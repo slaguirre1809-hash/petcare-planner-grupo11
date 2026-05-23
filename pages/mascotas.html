@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Mascotas | PetCare Planner</title>
+
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/mascotas.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+  <div class="page">
+    <header class="app-container app-topbar">
+      <a class="app-brand" href="../index.html" aria-label="Ir al inicio de PetCare Planner">
+        <span class="app-brand__icon" aria-hidden="true">🐾</span>
+        <span class="app-brand__text">PetCare Planner</span>
+      </a>
+
+      <div class="app-topbar__actions">
+        <a class="icon-btn" href="#pet-form" aria-label="Ir al formulario para agregar mascota">
+          +
+        </a>
+      </div>
+    </header>
+
+    <main id="main-content" class="app-container">
+      <section class="page-header">
+        <h1 class="page-title">Mis Mascotas</h1>
+        <p class="page-subtitle">
+          Administrá la información básica y los cuidados de tus compañeros.
+        </p>
+      </section>
+
+      <section class="section" aria-labelledby="pets-title">
+        <div class="section-header">
+          <h2 class="section-title" id="pets-title">Mascotas registradas</h2>
+        </div>
+
+        <div id="pets-list" class="grid pets-list">
+          <!-- JS: renderiza mascotas acá -->
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="selected-pet-title">
+        <div id="selected-pet-detail" class="card">
+          <h2 class="card-title" id="selected-pet-title">Seleccioná una mascota</h2>
+          <p class="card-text">
+            Cuando selecciones una mascota, vas a ver su información y próximos cuidados.
+          </p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="pet-form-title">
+        <article class="card">
+          <h2 class="card-title" id="pet-form-title">Agregar mascota</h2>
+
+          <form id="pet-form" class="form">
+            <div class="form-group">
+              <label class="form-label" for="pet-name">Nombre</label>
+              <input
+                class="form-input"
+                id="pet-name"
+                name="name"
+                type="text"
+                placeholder="Ej: Kira"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="pet-species">Especie</label>
+              <select
+                class="form-select"
+                id="pet-species"
+                name="species"
+                required
+              >
+                <option value="">Seleccionar especie</option>
+                <option value="Perro">Perro</option>
+                <option value="Gato">Gato</option>
+                <option value="Conejo">Conejo</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="pet-age">Edad</label>
+              <input
+                class="form-input"
+                id="pet-age"
+                name="age"
+                type="text"
+                placeholder="Ej: 3 años"
+              >
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="pet-breed">Raza</label>
+              <input
+                class="form-input"
+                id="pet-breed"
+                name="breed"
+                type="text"
+                placeholder="Ej: Golden Retriever"
+              >
+            </div>
+
+            <p id="pet-message" class="form-help" aria-live="polite"></p>
+
+            <button class="btn btn-primary btn-full" type="submit">
+              Guardar mascota
+            </button>
+          </form>
+        </article>
+      </section>
+
+      <section class="section" aria-labelledby="pet-tasks-title">
+        <div class="section-header">
+          <h2 class="section-title" id="pet-tasks-title">Próximos cuidados</h2>
+          <a class="section-link" href="./agenda.html">Ver agenda</a>
+        </div>
+
+        <div id="selected-pet-tasks" class="grid">
+          <!-- JS: renderiza tareas asociadas acá -->
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <a class="bottom-nav__link" href="../index.html">
+        <span aria-hidden="true">🏠</span>
+        Inicio
+      </a>
+
+      <a class="bottom-nav__link is-active" href="./mascotas.html" aria-current="page">
+        <span aria-hidden="true">🐾</span>
+        Mascotas
+      </a>
+
+      <a class="bottom-nav__link" href="./agenda.html">
+        <span aria-hidden="true">📅</span>
+        Agenda
+      </a>
+    </nav>
+  </div>
+
+  <script src="../assets/js/data.js"></script>
+  <script src="../assets/js/utils.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/mascotas.js"></script>
+</body>
+</html>
