@@ -11,7 +11,11 @@
 
   Regla importante:
   storage.js NO renderiza HTML y NO usa document.querySelector().
-  Solo se encarga de leer, guardar y actualizar datos.
+  Solo se encarga de leer, guardar, crear, actualizar y eliminar datos.
+
+  Depende de:
+  - data.js  → INITIAL_PETS / INITIAL_TASKS
+  - utils.js → generateId(), cleanText(), normalizeTaskStatus()
 */
 
 /* =====================================================
@@ -24,7 +28,7 @@ const STORAGE_KEYS = {
 };
 
 /* =====================================================
-   Funciones generales
+   Funciones generales de localStorage
 ===================================================== */
 
 function getFromStorage(key) {
@@ -51,23 +55,6 @@ function saveToStorage(key, value) {
   }
 }
 
-function generateId(prefix) {
-  return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-}
-
-function cleanText(value) {
-  return String(value || "").trim();
-}
-
-function getTodayISO() {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-}
-
 /* =====================================================
    Mascotas
 ===================================================== */
@@ -80,7 +67,7 @@ function savePets(pets) {
   saveToStorage(STORAGE_KEYS.PETS, pets);
 }
 
-function addPet(petData) {
+function addPet(petData = {}) {
   const pets = getPets();
 
   const newPet = {
@@ -93,6 +80,10 @@ function addPet(petData) {
     createdAt: new Date().toISOString()
   };
 
+  if (!newPet.name || !newPet.species) {
+    return null;
+  }
+
   pets.push(newPet);
   savePets(pets);
 
@@ -104,15 +95,16 @@ function getPetById(petId) {
   return pets.find((pet) => pet.id === petId) || null;
 }
 
-function updatePet(petId, updatedData) {
+function updatePet(petId, updatedData = {}) {
   const pets = getPets();
+  let updatedPet = null;
 
   const updatedPets = pets.map((pet) => {
     if (pet.id !== petId) {
       return pet;
     }
 
-    return {
+    updatedPet = {
       ...pet,
       ...updatedData,
       name: cleanText(updatedData.name ?? pet.name),
@@ -122,10 +114,21 @@ function updatePet(petId, updatedData) {
       image: cleanText(updatedData.image ?? pet.image),
       updatedAt: new Date().toISOString()
     };
+
+    return updatedPet;
   });
 
+  if (!updatedPet) {
+    return null;
+  }
+
+  if (!updatedPet.name || !updatedPet.species) {
+    return null;
+  }
+
   savePets(updatedPets);
-  return getPetById(petId);
+
+  return updatedPet;
 }
 
 function deletePet(petId) {
@@ -151,7 +154,7 @@ function saveTasks(tasks) {
   saveToStorage(STORAGE_KEYS.TASKS, tasks);
 }
 
-function addTask(taskData) {
+function addTask(taskData = {}) {
   const tasks = getTasks();
 
   const newTask = {
@@ -164,6 +167,10 @@ function addTask(taskData) {
     status: "pending",
     createdAt: new Date().toISOString()
   };
+
+  if (!newTask.petId || !newTask.title || !newTask.date) {
+    return null;
+  }
 
   tasks.push(newTask);
   saveTasks(tasks);
@@ -181,15 +188,16 @@ function getTasksByPetId(petId) {
   return tasks.filter((task) => task.petId === petId);
 }
 
-function updateTask(taskId, updatedData) {
+function updateTask(taskId, updatedData = {}) {
   const tasks = getTasks();
+  let updatedTask = null;
 
   const updatedTasks = tasks.map((task) => {
     if (task.id !== taskId) {
       return task;
     }
 
-    return {
+    updatedTask = {
       ...task,
       ...updatedData,
       petId: cleanText(updatedData.petId ?? task.petId),
@@ -197,13 +205,24 @@ function updateTask(taskId, updatedData) {
       description: cleanText(updatedData.description ?? task.description),
       date: cleanText(updatedData.date ?? task.date),
       time: cleanText(updatedData.time ?? task.time),
-      status: cleanText(updatedData.status ?? task.status),
+      status: normalizeTaskStatus(updatedData.status ?? task.status),
       updatedAt: new Date().toISOString()
     };
+
+    return updatedTask;
   });
 
+  if (!updatedTask) {
+    return null;
+  }
+
+  if (!updatedTask.petId || !updatedTask.title || !updatedTask.date) {
+    return null;
+  }
+
   saveTasks(updatedTasks);
-  return getTaskById(taskId);
+
+  return updatedTask;
 }
 
 function markTaskAsDone(taskId) {
@@ -228,96 +247,7 @@ function deleteTask(taskId) {
 }
 
 /* =====================================================
-   Estados visuales de tareas
-===================================================== */
-
-function getTaskVisualStatus(task) {
-  if (task.status === "done") {
-    return {
-      key: "done",
-      label: "Realizada",
-      badgeClass: "badge-primary"
-    };
-  }
-
-  if (!task.date) {
-    return {
-      key: "pending",
-      label: "Pendiente",
-      badgeClass: "badge-info"
-    };
-  }
-
-  const today = getTodayISO();
-
-  if (task.date < today) {
-    return {
-      key: "overdue",
-      label: "Vencida",
-      badgeClass: "badge-danger"
-    };
-  }
-
-  if (task.date === today) {
-    return {
-      key: "today",
-      label: "Hoy",
-      badgeClass: "badge-warning"
-    };
-  }
-
-  return {
-    key: "upcoming",
-    label: "Próxima",
-    badgeClass: "badge-success"
-  };
-}
-
-function filterTasksByVisualStatus(tasks, statusKey) {
-  if (statusKey === "all") {
-    return tasks;
-  }
-
-  return tasks.filter((task) => getTaskVisualStatus(task).key === statusKey);
-}
-
-function sortTasksByDate(tasks) {
-  return [...tasks].sort((a, b) => {
-    const dateA = `${a.date || "9999-12-31"} ${a.time || "23:59"}`;
-    const dateB = `${b.date || "9999-12-31"} ${b.time || "23:59"}`;
-
-    return dateA.localeCompare(dateB);
-  });
-}
-
-function getUpcomingTasks(limit = 3) {
-  const tasks = getTasks();
-
-  const upcomingTasks = tasks.filter((task) => {
-    const visualStatus = getTaskVisualStatus(task);
-    return visualStatus.key === "today" || visualStatus.key === "upcoming";
-  });
-
-  return sortTasksByDate(upcomingTasks).slice(0, limit);
-}
-
-function getOverdueTasks() {
-  const tasks = getTasks();
-  return tasks.filter((task) => getTaskVisualStatus(task).key === "overdue");
-}
-
-function getTodayTasks() {
-  const tasks = getTasks();
-  return tasks.filter((task) => getTaskVisualStatus(task).key === "today");
-}
-
-function getDoneTasks() {
-  const tasks = getTasks();
-  return tasks.filter((task) => getTaskVisualStatus(task).key === "done");
-}
-
-/* =====================================================
-   Datos iniciales opcionales
+   Datos iniciales
 ===================================================== */
 
 function seedInitialData() {
@@ -328,26 +258,21 @@ function seedInitialData() {
     return;
   }
 
-  const examplePet = addPet({
-    name: "Kira",
-    species: "Perro",
-    age: "3 años",
-    breed: "Golden Retriever",
-    image: ""
-  });
+  const initialPets = typeof INITIAL_PETS !== "undefined" ? INITIAL_PETS : [];
+  const initialTasks = typeof INITIAL_TASKS !== "undefined" ? INITIAL_TASKS : [];
 
-  addTask({
-    petId: examplePet.id,
-    title: "Vacuna antirrábica",
-    description: "Aplicación anual.",
-    date: getTodayISO(),
-    time: "09:00"
-  });
+  savePets(initialPets);
+  saveTasks(initialTasks);
 }
 
 /* =====================================================
    Utilidades para testing
 ===================================================== */
+
+/*
+  Solo para pruebas durante desarrollo.
+  No conectar esta función a botones finales del MVP.
+*/
 
 function clearPetCareData() {
   localStorage.removeItem(STORAGE_KEYS.PETS);
