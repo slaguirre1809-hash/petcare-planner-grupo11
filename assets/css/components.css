@@ -63,6 +63,7 @@
   font-weight: 700;
   text-align: center;
   cursor: pointer;
+  text-decoration: none;
   transition:
     transform var(--transition-fast, 0.2s ease),
     background-color var(--transition-fast, 0.2s ease),
@@ -167,7 +168,8 @@
   box-shadow: var(--shadow-card, var(--shadow-soft));
 }
 
-.card + .card {
+/* Espaciado vertical controlado por contenedor */
+.stack > * + * {
   margin-top: var(--space-md);
 }
 
@@ -203,7 +205,11 @@
 .panel {
   padding: var(--space-lg);
   border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-dark)
+  );
   color: var(--color-white, #ffffff);
   box-shadow: var(--shadow-soft);
 }
@@ -453,7 +459,7 @@
 .bottom-nav {
   position: fixed;
   left: 50%;
-  bottom: 1rem;
+  bottom: calc(0.75rem + env(safe-area-inset-bottom));
   z-index: 20;
   width: min(100% - 2rem, 26rem);
   transform: translateX(-50%);
@@ -462,7 +468,7 @@
   gap: var(--space-xs);
   padding: 0.5rem;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.92);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(10px);
@@ -472,8 +478,8 @@
   display: grid;
   place-items: center;
   gap: 0.15rem;
-  min-height: 3rem;
-  border-radius: var(--radius-pill);
+  min-height: 3.4rem;
+  border-radius: var(--radius-md);
   font-size: 0.78rem;
   font-weight: 800;
   color: var(--color-muted);
@@ -495,7 +501,7 @@
 .fab {
   position: fixed;
   right: 1.25rem;
-  bottom: 5.5rem;
+  bottom: calc(5.5rem + env(safe-area-inset-bottom));
   z-index: 25;
   width: 3.5rem;
   height: 3.5rem;
@@ -673,11 +679,21 @@
   display: flex;
   align-items: center;
   gap: var(--space-sm);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card, var(--shadow-soft));
+  transition:
+    border-color var(--transition-fast, 0.2s ease),
+    background-color var(--transition-fast, 0.2s ease),
+    box-shadow var(--transition-fast, 0.2s ease);
 }
 
 .pet-mini-card.is-selected {
   border-color: var(--color-primary);
   background: var(--color-primary-light);
+  box-shadow: var(--shadow-soft);
 }
 
 .pet-avatar {
@@ -722,6 +738,11 @@
 .task-card {
   display: grid;
   gap: var(--space-sm);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card, var(--shadow-soft));
 }
 
 .task-card__header {
