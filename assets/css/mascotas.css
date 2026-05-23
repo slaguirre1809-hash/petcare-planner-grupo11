@@ -1,0 +1,83 @@
+/* =========================
+   PetCare Planner - mascotas.css
+   Estilos específicos de la página Mascotas
+========================= */
+
+/* Lista de mascotas */
+.pets-list {
+  gap: var(--space-md);
+}
+
+.pets-list .pet-mini-card {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.pets-list .pet-mini-card.is-selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+/* Detalle de mascota */
+.pet-detail {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.pet-detail__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.pet-avatar--lg {
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.5rem;
+}
+
+/* Próximos cuidados */
+#selected-pet-tasks {
+  gap: var(--space-md);
+}
+
+/* Formulario */
+#pet-form {
+  margin-top: var(--space-md);
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  #main-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, 26rem);
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  #main-content > .page-header,
+  #main-content > section[aria-labelledby="pets-title"] {
+    grid-column: 1 / -1;
+  }
+
+  #main-content > section[aria-labelledby="selected-pet-title"],
+  #main-content > section[aria-labelledby="pet-tasks-title"] {
+    grid-column: 1;
+  }
+
+  #main-content > section[aria-labelledby="pet-form-title"] {
+    grid-column: 2;
+    grid-row: 3 / span 2;
+    position: sticky;
+    top: var(--space-xl);
+  }
+
+  .bottom-nav {
+    display: none;
+  }
+
+  .pets-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
