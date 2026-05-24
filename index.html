@@ -33,53 +33,57 @@
       <section class="dashboard-section highlight-block">
         <h2 class="section-title">Tus mascotas, siempre al día ❤️</h2>
         <p class="highlight-block__subtitle">Planificá sus cuidados y recibí recordatorios para que nada se te pase.</p>
-        <a class="btn btn-primary" href="./pages/agenda.html">Nueva tarea</a>
+        <a class="btn btn-primary" href="./pages/agenda.html">+ Nueva tarea</a>
       </section>
 
       <section class="dashboard-section today-summary">
         <h2 class="section-title">Resumen de hoy</h2>
         <div class="stats-grid">
-          <article class="stat-card">
-            <span class="stat-card__value" id="overdue-count">--</span>
-            <span class="stat-card__label">Vencidas</span>
-          </article>
-          <article class="stat-card">
-            <span class="stat-card__value" id="today-count">--</span>
-            <span class="stat-card__label">Para hoy</span>
-          </article>
-          <article class="stat-card">
-            <span class="stat-card__value" id="upcoming-count">--</span>
-            <span class="stat-card__label">Próximas</span>
-          </article>
-          <article class="stat-card">
-            <span class="stat-card__value" id="done-count">--</span>
-            <span class="stat-card__label">Completadas</span>
-          </article>
+        <article class="stat-card stat-card--danger">
+          <span class="stat-card__value" id="overdue-count">--</span>
+          <span class="stat-card__label">Vencidas</span>
+        </article>
+        <article class="stat-card stat-card--warning">
+          <span class="stat-card__value" id="today-count">--</span>
+          <span class="stat-card__label">Para hoy</span>
+        </article>
+        <article class="stat-card stat-card--success">
+          <span class="stat-card__value" id="upcoming-count">--</span>
+          <span class="stat-card__label">Próximas</span>
+        </article>
+        <article class="stat-card stat-card--primary">
+          <span class="stat-card__value" id="done-count">--</span>
+          <span class="stat-card__label">Completadas</span>
+        </article>
         </div>
       </section>
 
       <section class="dashboard-section upcoming-tasks">
         <header class="section-header">
           <h2 class="section-title">Próximas tareas</h2>
-          <a class="section-link" href="./pages/agenda.html">Ver todas</a>
+          <a class="section-link" href="./pages/agenda.html" aria-label="Ver todas las tareas">Ver todas</a>
         </header>
         <ul id="upcoming-tasks-list">
           <li>
             <article class="task-card">
-              <header class="task-card__header">
+              <span class="task-avatar" aria-hidden="true">🐕</span>
+              <div class="task-card__body">
                 <h3 class="task-card__title">Vacunar a Luna</h3>
-                <span class="badge badge-danger">Urgente</span>
-              </header>
               <p class="task-card__meta">Luna • Perro • 15/06/2026 • 10:00</p>
+              <span class="badge badge-danger">Vencida</span>
+              </div>
+              <a class="task-link" href="#" aria-label="Ver detalle de la tarea"> › </a>
             </article>
           </li>
           <li>
             <article class="task-card">
-              <header class="task-card__header">
+              <span class="task-avatar" aria-hidden="true">🐱</span>
+              <div class="task-card__body">
                 <h3 class="task-card__title">Paseo con Milo</h3>
-                <span class="badge badge-warning">Próximo</span>
-              </header>
               <p class="task-card__meta">Milo • Gato • 16/06/2026 • 18:00</p>
+              <span class="badge badge-warning">Hoy</span>
+              </div>
+              <a class="task-link" href="#" aria-label="Ver detalle de la tarea">›</a>
             </article>
           </li>
         </ul>
@@ -88,37 +92,40 @@
       <section class="dashboard-section my-pets">
         <header class="section-header">
           <h2 class="section-title">Mis mascotas</h2>
-          <a class="section-link" href="./pages/mascotas.html">Ver todas</a>
+          <a class="section-link" href="./pages/mascotas.html" aria-label="Ver todas las mascotas">Ver todas</a>
         </header>
         <ul id="pets-list-container">
           <li class="pet-mini-card">
             <span class="pet-avatar" aria-hidden="true">🐕</span>
-            <span class="pet-info">
+            <div class="pet-info">
               <p class="pet-name">Luna</p>
-              <p class="pet-meta">Perro • 3 años</p>
-            </span>
+            <p class="pet-specie">Perro</p>
+            <p class="pet-meta">3 años</p>
+            </div>
+            
           </li>
           <li class="pet-mini-card">
             <span class="pet-avatar" aria-hidden="true">🐱</span>
-            <span class="pet-info">
+            <div class="pet-info">
               <p class="pet-name">Milo</p>
-              <p class="pet-meta">Gato • 1 año</p>
-            </span>
+            <p class="pet-specie">Gato</p>
+            <p class="pet-meta">1 año</p>
+            </div>
           </li>
         </ul>
       </section>
 
       <aside class="dashboard-section tip-of-the-day" id="tip-of-the-day">
         <p>Cargando...</p>
-        <a class="tip-of-the-day__link">Ver más tips</a>
+        <a class="tip-of-the-day__link" href="./pages/tips.html" >Ver más tips</a>
       </aside>
 
     </main>
 
     <nav class="bottom-nav" aria-label="Navegación principal">
-      <a class="bottom-nav__link is-active" href="./index.html" aria-current="page">Inicio</a>
-      <a class="bottom-nav__link" href="./pages/mascotas.html">Mascotas</a>
-      <a class="bottom-nav__link" href="./pages/agenda.html">Agenda</a>
+      <a class="bottom-nav__link is-active" href="./index.html" aria-current="page" aria-label="Ir a la página de inicio">Inicio</a>
+      <a class="bottom-nav__link" href="./pages/mascotas.html" aria-label="Ir a la página de mascotas">Mascotas</a>
+      <a class="bottom-nav__link" href="./pages/agenda.html" aria-label="Ir a la página de agenda">Agenda</a>
     </nav>
     <footer class="app-footer">
       <p>🐾 PetCare Planner – Cuidados que mejoran vidas</p>
