@@ -36,9 +36,8 @@
         <a class="btn btn-primary" href="./pages/agenda.html">+ Nueva tarea</a>
       </section>
 
-      <section class="dashboard-section today-summary">
+      <section class="dashboard-section stats-grid">
         <h2 class="section-title">Resumen de hoy</h2>
-        <div class="stats-grid">
         <article class="stat-card stat-card--danger">
           <span class="stat-card__value" id="overdue-count">--</span>
           <span class="stat-card__label">Vencidas</span>
@@ -55,7 +54,6 @@
           <span class="stat-card__value" id="done-count">--</span>
           <span class="stat-card__label">Completadas</span>
         </article>
-        </div>
       </section>
 
       <section class="dashboard-section upcoming-tasks">
@@ -64,28 +62,6 @@
           <a class="section-link" href="./pages/agenda.html" aria-label="Ver todas las tareas">Ver todas</a>
         </header>
         <ul id="upcoming-tasks-list">
-          <li>
-            <article class="task-card">
-              <span class="task-avatar" aria-hidden="true">🐕</span>
-              <div class="task-card__body">
-                <h3 class="task-card__title">Vacunar a Luna</h3>
-              <p class="task-card__meta">Luna • Perro • 15/06/2026 • 10:00</p>
-              <span class="badge badge-danger">Vencida</span>
-              </div>
-              <a class="task-link" href="#" aria-label="Ver detalle de la tarea"> › </a>
-            </article>
-          </li>
-          <li>
-            <article class="task-card">
-              <span class="task-avatar" aria-hidden="true">🐱</span>
-              <div class="task-card__body">
-                <h3 class="task-card__title">Paseo con Milo</h3>
-              <p class="task-card__meta">Milo • Gato • 16/06/2026 • 18:00</p>
-              <span class="badge badge-warning">Hoy</span>
-              </div>
-              <a class="task-link" href="#" aria-label="Ver detalle de la tarea">›</a>
-            </article>
-          </li>
         </ul>
       </section>
 
@@ -95,29 +71,12 @@
           <a class="section-link" href="./pages/mascotas.html" aria-label="Ver todas las mascotas">Ver todas</a>
         </header>
         <ul id="pets-list-container">
-          <li class="pet-mini-card">
-            <span class="pet-avatar" aria-hidden="true">🐕</span>
-            <div class="pet-info">
-              <p class="pet-name">Luna</p>
-            <p class="pet-specie">Perro</p>
-            <p class="pet-meta">3 años</p>
-            </div>
-            
-          </li>
-          <li class="pet-mini-card">
-            <span class="pet-avatar" aria-hidden="true">🐱</span>
-            <div class="pet-info">
-              <p class="pet-name">Milo</p>
-            <p class="pet-specie">Gato</p>
-            <p class="pet-meta">1 año</p>
-            </div>
-          </li>
         </ul>
       </section>
 
       <aside class="dashboard-section tip-of-the-day" id="tip-of-the-day">
         <p>Cargando...</p>
-        <a class="tip-of-the-day__link" href="./pages/tips.html" >Ver más tips</a>
+        <button class="tip-of-the-day__button" type="button" > Ver otro tip </button>
       </aside>
 
     </main>

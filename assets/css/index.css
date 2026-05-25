@@ -244,7 +244,7 @@
   color: var(--color-text);
 }
 
-.tip-of-the-day__link {
+.tip-of-the-day__button {
   display: inline-block;
   margin-top: var(--space-sm);
   font-size: 0.85rem;
@@ -253,7 +253,7 @@
   text-decoration: none;
 }
 
-.tip-of-the-day__link:hover {
+.tip-of-the-day__button:hover {
   text-decoration: underline;
 }
 
