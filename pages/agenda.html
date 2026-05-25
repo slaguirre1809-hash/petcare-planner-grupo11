@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda | PetCare Planner</title>
+
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/agenda.css">
+</head>
+
+<body>
+    <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+
+    <div class="page">
+        <header class="app-container app-topbar">
+            <a class="app-brand" href="../index.html" aria-label="Ir al inicio de PetCare Planner">
+                <span class="app-brand__icon" aria-hidden="true">🐾</span>
+                <span class="app-brand__text">PetCare Planner</span>
+            </a>
+        </header>
+
+        <main id="main-content" class="app-container">
+            <!-- Santiago: desarrollar estructura y contenido de agenda.html acá -->
+
+            <main>
+
+                <section class="agenda-intro">
+
+                    <h2>Agenda de cuidados</h2>
+
+                    <p>
+                        Organiza vacunas, paseos, comidas y cuidados importantes
+                        para tus mascotas.
+                    </p>
+
+                </section>
+
+                <section class="task-form-section">
+
+                    <h2>Agregar cuidado</h2>
+
+                    <form id="task-form">
+
+                        <fieldset>
+
+                            <legend>Información de la tarea</legend>
+
+                            <label for="task-pet">Mascota</label>
+
+                            <select id="task-pet">
+
+                                <option value="">Seleccionar mascota</option>
+                                <option value="Kira">Kira</option>
+                                <option value="Milo">Milo</option>
+
+                            </select>
+
+                            <label for="task-title">Título</label>
+
+                            <input id="task-title" type="text" placeholder="Ej: Vacuna antirrábica">
+
+                            <label for="task-description">
+                                Descripción
+                            </label>
+
+                            <textarea id="task-description" placeholder="Describe el cuidado..."></textarea>
+
+                            <label for="task-date">Fecha</label>
+
+                            <input id="task-date" type="date">
+
+                            <label for="task-time">Hora</label>
+
+                            <input id="task-time" type="time">
+
+                        </fieldset>
+
+                        <button type="submit">
+                            Guardar cuidado
+                        </button>
+
+                    </form>
+
+                    <p id="task-message"></p>
+
+                </section>
+
+                <section class="filters-section">
+
+                    <h2>Filtrar tareas</h2>
+
+                    <nav class="filters">
+
+                        <button data-filter="all">
+                            Todas
+                        </button>
+
+                        <button data-filter="overdue">
+                            Vencidas
+                        </button>
+
+                        <button data-filter="today">
+                            Hoy
+                        </button>
+
+                        <button data-filter="upcoming">
+                            Próximas
+                        </button>
+
+                        <button data-filter="done">
+                            Realizadas
+                        </button>
+
+                    </nav>
+
+                </section>
+
+                <section id="tasks-list">
+
+                    <h2>Listado de tareas</h2>
+
+                    <article class="task-card">
+
+                        <header class="task-card-header">
+
+                            <section>
+
+                                <h3>
+                                    Vacuna antirrábica
+                                </h3>
+
+                                <p>
+                                    Kira · 25/05/2026 · 09:00
+                                </p>
+
+                            </section>
+
+                            <p class="task-status warning">
+                                Hoy
+                            </p>
+
+                        </header>
+
+                        <p>
+                            Aplicación anual de vacuna.
+                        </p>
+
+                        <footer class="task-card-actions">
+
+                            <button type="button">
+                                Marcar realizada
+                            </button>
+
+                        </footer>
+
+                    </article>
+
+                    <article class="task-card">
+
+                        <header class="task-card-header">
+
+                            <section>
+
+                                <h3>
+                                    Paseo nocturno
+                                </h3>
+
+                                <p>
+                                    Milo · 20/05/2026 · 20:00
+                                </p>
+
+                            </section>
+
+                            <p class="task-status overdue">
+                                Vencida
+                            </p>
+
+                        </header>
+
+                        <p>
+                            Paseo de 30 minutos.
+                        </p>
+
+                    </article>
+
+                    <article class="task-card">
+
+                        <header class="task-card-header">
+
+                            <section>
+
+                                <h3>
+                                    Baño
+                                </h3>
+
+                                <p>
+                                    Kira · 30/05/2026 · 15:00
+                                </p>
+
+                            </section>
+
+                            <p class="task-status upcoming">
+                                Próxima
+                            </p>
+
+                        </header>
+
+                        <p>
+                            Baño mensual.
+                        </p>
+
+                    </article>
+
+                    <article class="task-card">
+
+                        <header class="task-card-header">
+
+                            <section>
+
+                                <h3>
+                                    Medicación
+                                </h3>
+
+                                <p>
+                                    Milo · 18/05/2026 · 08:00
+                                </p>
+
+                            </section>
+
+                            <p class="task-status done">
+                                Realizada
+                            </p>
+
+                        </header>
+
+                        <p>
+                            Tomar medicamento después del desayuno.
+                        </p>
+
+                    </article>
+
+                </section>
+
+            </main>
+
+        </main>
+
+        <nav class="bottom-nav" aria-label="Navegación principal">
+            <a class="bottom-nav__link" href="../index.html">Inicio</a>
+            <a class="bottom-nav__link" href="./mascotas.html">Mascotas</a>
+            <a class="bottom-nav__link is-active" href="./agenda.html" aria-current="page">Agenda</a>
+        </nav>
+    </div>
+
+    <script src="../assets/js/data.js"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/storage.js"></script>
+    <script src="../assets/js/agenda.js"></script>
+</body>
+
+</html>
