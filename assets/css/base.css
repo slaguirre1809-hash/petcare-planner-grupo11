@@ -1,0 +1,285 @@
+/* =========================
+   PetCare Planner - base.css
+   Base visual global
+========================= */
+
+:root {
+  /* Marca */
+  --color-primary: #6f35e8;
+  --color-primary-dark: #5524c9;
+  --color-primary-light: #f1ebff;
+
+  /* Estados */
+  --color-danger: #f04464;
+  --color-danger-light: #ffe8ee;
+
+  --color-warning: #f59e0b;
+  --color-warning-light: #fff3d6;
+
+  --color-success: #22a956;
+  --color-success-light: #e5f8eb;
+
+  --color-info: #4f7cff;
+  --color-info-light: #eaf0ff;
+
+  /* Neutros */
+  --color-bg: #fbfaff;
+  --color-surface: #ffffff;
+  --color-text: #171421;
+  --color-muted: #667085;
+  --color-border: #e7e2f3;
+  --color-white: #ffffff;
+
+  /* Sombras */
+  --shadow-soft: 0 10px 30px rgba(87, 64, 140, 0.08);
+  --shadow-card: 0 8px 24px rgba(55, 45, 90, 0.06);
+
+  /* Bordes */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  /* Espaciados */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Tipografía */
+  --font-main:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Layout */
+  --container-mobile: min(100% - 2rem, 430px);
+  --container-desktop: min(100% - 3rem, 1440px);
+  --sidebar-width: 240px;
+  --desktop-gap: 2rem;
+
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+}
+
+/* Reset básico */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-main);
+  font-size: 16px;
+  line-height: 1.5;
+  background: var(--color-bg);
+  color: var(--color-text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Tipografía */
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--color-text);
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  font-size: clamp(1.35rem, 4vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+h3 {
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+p {
+  color: var(--color-muted);
+}
+
+/* Listas */
+ul,
+ol {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+/* Enlaces */
+a {
+  color: inherit;
+}
+
+a:hover {
+  color: var(--color-primary);
+}
+
+.nav-link,
+.button-link {
+  text-decoration: none;
+}
+
+/* Imágenes */
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+/* Formularios y botones base */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 44px;
+}
+
+/* Evita highlight molesto en mobile */
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Accesibilidad */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Layout general */
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+}
+
+.app-container {
+  width: var(--container-mobile);
+  margin-inline: auto;
+}
+
+.page-header {
+  padding: var(--space-lg) 0 var(--space-md);
+}
+
+.page-title {
+  margin-bottom: var(--space-sm);
+}
+
+.page-subtitle {
+  max-width: 34rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  color: var(--color-muted);
+}
+
+/* Utilidad accesible */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link accesible */
+.skip-link {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-white);
+  transform: translateY(-150%);
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Usuarios con animaciones reducidas */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .page {
+    padding-bottom: 2rem;
+  }
+
+  .app-container {
+    width: var(--container-desktop);
+  }
+}
+
+/* Botones y campos deshabilitados */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
