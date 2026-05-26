@@ -146,11 +146,11 @@ function deletePet(petId) {
    Tareas / Cuidados
 ===================================================== */
 
-export function getTasks() {
+function getTasks() {
   return getFromStorage(STORAGE_KEYS.TASKS);
 }
 
-export function saveTasks(tasks) {
+function saveTasks(tasks) {
   saveToStorage(STORAGE_KEYS.TASKS, tasks);
 }
 
