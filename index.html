@@ -22,14 +22,73 @@
     </header>
 
     <main id="main-content" class="app-container">
-      <!-- Lucas: desarrollar estructura y contenido de index.html acá -->
+
+      <h1 class="visually-hidden">Panel de inicio de PetCare Planner</h1>
+
+      <section class="dashboard-section greeting-block">
+        <p id="user-greeting">Cargando...</p> 
+        <p class="greeting-block__description">Organizá los cuidados de tus mascotas y seguí su bienestar día a día.</p>
+      </section>
+
+      <section class="dashboard-section highlight-block">
+        <h2 class="section-title">Tus mascotas, siempre al día ❤️</h2>
+        <p class="highlight-block__subtitle">Planificá sus cuidados y recibí recordatorios para que nada se te pase.</p>
+        <a class="btn btn-primary" href="./pages/agenda.html">+ Nueva tarea</a>
+      </section>
+
+      <section class="dashboard-section stats-grid">
+        <h2 class="section-title">Resumen de hoy</h2>
+        <article class="stat-card stat-card--danger">
+          <span class="stat-card__value" id="overdue-count">--</span>
+          <span class="stat-card__label">Vencidas</span>
+        </article>
+        <article class="stat-card stat-card--warning">
+          <span class="stat-card__value" id="today-count">--</span>
+          <span class="stat-card__label">Para hoy</span>
+        </article>
+        <article class="stat-card stat-card--success">
+          <span class="stat-card__value" id="upcoming-count">--</span>
+          <span class="stat-card__label">Próximas</span>
+        </article>
+        <article class="stat-card stat-card--primary">
+          <span class="stat-card__value" id="done-count">--</span>
+          <span class="stat-card__label">Completadas</span>
+        </article>
+      </section>
+
+      <section class="dashboard-section upcoming-tasks">
+        <header class="section-header">
+          <h2 class="section-title">Próximas tareas</h2>
+          <a class="section-link" href="./pages/agenda.html" aria-label="Ver todas las tareas">Ver todas</a>
+        </header>
+        <ul id="upcoming-tasks-list">
+        </ul>
+      </section>
+
+      <section class="dashboard-section my-pets">
+        <header class="section-header">
+          <h2 class="section-title">Mis mascotas</h2>
+          <a class="section-link" href="./pages/mascotas.html" aria-label="Ver todas las mascotas">Ver todas</a>
+        </header>
+        <ul id="pets-list-container">
+        </ul>
+      </section>
+
+      <aside class="dashboard-section tip-of-the-day" id="tip-of-the-day">
+        <p>Cargando...</p>
+        <button class="tip-of-the-day__button" type="button" > Ver otro tip </button>
+      </aside>
+
     </main>
 
     <nav class="bottom-nav" aria-label="Navegación principal">
-      <a class="bottom-nav__link is-active" href="./index.html" aria-current="page">Inicio</a>
-      <a class="bottom-nav__link" href="./pages/mascotas.html">Mascotas</a>
-      <a class="bottom-nav__link" href="./pages/agenda.html">Agenda</a>
+      <a class="bottom-nav__link is-active" href="./index.html" aria-current="page" aria-label="Ir a la página de inicio">Inicio</a>
+      <a class="bottom-nav__link" href="./pages/mascotas.html" aria-label="Ir a la página de mascotas">Mascotas</a>
+      <a class="bottom-nav__link" href="./pages/agenda.html" aria-label="Ir a la página de agenda">Agenda</a>
     </nav>
+    <footer class="app-footer">
+      <p>🐾 PetCare Planner – Cuidados que mejoran vidas</p>
+    </footer>
   </div>
 
   <script src="./assets/js/data.js"></script>

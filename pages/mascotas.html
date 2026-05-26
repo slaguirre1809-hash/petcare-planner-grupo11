@@ -13,127 +13,270 @@
   <body>
     <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
 
-    <div class="page">
-      <header class="app-container app-topbar">
+    <div class="page pet-page">
+      <aside class="desktop-sidebar" aria-label="Navegacion lateral">
+        <a
+          class="desktop-sidebar__brand"
+          href="../index.html"
+          aria-label="Ir al inicio de PetCare Planner"
+        >
+          <span class="brand-paw" aria-hidden="true">
+            <img src="../assets/img/brand/isotipo-paw.png" alt="" />
+            <span>🐾</span>
+          </span>
+          <span>
+            PetCare<br />
+            <strong>Planner</strong>
+          </span>
+        </a>
+
+        <nav class="desktop-sidebar__nav" aria-label="Navegacion principal">
+          <a class="desktop-sidebar__link" href="../index.html">
+            <span aria-hidden="true">⌂</span>
+            Inicio
+          </a>
+          <a
+            class="desktop-sidebar__link is-active"
+            href="./mascotas.html"
+            aria-current="page"
+          >
+            <span aria-hidden="true">🐾</span>
+            Mis Mascotas
+          </a>
+          <a class="desktop-sidebar__link" href="./agenda.html">
+            <span aria-hidden="true">▣</span>
+            Agenda de cuidados
+          </a>
+          <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
+            <span aria-hidden="true">♢</span>
+            Recordatorios
+          </a>
+          <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
+            <span aria-hidden="true">□</span>
+            Calendario
+          </a>
+          <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
+            <span aria-hidden="true">○</span>
+            Perfil
+          </a>
+          <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
+            <span aria-hidden="true">⚙</span>
+            Configuracion
+          </a>
+        </nav>
+
+        <article class="desktop-sidebar__message">
+          <strong>El amor se demuestra cada dia</strong>
+          <p>Pequenas rutinas, grandes beneficios para su calidad de vida.</p>
+          <div class="mini-illustration" aria-hidden="true">
+            <img
+              class="sidebar-pets-image"
+              src="../assets/img/pets/sidebar-pets.png"
+              alt=""
+              loading="lazy"
+              onerror="this.hidden = true"
+            />
+            <span class="pet-face pet-face--dog"></span>
+            <span class="pet-face pet-face--cat"></span>
+          </div>
+        </article>
+      </aside>
+
+      <header class="app-container app-topbar pet-topbar">
         <a
           class="app-brand"
           href="../index.html"
           aria-label="Ir al inicio de PetCare Planner"
         >
-          <span class="app-brand__icon" aria-hidden="true">🐾</span>
-          <span class="app-brand__text">PetCare Planner</span>
+          <span class="brand-paw" aria-hidden="true">
+            <img src="../assets/img/brand/isotipo-paw.png" alt="" />
+            <span>🐾</span>
+          </span>
+          <span class="app-brand__text">PetCare<br /><strong>Planner</strong></span>
         </a>
 
         <div class="app-topbar__actions">
-          <a
-            class="icon-btn"
-            href="#pet-form"
-            aria-label="Ir al formulario para agregar mascota"
+          <button
+            class="notification-btn"
+            type="button"
+            aria-label="3 recordatorios pendientes"
+          >
+            ♡
+            <span>3</span>
+          </button>
+          <button
+            class="icon-btn add-shortcut"
+            type="button"
+            data-open-pet-form
+            aria-label="Agregar mascota"
           >
             +
-          </a>
+          </button>
         </div>
       </header>
 
-      <main id="main-content" class="app-container">
-        <section class="page-header">
-          <h1 class="page-title">Mis Mascotas</h1>
-          <p class="page-subtitle">
-            Administrá la información básica y los cuidados de tus compañeros.
-          </p>
+      <main id="main-content" class="app-container pet-layout">
+        <section class="page-header pet-hero" aria-labelledby="pets-page-title">
+          <div class="pet-hero__content">
+            <h1 class="page-title" id="pets-page-title">Mis Mascotas</h1>
+            <p class="page-subtitle">
+              Administra la informacion y cuidados de tus companeros.
+            </p>
+          </div>
+
+          <div class="pet-hero__art" aria-hidden="true">
+            <span class="hero-blob"></span>
+            <img
+              class="hero-pets-image"
+              src="../assets/img/pets/hero-pets.png"
+              alt=""
+              loading="lazy"
+              onerror="this.hidden = true"
+            />
+            <span class="pet-face pet-face--dog pet-face--hero"></span>
+            <span class="pet-face pet-face--cat pet-face--hero"></span>
+            <span class="hero-heart">♡</span>
+            <span class="hero-spark">✦</span>
+          </div>
         </section>
 
-        <section class="section" aria-labelledby="pets-title">
-          <div class="section-header">
+        <section class="section pets-selector-section" aria-labelledby="pets-title">
+          <div class="section-header visually-hidden">
             <h2 class="section-title" id="pets-title">Mascotas registradas</h2>
           </div>
 
-          <div id="pets-list" class="grid pets-list">
-            <!-- JS: renderiza mascotas acá -->
+          <div id="pets-list" class="pets-list" aria-live="polite">
+            <!-- JS: mascotas registradas -->
           </div>
         </section>
 
-        <section class="section" aria-labelledby="selected-pet-title">
-          <div class="section-header">
-            <h2 class="section-title" id="selected-pet-title">
-              Detalle de mascota
-            </h2>
-          </div>
+        <section class="section selected-pet-section" aria-labelledby="selected-pet-title">
+          <h2 class="visually-hidden" id="selected-pet-title">
+            Mascota seleccionada
+          </h2>
 
           <div id="selected-pet-detail" class="card" aria-live="polite">
             <p class="card-text">
-              Seleccioná una mascota para ver su información y próximos
-              cuidados.
+              Selecciona una mascota para ver su informacion y proximos cuidados.
             </p>
           </div>
         </section>
 
-        <section class="section" aria-labelledby="pet-tasks-title">
-          <div class="section-header">
-            <h2 class="section-title" id="pet-tasks-title">
-              Próximos cuidados
-            </h2>
-            <a class="section-link" href="./agenda.html">Ver agenda</a>
+        <section class="section pet-tabs-section" aria-labelledby="pet-sections-title">
+          <h2 class="visually-hidden" id="pet-sections-title">
+            Secciones de la mascota
+          </h2>
+
+          <div
+            id="pet-feature-tabs"
+            class="tabs pet-feature-tabs"
+            role="tablist"
+            aria-label="Secciones de la mascota"
+          >
+            <button class="tab is-active" type="button" data-pet-section="Resumen">
+              <span aria-hidden="true">▤</span>
+              Resumen
+            </button>
+            <button class="tab" type="button" data-pet-section="Informacion">
+              <span aria-hidden="true">ⓘ</span>
+              Informacion
+            </button>
+            <button class="tab" type="button" data-pet-section="Historial">
+              <span aria-hidden="true">↺</span>
+              Historial
+            </button>
+            <button class="tab" type="button" data-pet-section="Fotos">
+              <span aria-hidden="true">▧</span>
+              Fotos
+            </button>
           </div>
 
-          <div id="selected-pet-tasks" class="grid" aria-live="polite">
-            <!-- JS: renderiza tareas asociadas acá -->
+          <div id="pet-feature-panel" class="pet-feature-panel" aria-live="polite">
+            <div id="selected-pet-summary" class="pet-summary-grid">
+              <!-- JS: resumen -->
+            </div>
+            <div id="pet-feature-message" class="coming-soon-card" hidden>
+              <!-- JS: tabs secundarias -->
+            </div>
           </div>
         </section>
-        
-        <section class="section" aria-labelledby="pet-form-title">
-          <article class="card">
-            <h2 class="card-title" id="pet-form-title">Agregar mascota</h2>
+
+        <section class="section pet-tasks-section" aria-labelledby="pet-tasks-title">
+          <div class="section-header">
+            <h2 class="section-title" id="pet-tasks-title">Proximos cuidados</h2>
+            <a class="section-link" href="./agenda.html">Ver todos</a>
+          </div>
+
+          <div id="selected-pet-tasks" class="pet-task-list" aria-live="polite">
+            <!-- JS: tareas asociadas -->
+          </div>
+        </section>
+
+        <a class="btn btn-primary pet-agenda-cta" href="./agenda.html">
+          <span aria-hidden="true">▣</span>
+          Ver agenda completa
+        </a>
+
+        <section
+          class="section pet-form-section"
+          id="pet-form-section"
+          aria-labelledby="pet-form-title"
+          hidden
+        >
+          <article class="card add-pet-panel">
+            <div class="section-header">
+              <h2 class="section-title" id="pet-form-title">Agregar mascota</h2>
+              <button class="btn btn-ghost" type="button" data-close-pet-form>
+                Cerrar
+              </button>
+            </div>
 
             <form id="pet-form" class="form">
-              <div class="form-group">
-                <label class="form-label" for="pet-name">Nombre</label>
-                <input
-                  class="form-input"
-                  id="pet-name"
-                  name="name"
-                  type="text"
-                  placeholder="Ej: Kira"
-                  required
-                />
-              </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="pet-name">Nombre</label>
+                  <input
+                    class="form-input"
+                    id="pet-name"
+                    name="name"
+                    type="text"
+                    placeholder="Ej: Kira"
+                    required
+                  />
+                </div>
 
-              <div class="form-group">
-                <label class="form-label" for="pet-species">Especie</label>
-                <select
-                  class="form-select"
-                  id="pet-species"
-                  name="species"
-                  required
-                >
-                  <option value="">Seleccionar especie</option>
-                  <option value="Perro">Perro</option>
-                  <option value="Gato">Gato</option>
-                  <option value="Conejo">Conejo</option>
-                  <option value="Otro">Otro</option>
-                </select>
-              </div>
+                <div class="form-group">
+                  <label class="form-label" for="pet-species">Especie</label>
+                  <select class="form-select" id="pet-species" name="species" required>
+                    <option value="">Seleccionar especie</option>
+                    <option value="Perro">Perro</option>
+                    <option value="Gato">Gato</option>
+                    <option value="Conejo">Conejo</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
 
-              <div class="form-group">
-                <label class="form-label" for="pet-age">Edad</label>
-                <input
-                  class="form-input"
-                  id="pet-age"
-                  name="age"
-                  type="text"
-                  placeholder="Ej: 3 años"
-                />
-              </div>
+                <div class="form-group">
+                  <label class="form-label" for="pet-age">Edad</label>
+                  <input
+                    class="form-input"
+                    id="pet-age"
+                    name="age"
+                    type="text"
+                    placeholder="Ej: 3 anos"
+                  />
+                </div>
 
-              <div class="form-group">
-                <label class="form-label" for="pet-breed">Raza</label>
-                <input
-                  class="form-input"
-                  id="pet-breed"
-                  name="breed"
-                  type="text"
-                  placeholder="Ej: Golden Retriever"
-                />
+                <div class="form-group">
+                  <label class="form-label" for="pet-breed">Raza</label>
+                  <input
+                    class="form-input"
+                    id="pet-breed"
+                    name="breed"
+                    type="text"
+                    placeholder="Ej: Golden Retriever"
+                  />
+                </div>
               </div>
 
               <p id="pet-message" class="form-help" aria-live="polite"></p>
@@ -146,12 +289,48 @@
         </section>
       </main>
 
-      <nav class="bottom-nav" aria-label="Navegación principal">
+      <aside class="desktop-pet-aside" aria-label="Resumen lateral de mascota">
+        <article class="desktop-widget">
+          <h2 class="desktop-widget__title" id="desktop-summary-title">
+            Resumen de mascota
+          </h2>
+          <div id="desktop-pet-summary" class="desktop-summary-list">
+            <!-- JS: resumen lateral -->
+          </div>
+        </article>
+
+        <article class="desktop-widget">
+          <h2 class="desktop-widget__title">Informacion rapida</h2>
+          <ul id="quick-info-list" class="quick-info-list">
+            <!-- JS: informacion rapida -->
+          </ul>
+        </article>
+
+        <article class="desktop-widget desktop-tip">
+          <span class="desktop-tip__icon" aria-hidden="true">
+            <img
+              class="desktop-tip__image"
+              src="../assets/img/tips/water-bowl.png"
+              alt=""
+              loading="lazy"
+              onerror="this.hidden = true"
+            />
+            <span class="desktop-tip__fallback">💧</span>
+          </span>
+          <div>
+            <h2 class="desktop-widget__title">Tip del dia</h2>
+            <p>
+              Asegurate de que tu mascota siempre tenga agua fresca disponible.
+            </p>
+          </div>
+        </article>
+      </aside>
+
+      <nav class="bottom-nav" aria-label="Navegacion principal">
         <a class="bottom-nav__link" href="../index.html">
-          <span aria-hidden="true">🏠</span>
+          <span aria-hidden="true">⌂</span>
           Inicio
         </a>
-
         <a
           class="bottom-nav__link is-active"
           href="./mascotas.html"
@@ -160,9 +339,8 @@
           <span aria-hidden="true">🐾</span>
           Mascotas
         </a>
-
         <a class="bottom-nav__link" href="./agenda.html">
-          <span aria-hidden="true">📅</span>
+          <span aria-hidden="true">▣</span>
           Agenda
         </a>
       </nav>

@@ -1,0 +1,324 @@
+/* =========================
+    Espaciado entre secciones
+   ========================= */
+
+.dashboard-section {
+  margin-top: var(--space-lg);
+}
+
+.dashboard-section:first-child {
+  margin-top: 0;
+}
+
+/* =========================
+   Bloque de saludo
+   ========================= */
+
+.greeting-block {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+
+#user-greeting {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.greeting-block__description {
+  margin-top: var(--space-xs);
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+/* =========================
+   3. Bloque destacado
+   ========================= */
+
+.highlight-block {
+  background: var(--color-primary-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+
+.highlight-block .section-title {
+  color: var(--color-primary-dark, var(--color-text));
+}
+
+.highlight-block__subtitle {
+  margin-top: var(--space-sm);
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.highlight-block .btn-primary {
+  margin-top: var(--space-md);
+}
+
+/* =========================
+   Resumen de hoy
+   ========================= */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.stats-grid > .section-title {
+  grid-column: 1 / -1;
+}
+
+.stat-card {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  text-align: center;
+  gap: 0.25rem;
+}
+
+.stat-card__value {
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.stat-card__label {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+#overdue-count {
+  color: var(--color-danger);
+}
+
+#today-count {
+  color: #9a5f00;
+}
+
+#upcoming-count {
+  color: var(--color-success);
+}
+
+#done-count {
+  color: var(--color-primary);
+}
+
+/* =========================
+    Próximas tareas
+   ========================= */
+
+#upcoming-tasks-list {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.task-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.task-avatar {
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  font-size: 1.25rem;
+}
+
+.task-card__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.task-card__title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--color-text);
+}
+
+.task-card__meta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.task-card .badge {
+  align-self: flex-start;
+  width: fit-content;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.55rem;
+}
+
+.task-link {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.task-link:hover {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.section-link:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+    Mis mascotas
+   ========================= */
+
+#pets-list-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  padding: 0;
+  list-style: none;
+}
+
+.pet-mini-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.2rem;
+}
+
+.pet-mini-card .pet-avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.pet-specie {
+  display: inline-block;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  margin-top: 0.25rem;
+}
+
+/* =========================
+    Tip del día
+   ========================= */
+
+.tip-of-the-day {
+  background: var(--color-primary-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.tip-of-the-day p {
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.tip-of-the-day__button {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.tip-of-the-day__button:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+    Footer
+   ========================= */
+
+.app-footer {
+  text-align: center;
+  padding: var(--space-md);
+  margin-top: var(--space-xl);
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-border);
+}
+
+/* =========================
+    Ajustes generales
+   ========================= */
+
+main.app-container {
+  padding-top: var(--space-md);
+  overflow-x: hidden;
+}
+
+/* =========================
+    Desktop 
+   ========================= */
+
+@media (min-width: 768px) {
+  .dashboard-section {
+    margin-top: var(--space-xl);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .greeting-block,
+  .highlight-block,
+  .tip-of-the-day {
+    padding: var(--space-lg);
+  }
+
+  .highlight-block .btn-primary {
+    width: auto;
+  }
+
+  #upcoming-tasks-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #pets-list-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pet-mini-card .pet-avatar {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .app-footer {
+    margin-top: var(--space-2xl);
+    padding: var(--space-lg);
+  }
+}
