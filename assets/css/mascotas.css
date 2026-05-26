@@ -343,46 +343,186 @@
 }
 
 /* Desktop */
-@media (min-width: 768px) {
+/* Desktop / Notebook */
+@media (min-width: 1024px) {
+  .page {
+    padding-bottom: var(--space-2xl);
+  }
+
+  .app-topbar {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+  }
+
   #main-content {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(20rem, 26rem);
+    grid-template-columns: minmax(0, 1fr) minmax(21rem, 26rem);
+    grid-template-areas:
+      "hero hero"
+      "pets pets"
+      "detail form"
+      "features form"
+      "tasks form";
     gap: var(--space-xl);
     align-items: start;
   }
 
-  #main-content > .page-header,
-  #main-content > section[aria-labelledby="pets-title"] {
-    grid-column: 1 / -1;
+  #main-content > .pet-hero {
+    grid-area: hero;
   }
 
-  #main-content > section[aria-labelledby="selected-pet-title"],
-  #main-content > section[aria-labelledby="pet-sections-title"],
+  #main-content > section[aria-labelledby="pets-title"] {
+    grid-area: pets;
+  }
+
+  #main-content > section[aria-labelledby="selected-pet-title"] {
+    grid-area: detail;
+  }
+
+  #main-content > section[aria-labelledby="pet-sections-title"] {
+    grid-area: features;
+  }
+
   #main-content > section[aria-labelledby="pet-tasks-title"] {
-    grid-column: 1;
+    grid-area: tasks;
   }
 
   #main-content > section[aria-labelledby="pet-form-title"] {
-    grid-column: 2;
-    grid-row: 3 / span 4;
+    grid-area: form;
     position: sticky;
     top: var(--space-xl);
   }
 
+  .bottom-nav {
+    display: none;
+  }
+
+  /* Hero desktop */
   .pet-hero {
-    grid-template-columns: minmax(0, 1fr) minmax(18rem, 28rem);
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, 28rem);
     align-items: center;
+    padding-block: var(--space-xl);
+  }
+
+  .pet-hero__content {
+    max-width: 42rem;
   }
 
   .pet-hero__art {
-    min-height: 11rem;
+    min-height: 12rem;
   }
 
+  .pet-hero__bubble {
+    width: 5.25rem;
+    height: 5.25rem;
+    font-size: 2.25rem;
+  }
+
+  /* Mascotas registradas */
+  .pets-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pets-list .pet-add-card {
+    min-height: 6rem;
+  }
+
+  .pet-selector-card {
+    min-height: 6rem;
+  }
+
+  /* Detalle */
+  .pet-profile-card {
+    min-height: 12rem;
+    align-content: center;
+  }
+
+  .pet-profile-card__main {
+    align-items: center;
+  }
+
+  .pet-avatar--xl {
+    width: 5.25rem;
+    height: 5.25rem;
+    flex-basis: 5.25rem;
+    font-size: 2.25rem;
+  }
+
+  .pet-profile-card__action {
+    margin-top: var(--space-sm);
+  }
+
+  /* Tabs + resumen */
+  .pet-feature-tabs {
+    border-radius: var(--radius-xl);
+  }
+
+  .pet-feature-panel {
+    margin-top: var(--space-md);
+  }
+
+  .pet-summary-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .pet-summary-card {
+    min-height: 9rem;
+    justify-content: center;
+  }
+
+  /* Próximos cuidados */
+  #selected-pet-tasks {
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+  }
+
+  #selected-pet-tasks .pet-task-card {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #selected-pet-tasks .pet-task-card + .pet-task-card {
+    border-top: 1px solid var(--color-border);
+  }
+
+  #selected-pet-tasks .empty-state {
+    border: 0;
+    background: transparent;
+  }
+
+  .pet-task-card {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    padding: var(--space-lg);
+  }
+
+  /* Formulario lateral */
+  #main-content > section[aria-labelledby="pet-form-title"] .card {
+    padding: var(--space-lg);
+    border-radius: var(--radius-xl);
+  }
+
+  #pet-form {
+    gap: var(--space-lg);
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
   .pets-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .pet-summary-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pet-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+    align-items: center;
   }
 }
