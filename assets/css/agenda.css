@@ -260,13 +260,35 @@ button[type="submit"]:hover {
 }
 
 .overdue {
-    background-color: #ffdede;
-    color: #d63031;
+    /* Deja el fondo completamente transparente o invisible */
+    background-color: transparent; 
+    
+    /* Pinta solo las letras con el verde que te guste */
+    color: #d63031; 
+    
+    /* Opcional: quita bordes o sombreados si es que los tiene */
+    border: none;
+    background: none;
+    
+    /* Opcional: un poquito de espacio arriba para que no se pegue al botón */
+    margin-top: 10px; 
+    font-weight: bold;
 }
 
 .upcoming {
-    background-color: #dfffe5;
-    color: #27ae60;
+    /* Deja el fondo completamente transparente o invisible */
+    background-color: transparent; 
+    
+    /* Pinta solo las letras con el verde que te guste */
+    color: #27ae60; 
+    
+    /* Opcional: quita bordes o sombreados si es que los tiene */
+    border: none;
+    background: none;
+    
+    /* Opcional: un poquito de espacio arriba para que no se pegue al botón */
+    margin-top: 10px; 
+    font-weight: bold;
 }
 
 .done {

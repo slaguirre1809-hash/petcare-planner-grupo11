@@ -178,7 +178,7 @@ function handleTaskSubmit(event) {
 
         showTaskMessage(
             "Completa los campos obligatorios.",
-            "error"
+            "overdue"
         );
 
         return;
@@ -209,7 +209,7 @@ function handleTaskSubmit(event) {
 
     showTaskMessage(
         "Tarea creada correctamente.",
-        "success"
+        "upcoming"
     );
 
     taskForm.reset();
