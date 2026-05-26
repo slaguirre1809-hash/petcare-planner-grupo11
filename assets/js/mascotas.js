@@ -30,6 +30,26 @@ const PET_COLORS = {
   Otro: "other"
 };
 
+const PET_IMAGE_BY_ID = {
+  "pet-kira": "assets/img/pets/dog-avatar.png",
+  "pet-mishi": "assets/img/pets/cat-avatar.png",
+  "pet-luna": "assets/img/pets/rabbit-avatar.png"
+};
+
+const TASK_ICON_ASSETS = {
+  vaccine: "assets/img/icons/icon-vaccine.png",
+  food: "assets/img/icons/icon-food.png",
+  bath: "assets/img/icons/icon-bath.png",
+  vet: "assets/img/icons/icon-vet.png",
+  medicine: "assets/img/icons/icon-medicine.png",
+  calendar: "assets/img/icons/icon-calendar.png"
+};
+
+const EMPTY_STATE_ASSETS = {
+  pets: "assets/img/states/empty-pets.png",
+  tasks: "assets/img/states/empty-tasks.png"
+};
+
 const PET_DEFAULTS = {
   "pet-kira": {
     sex: "Hembra",
@@ -117,8 +137,42 @@ function displayText(value, fallback = "") {
   return normalizeDisplayText(cleanText(value) || fallback);
 }
 
+function resolveAssetPath(assetPath) {
+  if (!assetPath) {
+    return "";
+  }
+
+  const isInsidePagesFolder = window.location.pathname.includes("/pages/");
+  return isInsidePagesFolder ? `../${assetPath}` : `./${assetPath}`;
+}
+
+function renderOptionalImage(assetPath, className, altText = "", isLazy = true) {
+  const resolvedPath = resolveAssetPath(assetPath);
+
+  if (!resolvedPath) {
+    return "";
+  }
+
+  const lazyAttribute = isLazy ? ' loading="lazy"' : "";
+
+  return `
+    <img
+      class="${className}"
+      src="${escapeHTML(resolvedPath)}"
+      alt="${escapeHTML(altText)}"
+      ${lazyAttribute}
+      onload="this.closest('.pet-avatar')?.classList.add('has-image')"
+      onerror="this.hidden = true; this.closest('.pet-avatar')?.classList.remove('has-image')"
+    />
+  `;
+}
+
 function getPetKind(pet) {
   return PET_COLORS[pet.species] || PET_COLORS.Otro;
+}
+
+function getPetImage(pet) {
+  return cleanText(pet.image) || PET_IMAGE_BY_ID[pet.id] || "";
 }
 
 function getPetDetails(pet) {
@@ -149,6 +203,42 @@ function getTaskIcon(title) {
   return "▣";
 }
 
+function getTaskIconKey(title) {
+  const normalizedTitle = displayText(title).toLowerCase();
+
+  if (normalizedTitle.includes("vacuna")) return "vaccine";
+  if (normalizedTitle.includes("aliment")) return "food";
+  if (normalizedTitle.includes("bano") || normalizedTitle.includes("baÃ±o")) return "bath";
+  if (normalizedTitle.includes("control") || normalizedTitle.includes("veterin")) return "vet";
+  if (normalizedTitle.includes("medic") || normalizedTitle.includes("pastilla")) return "medicine";
+
+  return "";
+}
+
+function renderTaskIcon(title) {
+  const iconKey = getTaskIconKey(title);
+  const iconAsset = iconKey ? TASK_ICON_ASSETS[iconKey] : "";
+
+  return `
+    <span class="pet-task-card__icon" aria-hidden="true">
+      ${renderOptionalImage(iconAsset, "pet-task-card__image", "", true)}
+      <span class="pet-task-card__fallback">${getTaskIcon(title)}</span>
+    </span>
+  `;
+}
+
+function renderEmptyState(title, text, imageType = "") {
+  const imageAsset = EMPTY_STATE_ASSETS[imageType] || "";
+
+  return `
+    <div class="empty-state">
+      ${renderOptionalImage(imageAsset, "empty-state__image", "", true)}
+      <p class="empty-state__title">${escapeHTML(title)}</p>
+      <p class="empty-state__text">${escapeHTML(text)}</p>
+    </div>
+  `;
+}
+
 function getSelectedPet() {
   return selectedPetId ? getPetById(selectedPetId) : null;
 }
@@ -165,10 +255,13 @@ function loadInitialData() {
 
 function renderPetAvatar(pet, sizeClass = "") {
   const petKind = getPetKind(pet);
+  const petImage = getPetImage(pet);
+  const hiddenAttribute = petImage ? "" : ' aria-hidden="true"';
 
   return `
-    <span class="pet-avatar pet-avatar--${petKind} ${sizeClass}" aria-hidden="true">
-      <span class="pet-face pet-face--${petKind}"></span>
+    <span class="pet-avatar pet-avatar--${petKind} ${sizeClass}"${hiddenAttribute}>
+      ${renderOptionalImage(petImage, "pet-avatar__image", `Foto de ${displayText(pet.name, "mascota")}`, true)}
+      <span class="pet-face pet-face--${petKind}" aria-hidden="true"></span>
     </span>
   `;
 }
@@ -179,12 +272,11 @@ function renderPets() {
 
   if (pets.length === 0) {
     petsListElement.innerHTML = `
-      <div class="empty-state">
-        <p class="empty-state__title">Todavia no agregaste mascotas</p>
-        <p class="empty-state__text">
-          Agrega tu primera mascota para empezar a organizar sus cuidados.
-        </p>
-      </div>
+      ${renderEmptyState(
+        "Todavia no agregaste mascotas",
+        "Agrega tu primera mascota para empezar a organizar sus cuidados.",
+        "pets"
+      )}
       <button class="pet-add-card" type="button" data-open-pet-form>
         <span class="pet-add-card__icon" aria-hidden="true">+</span>
         <span class="pet-add-card__text">Agregar mascota</span>
@@ -315,12 +407,11 @@ function getPetTaskSummary() {
 function renderSelectedPetSummary() {
   if (!selectedPetId) {
     selectedPetSummaryElement.innerHTML = `
-      <div class="empty-state">
-        <p class="empty-state__title">Sin mascota seleccionada</p>
-        <p class="empty-state__text">
-          Selecciona una mascota para ver el resumen de cuidados.
-        </p>
-      </div>
+      ${renderEmptyState(
+        "Sin mascota seleccionada",
+        "Selecciona una mascota para ver el resumen de cuidados.",
+        "pets"
+      )}
     `;
     return;
   }
@@ -401,12 +492,11 @@ function renderQuickInfo() {
 function renderSelectedPetTasks() {
   if (!selectedPetId) {
     selectedPetTasksElement.innerHTML = `
-      <div class="empty-state">
-        <p class="empty-state__title">Sin mascota seleccionada</p>
-        <p class="empty-state__text">
-          Selecciona una mascota para ver sus proximos cuidados.
-        </p>
-      </div>
+      ${renderEmptyState(
+        "Sin mascota seleccionada",
+        "Selecciona una mascota para ver sus proximos cuidados.",
+        "tasks"
+      )}
     `;
     return;
   }
@@ -418,12 +508,11 @@ function renderSelectedPetTasks() {
 
   if (visibleTasks.length === 0) {
     selectedPetTasksElement.innerHTML = `
-      <div class="empty-state">
-        <p class="empty-state__title">Sin cuidados pendientes</p>
-        <p class="empty-state__text">
-          Esta mascota no tiene cuidados pendientes por ahora.
-        </p>
-      </div>
+      ${renderEmptyState(
+        "Sin cuidados pendientes",
+        "Esta mascota no tiene cuidados pendientes por ahora.",
+        "tasks"
+      )}
     `;
     return;
   }
@@ -433,7 +522,7 @@ function renderSelectedPetTasks() {
     const taskCard = document.createElement("article");
     taskCard.className = `pet-task-card pet-task-card--${visualStatus.key}`;
     taskCard.innerHTML = `
-      <span class="pet-task-card__icon" aria-hidden="true">${getTaskIcon(task.title)}</span>
+      ${renderTaskIcon(task.title)}
       <div class="pet-task-card__body">
         <h3>${escapeHTML(displayText(task.title))}</h3>
         <p>${escapeHTML(displayText(task.description, "Sin descripcion adicional."))}</p>
