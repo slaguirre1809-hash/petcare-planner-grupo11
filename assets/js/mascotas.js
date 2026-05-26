@@ -137,6 +137,16 @@ function displayText(value, fallback = "") {
   return normalizeDisplayText(cleanText(value) || fallback);
 }
 
+function renderLucideIcons() {
+  if (window.lucide && typeof window.lucide.createIcons === "function") {
+    window.lucide.createIcons();
+  }
+}
+
+function renderLucideIcon(iconName) {
+  return `<i data-lucide="${iconName}" aria-hidden="true"></i>`;
+}
+
 function resolveAssetPath(assetPath) {
   if (!assetPath) {
     return "";
@@ -342,7 +352,7 @@ function renderSelectedPet() {
     <div class="pet-profile-card__main">
       <div class="pet-profile-card__avatar-wrap">
         ${renderPetAvatar(pet, "pet-avatar--xl")}
-        <span class="pet-camera" aria-hidden="true">●</span>
+        <span class="pet-camera" aria-hidden="true">${renderLucideIcon("camera")}</span>
       </div>
 
       <div class="pet-profile-card__body">
@@ -364,7 +374,7 @@ function renderSelectedPet() {
       aria-disabled="true"
       title="Funcion disponible proximamente"
     >
-      ✎ Editar
+      ${renderLucideIcon("pencil")} Editar
     </button>
   `;
 }
@@ -466,12 +476,12 @@ function renderQuickInfo() {
 
   const details = getPetDetails(pet);
   const infoItems = [
-    { icon: "⚖", label: "Peso", value: details.weight },
-    { icon: "↔", label: "Tamano", value: details.size },
-    { icon: "⚕", label: "Veterinario", value: details.vet },
-    { icon: "⌂", label: "Clinica", value: details.clinic },
-    { icon: "!", label: "Alergias", value: details.allergies },
-    { icon: "□", label: "Notas", value: details.notes }
+    { icon: "scale", label: "Peso", value: details.weight },
+    { icon: "ruler", label: "Tamano", value: details.size },
+    { icon: "stethoscope", label: "Veterinario", value: details.vet },
+    { icon: "hospital", label: "Clinica", value: details.clinic },
+    { icon: "triangle-alert", label: "Alergias", value: details.allergies },
+    { icon: "clipboard-list", label: "Notas", value: details.notes }
   ];
 
   quickInfoListElement.innerHTML = "";
@@ -479,7 +489,7 @@ function renderQuickInfo() {
   infoItems.forEach((item) => {
     const listItem = document.createElement("li");
     listItem.innerHTML = `
-      <span aria-hidden="true">${item.icon}</span>
+      <span aria-hidden="true">${renderLucideIcon(item.icon)}</span>
       <div>
         <strong>${escapeHTML(item.label)}</strong>
         <p>${escapeHTML(displayText(item.value))}</p>
@@ -532,7 +542,7 @@ function renderSelectedPetTasks() {
         ${escapeHTML(formatTimeToDisplay(task.time))}
       </time>
       <span class="badge ${visualStatus.badgeClass}">${escapeHTML(displayText(visualStatus.label))}</span>
-      <span class="pet-task-card__chevron" aria-hidden="true">›</span>
+      <span class="pet-task-card__chevron" aria-hidden="true">${renderLucideIcon("chevron-right")}</span>
     `;
     selectedPetTasksElement.appendChild(taskCard);
   });
@@ -565,7 +575,7 @@ function renderPetFeatureMessage(sectionName = "Resumen") {
   }
 
   petFeatureMessageElement.innerHTML = `
-    <span class="coming-soon-card__icon" aria-hidden="true">▣</span>
+    <span class="coming-soon-card__icon" aria-hidden="true">${renderLucideIcon("calendar-clock")}</span>
     <div>
       <h3 class="coming-soon-card__title">${escapeHTML(sectionName)} proximamente</h3>
       <p class="coming-soon-card__text">
@@ -585,6 +595,7 @@ function setActivePetFeatureTab(sectionName = "Resumen") {
   });
 
   renderPetFeatureMessage(sectionName);
+  renderLucideIcons();
 }
 
 function selectPet(petId) {
@@ -599,6 +610,7 @@ function selectPet(petId) {
   setActivePetFeatureTab("Resumen");
 
   petMessageElement.textContent = "";
+  renderLucideIcons();
 }
 
 function openPetForm() {
@@ -705,6 +717,7 @@ function initMascotasPage() {
   renderSelectedPetTasks();
   setActivePetFeatureTab("Resumen");
   setupEventListeners();
+  renderLucideIcons();
 }
 
 initMascotasPage();

@@ -32,7 +32,7 @@
 
         <nav class="desktop-sidebar__nav" aria-label="Navegacion principal">
           <a class="desktop-sidebar__link" href="../index.html">
-            <span aria-hidden="true">⌂</span>
+            <i data-lucide="home" aria-hidden="true"></i>
             Inicio
           </a>
           <a
@@ -40,27 +40,27 @@
             href="./mascotas.html"
             aria-current="page"
           >
-            <span aria-hidden="true">🐾</span>
+            <i data-lucide="paw-print" aria-hidden="true"></i>
             Mis Mascotas
           </a>
           <a class="desktop-sidebar__link" href="./agenda.html">
-            <span aria-hidden="true">▣</span>
+            <i data-lucide="clipboard-check" aria-hidden="true"></i>
             Agenda de cuidados
           </a>
           <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
-            <span aria-hidden="true">♢</span>
+            <i data-lucide="bell" aria-hidden="true"></i>
             Recordatorios
           </a>
           <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
-            <span aria-hidden="true">□</span>
+            <i data-lucide="calendar-days" aria-hidden="true"></i>
             Calendario
           </a>
           <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
-            <span aria-hidden="true">○</span>
+            <i data-lucide="circle-user" aria-hidden="true"></i>
             Perfil
           </a>
           <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
-            <span aria-hidden="true">⚙</span>
+            <i data-lucide="settings" aria-hidden="true"></i>
             Configuracion
           </a>
         </nav>
@@ -101,7 +101,7 @@
             type="button"
             aria-label="3 recordatorios pendientes"
           >
-            ♡
+            <i data-lucide="bell" aria-hidden="true"></i>
             <span>3</span>
           </button>
           <button
@@ -110,7 +110,7 @@
             data-open-pet-form
             aria-label="Agregar mascota"
           >
-            +
+            <i data-lucide="plus" aria-hidden="true"></i>
           </button>
         </div>
       </header>
@@ -174,19 +174,19 @@
             aria-label="Secciones de la mascota"
           >
             <button class="tab is-active" type="button" data-pet-section="Resumen">
-              <span aria-hidden="true">▤</span>
+              <i data-lucide="list-checks" aria-hidden="true"></i>
               Resumen
             </button>
             <button class="tab" type="button" data-pet-section="Informacion">
-              <span aria-hidden="true">ⓘ</span>
+              <i data-lucide="info" aria-hidden="true"></i>
               Informacion
             </button>
             <button class="tab" type="button" data-pet-section="Historial">
-              <span aria-hidden="true">↺</span>
+              <i data-lucide="history" aria-hidden="true"></i>
               Historial
             </button>
             <button class="tab" type="button" data-pet-section="Fotos">
-              <span aria-hidden="true">▧</span>
+              <i data-lucide="image" aria-hidden="true"></i>
               Fotos
             </button>
           </div>
@@ -213,7 +213,7 @@
         </section>
 
         <a class="btn btn-primary pet-agenda-cta" href="./agenda.html">
-          <span aria-hidden="true">▣</span>
+          <i data-lucide="clipboard-check" aria-hidden="true"></i>
           Ver agenda completa
         </a>
 
@@ -328,7 +328,7 @@
 
       <nav class="bottom-nav" aria-label="Navegacion principal">
         <a class="bottom-nav__link" href="../index.html">
-          <span aria-hidden="true">⌂</span>
+          <i data-lucide="home" aria-hidden="true"></i>
           Inicio
         </a>
         <a
@@ -336,11 +336,11 @@
           href="./mascotas.html"
           aria-current="page"
         >
-          <span aria-hidden="true">🐾</span>
+          <i data-lucide="paw-print" aria-hidden="true"></i>
           Mascotas
         </a>
         <a class="bottom-nav__link" href="./agenda.html">
-          <span aria-hidden="true">▣</span>
+          <i data-lucide="clipboard-check" aria-hidden="true"></i>
           Agenda
         </a>
       </nav>
@@ -349,6 +349,7 @@
     <script src="../assets/js/data.js"></script>
     <script src="../assets/js/utils.js"></script>
     <script src="../assets/js/storage.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="../assets/js/mascotas.js"></script>
   </body>
 </html>
