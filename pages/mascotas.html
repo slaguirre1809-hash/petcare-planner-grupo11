@@ -36,11 +36,20 @@
       </header>
 
       <main id="main-content" class="app-container">
-        <section class="page-header">
-          <h1 class="page-title">Mis Mascotas</h1>
-          <p class="page-subtitle">
-            Administrá la información básica y los cuidados de tus compañeros.
-          </p>
+        <section class="page-header pet-hero">
+          <div class="pet-hero__content">
+            <p class="pet-hero__eyebrow">Panel de mascotas</p>
+            <h1 class="page-title">Mis Mascotas</h1>
+            <p class="page-subtitle">
+              Administrá la información básica y los cuidados de tus compañeros.
+            </p>
+          </div>
+
+          <div class="pet-hero__art" aria-hidden="true">
+            <span class="pet-hero__bubble pet-hero__bubble--dog">🐶</span>
+            <span class="pet-hero__bubble pet-hero__bubble--cat">🐱</span>
+            <span class="pet-hero__spark">✦</span>
+          </div>
         </section>
 
         <section class="section" aria-labelledby="pets-title">
@@ -68,6 +77,52 @@
           </div>
         </section>
 
+        <section class="section" aria-labelledby="pet-sections-title">
+          <div class="section-header">
+            <h2 class="section-title" id="pet-sections-title">
+              Más sobre esta mascota
+            </h2>
+          </div>
+
+          <div
+            id="pet-feature-tabs"
+            class="tabs pet-feature-tabs"
+            role="tablist"
+            aria-label="Secciones de la mascota"
+          >
+            <button
+              class="tab is-active"
+              type="button"
+              data-pet-section="Resumen"
+            >
+              Resumen
+            </button>
+            <button class="tab" type="button" data-pet-section="Información">
+              Información
+            </button>
+            <button class="tab" type="button" data-pet-section="Historial">
+              Historial
+            </button>
+            <button class="tab" type="button" data-pet-section="Fotos">
+              Fotos
+            </button>
+          </div>
+
+          <div
+            id="pet-feature-panel"
+            class="pet-feature-panel"
+            aria-live="polite"
+          >
+            <div id="selected-pet-summary" class="pet-summary-grid">
+              <!-- JS: renderiza resumen de cuidados acá -->
+            </div>
+
+            <div id="pet-feature-message" class="coming-soon-card" hidden>
+              <!-- JS: renderiza mensajes de próximamente acá -->
+            </div>
+          </div>
+        </section>
+
         <section class="section" aria-labelledby="pet-tasks-title">
           <div class="section-header">
             <h2 class="section-title" id="pet-tasks-title">
@@ -80,7 +135,7 @@
             <!-- JS: renderiza tareas asociadas acá -->
           </div>
         </section>
-        
+
         <section class="section" aria-labelledby="pet-form-title">
           <article class="card">
             <h2 class="card-title" id="pet-form-title">Agregar mascota</h2>

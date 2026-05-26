@@ -3,43 +3,338 @@
    Estilos específicos de la página Mascotas
 ========================= */
 
+/* Hero */
+.pet-hero {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.pet-hero__eyebrow {
+  margin-bottom: var(--space-xs);
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pet-hero__art {
+  min-height: 8rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
+  position: relative;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(111, 53, 232, 0.15),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 80% 60%,
+      rgba(79, 124, 255, 0.12),
+      transparent 35%
+    ),
+    var(--color-surface);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.pet-hero__bubble {
+  width: 4.5rem;
+  height: 4.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  font-size: 2rem;
+}
+
+.pet-hero__bubble--dog {
+  transform: translateY(0.25rem);
+}
+
+.pet-hero__bubble--cat {
+  transform: translateY(-0.35rem);
+}
+
+.pet-hero__spark {
+  position: absolute;
+  left: 1.5rem;
+  bottom: 1rem;
+  color: var(--color-warning);
+  font-size: 1.3rem;
+}
+
 /* Lista de mascotas */
 .pets-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-md);
 }
 
 .pets-list .pet-mini-card {
   width: 100%;
-  justify-content: flex-start;
-  text-align: left;
+  min-height: 9.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  text-align: center;
 }
 
-.pets-list .pet-mini-card.is-selected {
+.pet-selector-card.is-selected {
   border-color: var(--color-primary);
   background: var(--color-primary-light);
+  box-shadow: var(--shadow-soft);
+}
+
+.pet-selector-card .pet-avatar {
+  width: 4rem;
+  height: 4rem;
+  flex-basis: 4rem;
+  font-size: 1.75rem;
+  margin-bottom: var(--space-xs);
+}
+
+.pet-selector-card .pet-info {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+}
+
+.pet-selector-card .pet-name {
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.pet-species-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.pet-selector-card .pet-meta {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Card para agregar mascota dentro del listado */
+.pet-add-card {
+  min-height: 9.5rem;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border: 2px dashed rgba(111, 53, 232, 0.35);
+  border-radius: var(--radius-lg);
+  background: rgba(241, 235, 255, 0.45);
+  color: var(--color-primary);
+  font-weight: 900;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.pet-add-card:hover {
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.pet-add-card__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  font-size: 1.5rem;
+}
+
+.pet-add-card__text {
+  font-size: 0.9rem;
 }
 
 /* Detalle de mascota */
-.pet-detail {
+.pet-profile-card {
   display: grid;
   gap: var(--space-md);
 }
 
-.pet-detail__header {
+.pet-profile-card__main {
   display: flex;
   align-items: center;
   gap: var(--space-md);
 }
 
-.pet-avatar--lg {
-  width: 3.5rem;
-  height: 3.5rem;
-  font-size: 1.5rem;
+.pet-avatar--lg,
+.pet-avatar--xl {
+  width: 4.5rem;
+  height: 4.5rem;
+  flex-basis: 4.5rem;
+  font-size: 2rem;
+}
+
+.pet-profile-card__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.pet-profile-card__meta {
+  display: grid;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.pet-profile-card__action {
+  justify-self: start;
+}
+
+/* Resumen */
+.pet-feature-panel {
+  margin-top: var(--space-md);
+}
+
+.pet-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow-card);
+}
+
+.coming-soon-card[hidden],
+.pet-summary-grid[hidden] {
+  display: none;
+}
+
+.pet-summary-card {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.pet-summary-card__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  font-size: 1.35rem;
+}
+
+.pet-summary-card__value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.pet-summary-card__label {
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--color-text);
+}
+
+.pet-summary-card__text {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+/* Tabs futuras */
+.pet-feature-tabs {
+  margin-bottom: var(--space-md);
+}
+
+.coming-soon-card {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border: 1px dashed rgba(111, 53, 232, 0.35);
+  border-radius: var(--radius-lg);
+  background: rgba(241, 235, 255, 0.45);
+}
+
+.coming-soon-card__icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.coming-soon-card__title {
+  margin-bottom: var(--space-xs);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.coming-soon-card__text {
+  font-size: 0.9rem;
+  color: var(--color-muted);
 }
 
 /* Próximos cuidados */
 #selected-pet-tasks {
   gap: var(--space-md);
+}
+
+.pet-task-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.pet-task-card__icon {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  font-size: 1.35rem;
+}
+
+.pet-task-card__body {
+  min-width: 0;
+}
+
+.pet-task-card__date {
+  font-weight: 800;
+  color: var(--color-muted);
 }
 
 /* Formulario */
@@ -62,22 +357,32 @@
   }
 
   #main-content > section[aria-labelledby="selected-pet-title"],
+  #main-content > section[aria-labelledby="pet-sections-title"],
   #main-content > section[aria-labelledby="pet-tasks-title"] {
     grid-column: 1;
   }
 
   #main-content > section[aria-labelledby="pet-form-title"] {
     grid-column: 2;
-    grid-row: 3 / span 2;
+    grid-row: 3 / span 4;
     position: sticky;
     top: var(--space-xl);
   }
 
-  .bottom-nav {
-    display: none;
+  .pet-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 28rem);
+    align-items: center;
+  }
+
+  .pet-hero__art {
+    min-height: 11rem;
   }
 
   .pets-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pet-summary-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
