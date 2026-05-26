@@ -26,7 +26,7 @@ const INITIAL_PETS = [
     species: "Perro",
     age: "3 años",
     breed: "Golden Retriever",
-    image: "assets/img/pets/dog-avatar.png",
+    image: "",
     createdAt: "2026-05-20T10:00:00.000Z"
   },
   {
@@ -35,7 +35,7 @@ const INITIAL_PETS = [
     species: "Gato",
     age: "2 años",
     breed: "Común europeo",
-    image: "assets/img/pets/cat-avatar.png",
+    image: "",
     createdAt: "2026-05-20T10:05:00.000Z"
   },
   {
@@ -44,7 +44,7 @@ const INITIAL_PETS = [
     species: "Conejo",
     age: "1 año",
     breed: "Mini lop",
-    image: "assets/img/pets/rabbit-avatar.png",
+    image: "",
     createdAt: "2026-05-20T10:10:00.000Z"
   }
 ];
