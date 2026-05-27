@@ -587,6 +587,19 @@ body {
   font-size: 0.9rem;
 }
 
+.pet-profile-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.pet-profile-card__meta .lucide {
+  width: 1rem;
+  height: 1rem;
+  color: #64748b;
+}
+
 .pet-profile-card__action {
   justify-self: stretch;
   border: 1px solid var(--pet-purple);
@@ -660,6 +673,12 @@ body {
   background: #ede9fe;
   color: var(--pet-purple);
   font-size: 1.05rem;
+}
+
+.pet-summary-card__icon .lucide,
+.desktop-summary-row__icon .lucide {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .pet-summary-card--danger .pet-summary-card__icon {
@@ -742,10 +761,28 @@ body {
 
 .info-tab-grid article {
   display: grid;
-  gap: 0.2rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.2rem 0.55rem;
+  align-items: start;
   padding: 0.8rem;
   border-radius: 0.85rem;
   background: #ffffff;
+}
+
+.info-tab-grid__icon {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.65rem;
+  background: #ede9fe;
+  color: var(--pet-purple);
+}
+
+.info-tab-grid__icon .lucide {
+  width: 1rem;
+  height: 1rem;
 }
 
 .info-tab-grid strong {
@@ -753,9 +790,10 @@ body {
   font-size: 0.82rem;
 }
 
-.info-tab-grid span {
+.info-tab-grid article > span:not(.info-tab-grid__icon) {
   color: #475569;
   font-size: 0.88rem;
+  overflow-wrap: anywhere;
 }
 
 .pet-tasks-section .section-title {
@@ -902,6 +940,56 @@ body {
 .form-grid {
   display: grid;
   gap: 1rem;
+}
+
+.pet-form-group {
+  display: grid;
+  gap: 0.9rem;
+  min-width: 0;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.pet-form-group + .pet-form-group {
+  margin-top: 1rem;
+}
+
+.pet-form-group legend {
+  padding-inline: 0.35rem;
+  color: var(--pet-purple);
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+
+.form-group--wide {
+  grid-column: 1 / -1;
+}
+
+.form-textarea {
+  width: 100%;
+  max-width: 100%;
+  min-height: 5.5rem;
+  resize: vertical;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 0.8rem 0.9rem;
+  color: var(--pet-text);
+  font: inherit;
+  line-height: 1.45;
+  background: #fff;
+}
+
+.form-textarea:focus,
+.pet-file-input:focus {
+  border-color: var(--pet-purple);
+  outline: 3px solid rgba(109, 40, 217, 0.16);
+}
+
+.pet-file-input {
+  padding: 0.7rem;
 }
 
 .desktop-sidebar,
@@ -1081,6 +1169,10 @@ body {
   .pet-profile-card__action {
     justify-self: stretch;
     min-height: 2.75rem;
+  }
+
+  .info-tab-grid {
+    grid-template-columns: 1fr;
   }
 
   .pet-feature-tabs {
