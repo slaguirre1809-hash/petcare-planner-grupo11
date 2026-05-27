@@ -15,6 +15,8 @@ const petFormSectionElement = document.getElementById("pet-form-section");
 const petTipTextElement = document.getElementById("pet-tip-text");
 
 const petFormElement = document.getElementById("pet-form");
+const petFormTitleElement = document.getElementById("pet-form-title");
+const petFormSubmitElement = document.getElementById("pet-form-submit");
 const petNameInput = document.getElementById("pet-name");
 const petSpeciesSelect = document.getElementById("pet-species");
 const petAgeInput = document.getElementById("pet-age");
@@ -31,6 +33,7 @@ const petImageInput = document.getElementById("pet-image");
 const petMessageElement = document.getElementById("pet-message");
 
 let selectedPetId = null;
+let editingPetId = null;
 
 const MAX_PET_IMAGE_SIZE = 1024 * 1024;
 
@@ -114,6 +117,8 @@ function validateRequiredElements() {
     petFeatureMessageElement,
     petFormSectionElement,
     petFormElement,
+    petFormTitleElement,
+    petFormSubmitElement,
     petNameInput,
     petSpeciesSelect,
     petAgeInput,
@@ -214,6 +219,33 @@ function formatPetDate(value) {
   }
 
   return text;
+}
+
+function formatDateForInput(value) {
+  const text = displayText(value).trim();
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    return text;
+  }
+
+  const dateParts = text.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+
+  if (dateParts) {
+    return `${dateParts[3]}-${dateParts[2]}-${dateParts[1]}`;
+  }
+
+  return "";
+}
+
+function normalizeSizeForInput(value) {
+  const size = displayText(value).trim();
+  const normalizedSize = size.toLowerCase();
+
+  if (normalizedSize === "pequena" || normalizedSize === "pequeña") {
+    return "Pequeno";
+  }
+
+  return size;
 }
 
 function renderLucideIcons() {
@@ -476,8 +508,7 @@ function renderSelectedPet() {
     <button
       class="btn btn-secondary pet-profile-card__action"
       type="button"
-      aria-disabled="true"
-      title="Funcion disponible proximamente"
+      data-edit-selected-pet
     >
       ${renderLucideIcon("pencil")} Editar
     </button>
@@ -785,6 +816,10 @@ function setActivePetFeatureTab(sectionName = "Resumen") {
 }
 
 function selectPet(petId) {
+  if (editingPetId && editingPetId !== petId) {
+    closePetForm();
+  }
+
   selectedPetId = petId;
 
   renderPets();
@@ -798,13 +833,70 @@ function selectPet(petId) {
   renderLucideIcons();
 }
 
-function openPetForm() {
+function resetPetFormMode() {
+  editingPetId = null;
+  petFormSectionElement.dataset.mode = "create";
+  petFormTitleElement.textContent = "Agregar mascota";
+  petFormSubmitElement.textContent = "Guardar mascota";
+}
+
+function clearPetForm() {
+  petFormElement.reset();
+  petImageInput.value = "";
+}
+
+function openPetFormForCreate() {
+  resetPetFormMode();
+  clearPetForm();
+  petMessageElement.textContent = "";
+  petMessageElement.className = "form-help";
+  petFormSectionElement.hidden = false;
+  petNameInput.focus();
+}
+
+function fillPetForm(pet) {
+  const details = getPetDetails(pet);
+
+  petNameInput.value = displayText(pet.name);
+  petSpeciesSelect.value = displayText(pet.species);
+  petAgeInput.value = normalizePetAge(pet.age, "");
+  petBreedInput.value = displayText(pet.breed);
+  petBirthDateInput.value = formatDateForInput(pet.birthDate || details.birthDate);
+  petSexSelect.value = displayText(pet.sex || details.sex) === "Sin dato" ? "" : displayText(pet.sex || details.sex);
+  petWeightInput.value = details.weight === "Sin dato" ? "" : details.weight;
+  petSizeSelect.value = details.size === "Sin dato" ? "" : normalizeSizeForInput(details.size);
+  petVetNameInput.value = details.vet === "A completar" ? "" : details.vet;
+  petClinicInput.value = details.clinic === "A completar" ? "" : details.clinic;
+  petAllergiesInput.value = details.allergies === "Sin alergias registradas" ? "" : details.allergies;
+  petNotesInput.value = details.notes === "Sin notas cargadas" ? "" : details.notes;
+  petImageInput.value = "";
+}
+
+function openPetFormForEdit(petId) {
+  const pet = getPetById(petId);
+
+  if (!pet) {
+    showPetMessage("No se encontro la mascota seleccionada.", "error");
+    return;
+  }
+
+  editingPetId = pet.id;
+  petFormSectionElement.dataset.mode = "edit";
+  petFormTitleElement.textContent = `Editar mascota`;
+  petFormSubmitElement.textContent = "Guardar cambios";
+  fillPetForm(pet);
+  petMessageElement.textContent = "";
+  petMessageElement.className = "form-help";
   petFormSectionElement.hidden = false;
   petNameInput.focus();
 }
 
 function closePetForm() {
   petFormSectionElement.hidden = true;
+  clearPetForm();
+  resetPetFormMode();
+  petMessageElement.textContent = "";
+  petMessageElement.className = "form-help";
 }
 
 function showPetMessage(message, type = "success") {
@@ -839,18 +931,13 @@ function readPetImageFile(file) {
   });
 }
 
-async function handlePetSubmit(event) {
-  event.preventDefault();
-
-  const petData = {
+function getPetFormPayload(imageValue) {
+  return {
     name: petNameInput.value,
     species: petSpeciesSelect.value,
     age: normalizePetAge(petAgeInput.value, ""),
     breed: petBreedInput.value,
-    image: ""
-  };
-
-  const extraPetData = {
+    image: imageValue,
     birthDate: cleanText(petBirthDateInput.value),
     sex: cleanText(petSexSelect.value),
     weight: cleanText(petWeightInput.value),
@@ -860,37 +947,90 @@ async function handlePetSubmit(event) {
     allergies: cleanText(petAllergiesInput.value),
     notes: cleanText(petNotesInput.value)
   };
+}
 
-  if (!cleanText(petData.name)) {
+async function handlePetSubmit(event) {
+  event.preventDefault();
+
+  const existingPet = editingPetId ? getPetById(editingPetId) : null;
+
+  if (editingPetId && !existingPet) {
+    showPetMessage("No se encontro la mascota que querias editar.", "error");
+    resetPetFormMode();
+    return;
+  }
+
+  const isEditing = Boolean(editingPetId && existingPet);
+  let imageValue = isEditing ? existingPet.image || "" : "";
+  const basicPetData = getPetFormPayload(imageValue);
+
+  if (!cleanText(basicPetData.name)) {
     showPetMessage("Completa el nombre de la mascota.", "error");
     petNameInput.focus();
     return;
   }
 
-  if (!cleanText(petData.species)) {
+  if (!cleanText(basicPetData.species)) {
     showPetMessage("Selecciona la especie de la mascota.", "error");
     petSpeciesSelect.focus();
     return;
   }
 
   try {
-    petData.image = await readPetImageFile(petImageInput.files[0]);
+    const newImage = await readPetImageFile(petImageInput.files[0]);
+
+    if (newImage) {
+      imageValue = newImage;
+    }
   } catch (error) {
     showPetMessage(error.message, "error");
     petImageInput.focus();
     return;
   }
 
-  const newPet = addPet(petData);
+  const petData = getPetFormPayload(imageValue);
+
+  if (isEditing) {
+    const updatedPet = updatePet(existingPet.id, petData);
+
+    if (!updatedPet) {
+      showPetMessage("No se pudieron guardar los cambios. Revisa los datos.", "error");
+      return;
+    }
+
+    clearPetForm();
+    resetPetFormMode();
+    selectPet(updatedPet.id);
+    showPetMessage(`Mascota "${displayText(updatedPet.name)}" actualizada correctamente.`);
+    return;
+  }
+
+  const newPet = addPet({
+    name: petData.name,
+    species: petData.species,
+    age: petData.age,
+    breed: petData.breed,
+    image: petData.image
+  });
 
   if (!newPet) {
     showPetMessage("No se pudo guardar la mascota. Revisa los datos.", "error");
     return;
   }
 
-  const updatedPet = updatePet(newPet.id, extraPetData) || newPet;
+  const updatedPet = updatePet(newPet.id, {
+    birthDate: petData.birthDate,
+    sex: petData.sex,
+    weight: petData.weight,
+    size: petData.size,
+    vetName: petData.vetName,
+    clinic: petData.clinic,
+    allergies: petData.allergies,
+    notes: petData.notes
+  }) || newPet;
 
-  petFormElement.reset();
+  clearPetForm();
+  resetPetFormMode();
   selectPet(updatedPet.id);
   showPetMessage(`Mascota "${displayText(updatedPet.name)}" agregada correctamente.`);
 }
@@ -900,7 +1040,7 @@ function handlePetsListClick(event) {
   const openFormButton = event.target.closest("[data-open-pet-form]");
 
   if (openFormButton) {
-    openPetForm();
+    openPetFormForCreate();
     return;
   }
 
@@ -911,11 +1051,15 @@ function handlePetsListClick(event) {
 
 function handlePageClick(event) {
   if (event.target.closest("[data-open-pet-form]")) {
-    openPetForm();
+    openPetFormForCreate();
   }
 
   if (event.target.closest("[data-close-pet-form]")) {
     closePetForm();
+  }
+
+  if (event.target.closest("[data-edit-selected-pet]") && selectedPetId) {
+    openPetFormForEdit(selectedPetId);
   }
 
   if (event.target.closest("[data-next-pet-tip]")) {
