@@ -67,16 +67,31 @@ function savePets(pets) {
   saveToStorage(STORAGE_KEYS.PETS, pets);
 }
 
+function normalizePetStorageData(petData = {}, existingPet = {}) {
+  return {
+    name: cleanText(petData.name ?? existingPet.name),
+    species: cleanText(petData.species ?? existingPet.species),
+    age: cleanText(petData.age ?? existingPet.age),
+    breed: cleanText(petData.breed ?? existingPet.breed),
+    image: cleanText(petData.image ?? existingPet.image),
+    birthDate: cleanText(petData.birthDate ?? existingPet.birthDate),
+    sex: cleanText(petData.sex ?? existingPet.sex),
+    weight: cleanText(petData.weight ?? existingPet.weight),
+    size: cleanText(petData.size ?? existingPet.size),
+    vetName: cleanText(petData.vetName ?? existingPet.vetName),
+    clinic: cleanText(petData.clinic ?? existingPet.clinic),
+    allergies: cleanText(petData.allergies ?? existingPet.allergies),
+    notes: cleanText(petData.notes ?? existingPet.notes)
+  };
+}
+
 function addPet(petData = {}) {
   const pets = getPets();
+  const normalizedPetData = normalizePetStorageData(petData);
 
   const newPet = {
     id: generateId("pet"),
-    name: cleanText(petData.name),
-    species: cleanText(petData.species),
-    age: cleanText(petData.age),
-    breed: cleanText(petData.breed),
-    image: cleanText(petData.image),
+    ...normalizedPetData,
     createdAt: new Date().toISOString()
   };
 
@@ -107,11 +122,7 @@ function updatePet(petId, updatedData = {}) {
     updatedPet = {
       ...pet,
       ...updatedData,
-      name: cleanText(updatedData.name ?? pet.name),
-      species: cleanText(updatedData.species ?? pet.species),
-      age: cleanText(updatedData.age ?? pet.age),
-      breed: cleanText(updatedData.breed ?? pet.breed),
-      image: cleanText(updatedData.image ?? pet.image),
+      ...normalizePetStorageData(updatedData, pet),
       updatedAt: new Date().toISOString()
     };
 

@@ -912,34 +912,17 @@ async function handlePetSubmit(event) {
     return;
   }
 
-  const newPet = addPet({
-    name: petData.name,
-    species: petData.species,
-    age: petData.age,
-    breed: petData.breed,
-    image: petData.image
-  });
+  const newPet = addPet(petData);
 
   if (!newPet) {
     showPetMessage("No se pudo guardar la mascota. Revisa los datos.", "error");
     return;
   }
 
-  const updatedPet = updatePet(newPet.id, {
-    birthDate: petData.birthDate,
-    sex: petData.sex,
-    weight: petData.weight,
-    size: petData.size,
-    vetName: petData.vetName,
-    clinic: petData.clinic,
-    allergies: petData.allergies,
-    notes: petData.notes
-  }) || newPet;
-
   clearPetForm();
   resetPetFormMode();
-  selectPet(updatedPet.id);
-  showPetMessage(`Mascota "${displayText(updatedPet.name)}" agregada correctamente.`);
+  selectPet(newPet.id);
+  showPetMessage(`Mascota "${displayText(newPet.name)}" agregada correctamente.`);
 }
 
 function handlePetsListClick(event) {
