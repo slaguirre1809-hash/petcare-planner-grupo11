@@ -26,6 +26,68 @@ function cleanText(value) {
   return String(value || "").trim();
 }
 
+function escapeHTML(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function normalizeDisplayText(value) {
+  const text = String(value || "");
+
+  if (!/[ÃÂ]/.test(text)) {
+    return text;
+  }
+
+  try {
+    return decodeURIComponent(escape(text));
+  } catch (error) {
+    return text;
+  }
+}
+
+function displayText(value, fallback = "") {
+  return normalizeDisplayText(cleanText(value) || fallback);
+}
+
+function displayOptionalText(value, fallback) {
+  const text = displayText(value).trim();
+  const normalizedText = text.toLowerCase();
+
+  if (!text || normalizedText === "undefined" || normalizedText === "null") {
+    return fallback;
+  }
+
+  return text;
+}
+
+function normalizePetAge(value, fallback = "Sin edad") {
+  const text = displayText(value).trim().toLowerCase();
+
+  if (!text) {
+    return fallback;
+  }
+
+  const numberMatch = text.match(/\d+/);
+
+  if (numberMatch) {
+    const ageNumber = Number(numberMatch[0]);
+
+    if (Number.isFinite(ageNumber) && ageNumber > 0) {
+      return `${ageNumber} ${ageNumber === 1 ? "año" : "años"}`;
+    }
+  }
+
+  return text
+    .replace(/\s+/g, " ")
+    .replace(/anos/g, "años")
+    .replace(/años\s+años/g, "años")
+    .trim();
+}
+
 /* =====================================================
    IDs
 ===================================================== */
@@ -67,6 +129,22 @@ function formatTimeToDisplay(time) {
   }
 
   return time;
+}
+
+function formatDateForInput(value) {
+  const text = displayText(value).trim();
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    return text;
+  }
+
+  const dateParts = text.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+
+  if (dateParts) {
+    return `${dateParts[3]}-${dateParts[2]}-${dateParts[1]}`;
+  }
+
+  return "";
 }
 
 /* =====================================================
@@ -138,6 +216,21 @@ function sortTasksByDate(tasks) {
 
     return dateA.localeCompare(dateB);
   });
+}
+
+function getTaskTimestamp(task) {
+  if (!task.date) {
+    return Number.POSITIVE_INFINITY;
+  }
+
+  const time = task.time || "23:59";
+  const timestamp = new Date(`${task.date}T${time}`).getTime();
+
+  return Number.isNaN(timestamp) ? Number.POSITIVE_INFINITY : timestamp;
+}
+
+function sortTasksByDateTime(tasks) {
+  return [...tasks].sort((a, b) => getTaskTimestamp(a) - getTaskTimestamp(b));
 }
 
 function getTasksByVisualStatus(tasks, statusKey) {
