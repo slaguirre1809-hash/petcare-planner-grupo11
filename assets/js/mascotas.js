@@ -5,7 +5,6 @@
 
 const petsListElement = document.getElementById("pets-list");
 const selectedPetDetailElement = document.getElementById("selected-pet-detail");
-const selectedPetTasksElement = document.getElementById("selected-pet-tasks");
 const selectedPetSummaryElement = document.getElementById("selected-pet-summary");
 const petFeatureTabsElement = document.getElementById("pet-feature-tabs");
 const petFeatureMessageElement = document.getElementById("pet-feature-message");
@@ -110,7 +109,6 @@ function validateRequiredElements() {
   const requiredElements = [
     petsListElement,
     selectedPetDetailElement,
-    selectedPetTasksElement,
     selectedPetSummaryElement,
     petFeatureTabsElement,
     petFeatureMessageElement,
@@ -521,6 +519,73 @@ function getPetTaskSummary() {
   ];
 }
 
+function getTaskTimestamp(task) {
+  if (!task.date) {
+    return Number.POSITIVE_INFINITY;
+  }
+
+  const time = task.time || "23:59";
+  const timestamp = new Date(`${task.date}T${time}`).getTime();
+
+  return Number.isNaN(timestamp) ? Number.POSITIVE_INFINITY : timestamp;
+}
+
+function getTaskSummaryVisualStatus(task) {
+  if (task.status !== "done" && getTaskTimestamp(task) < Date.now()) {
+    return {
+      key: "overdue",
+      label: "Vencida",
+      badgeClass: "badge-danger"
+    };
+  }
+
+  return getTaskVisualStatus(task);
+}
+
+function sortTasksByDateTime(tasks) {
+  return [...tasks].sort((a, b) => getTaskTimestamp(a) - getTaskTimestamp(b));
+}
+
+function getPendingTasksForSelectedPet() {
+  if (!selectedPetId) {
+    return [];
+  }
+
+  return getTasksByPetId(selectedPetId).filter((task) => task.status !== "done");
+}
+
+function getPriorityTaskForSelectedPet() {
+  const pendingTasks = getPendingTasksForSelectedPet();
+  const now = Date.now();
+  const overdueTasks = pendingTasks.filter((task) => getTaskTimestamp(task) < now);
+
+  if (overdueTasks.length > 0) {
+    return sortTasksByDateTime(overdueTasks)[0];
+  }
+
+  return sortTasksByDateTime(pendingTasks)[0] || null;
+}
+
+function renderSummaryTaskRow(task) {
+  const visualStatus = getTaskSummaryVisualStatus(task);
+
+  return `
+    <article class="summary-task-row summary-task-row--${visualStatus.key}">
+      ${renderTaskIcon(task.title)}
+      <div class="summary-task-row__body">
+        <h4>${escapeHTML(displayText(task.title, "Cuidado pendiente"))}</h4>
+        <p>${escapeHTML(displayText(task.description, "Sin descripcion adicional."))}</p>
+      </div>
+      <time class="summary-task-row__date" datetime="${escapeHTML(task.date || "")}">
+        ${escapeHTML(formatDateToDisplay(task.date))}<br />
+        ${escapeHTML(formatTimeToDisplay(task.time))}
+      </time>
+      <span class="badge ${visualStatus.badgeClass}">${escapeHTML(displayText(visualStatus.label))}</span>
+      <span class="summary-task-row__chevron" aria-hidden="true">${renderLucideIcon("chevron-right")}</span>
+    </article>
+  `;
+}
+
 function renderSelectedPetSummary() {
   if (!selectedPetId) {
     selectedPetSummaryElement.innerHTML = `
@@ -533,19 +598,60 @@ function renderSelectedPetSummary() {
     return;
   }
 
-  selectedPetSummaryElement.innerHTML = "";
+  const pet = getSelectedPet();
+  const priorityTask = getPriorityTaskForSelectedPet();
 
-  getPetTaskSummary().forEach((item) => {
-    const summaryCard = document.createElement("article");
-    summaryCard.className = `pet-summary-card pet-summary-card--${item.className}`;
-    summaryCard.innerHTML = `
-      <span class="pet-summary-card__icon" aria-hidden="true">${renderLucideIcon(item.icon)}</span>
-      <strong class="pet-summary-card__value">${item.value}</strong>
-      <span class="pet-summary-card__label">${item.label}</span>
-      <span class="pet-summary-card__text">${item.text}</span>
+  if (!pet || !priorityTask) {
+    selectedPetSummaryElement.innerHTML = `
+      <div class="pet-summary-dashboard pet-summary-dashboard--empty">
+        ${renderEmptyState(
+          "Sin cuidados pendientes",
+          "Esta mascota no tiene tareas pendientes por ahora.",
+          "tasks"
+        )}
+      </div>
     `;
-    selectedPetSummaryElement.appendChild(summaryCard);
-  });
+    return;
+  }
+
+  const priorityStatus = getTaskSummaryVisualStatus(priorityTask);
+  const priorityLabel = priorityStatus.key === "overdue" ? "Tarea vencida" : "Proxima tarea";
+  const pendingTasks = sortTasksByDateTime(getPendingTasksForSelectedPet())
+    .filter((task) => task.id !== priorityTask.id)
+    .slice(0, 3);
+  const taskListContent =
+    pendingTasks.length > 0
+      ? pendingTasks.map((task) => renderSummaryTaskRow(task)).join("")
+      : `<p class="summary-task-list__empty">No hay otras tareas pendientes para esta mascota.</p>`;
+
+  selectedPetSummaryElement.innerHTML = `
+    <div class="pet-summary-dashboard">
+      <article class="priority-task-card priority-task-card--${priorityStatus.key}">
+        ${renderTaskIcon(priorityTask.title)}
+        <span class="priority-task-card__eyebrow">${escapeHTML(priorityLabel)}</span>
+        <h3>${escapeHTML(displayText(priorityTask.title, "Cuidado pendiente"))}</h3>
+        <p>${escapeHTML(displayText(priorityTask.description, "Sin descripcion adicional."))}</p>
+        <time datetime="${escapeHTML(priorityTask.date || "")}">
+          ${escapeHTML(formatDateToDisplay(priorityTask.date))} - ${escapeHTML(formatTimeToDisplay(priorityTask.time))}
+        </time>
+        <span class="badge ${priorityStatus.badgeClass}">${escapeHTML(displayText(priorityStatus.label))}</span>
+      </article>
+
+      <section class="summary-task-list" aria-labelledby="summary-task-list-title">
+        <div class="summary-task-list__header">
+          <h3 id="summary-task-list-title">Proximas tareas</h3>
+        </div>
+        <div class="summary-task-list__items">
+          ${taskListContent}
+        </div>
+      </section>
+
+      <a class="btn btn-primary pet-summary-dashboard__cta" href="./agenda.html">
+        ${renderLucideIcon("clipboard-check")}
+        Ver agenda completa de ${escapeHTML(displayText(pet.name, "la mascota"))}
+      </a>
+    </div>
+  `;
 }
 
 function renderDesktopPetSummary() {
@@ -605,55 +711,6 @@ function renderQuickInfo() {
       </div>
     `;
     quickInfoListElement.appendChild(listItem);
-  });
-}
-
-function renderSelectedPetTasks() {
-  if (!selectedPetId) {
-    selectedPetTasksElement.innerHTML = `
-      ${renderEmptyState(
-        "Sin mascota seleccionada",
-        "Selecciona una mascota para ver sus proximos cuidados.",
-        "tasks"
-      )}
-    `;
-    return;
-  }
-
-  const pendingTasks = getTasksByPetId(selectedPetId).filter((task) => task.status !== "done");
-  const visibleTasks = sortTasksByDate(pendingTasks).slice(0, 4);
-
-  selectedPetTasksElement.innerHTML = "";
-
-  if (visibleTasks.length === 0) {
-    selectedPetTasksElement.innerHTML = `
-      ${renderEmptyState(
-        "Sin cuidados pendientes",
-        "Esta mascota no tiene cuidados pendientes por ahora.",
-        "tasks"
-      )}
-    `;
-    return;
-  }
-
-  visibleTasks.forEach((task) => {
-    const visualStatus = getTaskVisualStatus(task);
-    const taskCard = document.createElement("article");
-    taskCard.className = `pet-task-card pet-task-card--${visualStatus.key}`;
-    taskCard.innerHTML = `
-      ${renderTaskIcon(task.title)}
-      <div class="pet-task-card__body">
-        <h3>${escapeHTML(displayText(task.title))}</h3>
-        <p>${escapeHTML(displayText(task.description, "Sin descripcion adicional."))}</p>
-      </div>
-      <time class="pet-task-card__date" datetime="${escapeHTML(task.date || "")}">
-        ${escapeHTML(formatDateToDisplay(task.date))}<br />
-        ${escapeHTML(formatTimeToDisplay(task.time))}
-      </time>
-      <span class="badge ${visualStatus.badgeClass}">${escapeHTML(displayText(visualStatus.label))}</span>
-      <span class="pet-task-card__chevron" aria-hidden="true">${renderLucideIcon("chevron-right")}</span>
-    `;
-    selectedPetTasksElement.appendChild(taskCard);
   });
 }
 
@@ -735,7 +792,6 @@ function selectPet(petId) {
   renderSelectedPetSummary();
   renderDesktopPetSummary();
   renderQuickInfo();
-  renderSelectedPetTasks();
   setActivePetFeatureTab("Resumen");
 
   petMessageElement.textContent = "";
@@ -895,7 +951,6 @@ function initMascotasPage() {
   renderSelectedPetSummary();
   renderDesktopPetSummary();
   renderQuickInfo();
-  renderSelectedPetTasks();
   setActivePetFeatureTab("Resumen");
   setupEventListeners();
   updatePetTip();
