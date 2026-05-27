@@ -32,7 +32,7 @@
 
         <nav class="desktop-sidebar__nav" aria-label="Navegacion principal">
           <a class="desktop-sidebar__link" href="../index.html">
-            <span aria-hidden="true">⌂</span>
+            <i data-lucide="home" aria-hidden="true"></i>
             Inicio
           </a>
           <a
@@ -40,27 +40,27 @@
             href="./mascotas.html"
             aria-current="page"
           >
-            <span aria-hidden="true">🐾</span>
+            <i data-lucide="paw-print" aria-hidden="true"></i>
             Mis Mascotas
           </a>
           <a class="desktop-sidebar__link" href="./agenda.html">
-            <span aria-hidden="true">▣</span>
+            <i data-lucide="clipboard-check" aria-hidden="true"></i>
             Agenda de cuidados
           </a>
           <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
-            <span aria-hidden="true">♢</span>
+            <i data-lucide="bell" aria-hidden="true"></i>
             Recordatorios
           </a>
           <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
-            <span aria-hidden="true">□</span>
+            <i data-lucide="calendar-days" aria-hidden="true"></i>
             Calendario
           </a>
           <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
-            <span aria-hidden="true">○</span>
+            <i data-lucide="circle-user" aria-hidden="true"></i>
             Perfil
           </a>
           <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
-            <span aria-hidden="true">⚙</span>
+            <i data-lucide="settings" aria-hidden="true"></i>
             Configuracion
           </a>
         </nav>
@@ -101,7 +101,7 @@
             type="button"
             aria-label="3 recordatorios pendientes"
           >
-            ♡
+            <i data-lucide="bell" aria-hidden="true"></i>
             <span>3</span>
           </button>
           <button
@@ -110,7 +110,7 @@
             data-open-pet-form
             aria-label="Agregar mascota"
           >
-            +
+            <i data-lucide="plus" aria-hidden="true"></i>
           </button>
         </div>
       </header>
@@ -174,19 +174,19 @@
             aria-label="Secciones de la mascota"
           >
             <button class="tab is-active" type="button" data-pet-section="Resumen">
-              <span aria-hidden="true">▤</span>
+              <i data-lucide="list-checks" aria-hidden="true"></i>
               Resumen
             </button>
             <button class="tab" type="button" data-pet-section="Informacion">
-              <span aria-hidden="true">ⓘ</span>
+              <i data-lucide="info" aria-hidden="true"></i>
               Informacion
             </button>
             <button class="tab" type="button" data-pet-section="Historial">
-              <span aria-hidden="true">↺</span>
+              <i data-lucide="history" aria-hidden="true"></i>
               Historial
             </button>
             <button class="tab" type="button" data-pet-section="Fotos">
-              <span aria-hidden="true">▧</span>
+              <i data-lucide="image" aria-hidden="true"></i>
               Fotos
             </button>
           </div>
@@ -200,22 +200,6 @@
             </div>
           </div>
         </section>
-
-        <section class="section pet-tasks-section" aria-labelledby="pet-tasks-title">
-          <div class="section-header">
-            <h2 class="section-title" id="pet-tasks-title">Proximos cuidados</h2>
-            <a class="section-link" href="./agenda.html">Ver todos</a>
-          </div>
-
-          <div id="selected-pet-tasks" class="pet-task-list" aria-live="polite">
-            <!-- JS: tareas asociadas -->
-          </div>
-        </section>
-
-        <a class="btn btn-primary pet-agenda-cta" href="./agenda.html">
-          <span aria-hidden="true">▣</span>
-          Ver agenda completa
-        </a>
 
         <section
           class="section pet-form-section"
@@ -232,52 +216,164 @@
             </div>
 
             <form id="pet-form" class="form">
-              <div class="form-grid">
-                <div class="form-group">
-                  <label class="form-label" for="pet-name">Nombre</label>
-                  <input
-                    class="form-input"
-                    id="pet-name"
-                    name="name"
-                    type="text"
-                    placeholder="Ej: Kira"
-                    required
-                  />
-                </div>
+              <fieldset class="pet-form-group">
+                <legend>Datos basicos</legend>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="pet-name">Nombre</label>
+                    <input
+                      class="form-input"
+                      id="pet-name"
+                      name="name"
+                      type="text"
+                      placeholder="Ej: Kira"
+                      required
+                    />
+                  </div>
 
-                <div class="form-group">
-                  <label class="form-label" for="pet-species">Especie</label>
-                  <select class="form-select" id="pet-species" name="species" required>
-                    <option value="">Seleccionar especie</option>
-                    <option value="Perro">Perro</option>
-                    <option value="Gato">Gato</option>
-                    <option value="Conejo">Conejo</option>
-                    <option value="Otro">Otro</option>
-                  </select>
-                </div>
+                  <div class="form-group">
+                    <label class="form-label" for="pet-species">Especie</label>
+                    <select class="form-select" id="pet-species" name="species" required>
+                      <option value="">Seleccionar especie</option>
+                      <option value="Perro">Perro</option>
+                      <option value="Gato">Gato</option>
+                      <option value="Conejo">Conejo</option>
+                      <option value="Otro">Otro</option>
+                    </select>
+                  </div>
 
-                <div class="form-group">
-                  <label class="form-label" for="pet-age">Edad</label>
-                  <input
-                    class="form-input"
-                    id="pet-age"
-                    name="age"
-                    type="text"
-                    placeholder="Ej: 3 anos"
-                  />
-                </div>
+                  <div class="form-group">
+                    <label class="form-label" for="pet-age">Edad</label>
+                    <input
+                      class="form-input"
+                      id="pet-age"
+                      name="age"
+                      type="text"
+                      placeholder="Ej: 3 anos"
+                    />
+                  </div>
 
-                <div class="form-group">
-                  <label class="form-label" for="pet-breed">Raza</label>
-                  <input
-                    class="form-input"
-                    id="pet-breed"
-                    name="breed"
-                    type="text"
-                    placeholder="Ej: Golden Retriever"
-                  />
+                  <div class="form-group">
+                    <label class="form-label" for="pet-breed">Raza</label>
+                    <input
+                      class="form-input"
+                      id="pet-breed"
+                      name="breed"
+                      type="text"
+                      placeholder="Ej: Golden Retriever"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="pet-birth-date">Fecha de nacimiento</label>
+                    <input
+                      class="form-input"
+                      id="pet-birth-date"
+                      name="birthDate"
+                      type="date"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="pet-sex">Sexo</label>
+                    <select class="form-select" id="pet-sex" name="sex">
+                      <option value="">Sin dato</option>
+                      <option value="Hembra">Hembra</option>
+                      <option value="Macho">Macho</option>
+                      <option value="No especificado">No especificado</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
+              </fieldset>
+
+              <fieldset class="pet-form-group">
+                <legend>Salud y cuidados</legend>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label" for="pet-weight">Peso</label>
+                    <input
+                      class="form-input"
+                      id="pet-weight"
+                      name="weight"
+                      type="text"
+                      placeholder="Ej: 28 kg"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="pet-size">Tamano</label>
+                    <select class="form-select" id="pet-size" name="size">
+                      <option value="">Sin dato</option>
+                      <option value="Toy / mini">Toy / mini</option>
+                      <option value="Pequeno">Pequeno</option>
+                      <option value="Mediano">Mediano</option>
+                      <option value="Grande">Grande</option>
+                      <option value="Gigante">Gigante</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="pet-vet-name">Veterinario asignado</label>
+                    <input
+                      class="form-input"
+                      id="pet-vet-name"
+                      name="vetName"
+                      type="text"
+                      placeholder="Ej: Vet. Maria Lopez"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="pet-clinic">Clinica</label>
+                    <input
+                      class="form-input"
+                      id="pet-clinic"
+                      name="clinic"
+                      type="text"
+                      placeholder="Ej: Patitas Felices"
+                    />
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="pet-form-group">
+                <legend>Informacion adicional</legend>
+                <div class="form-grid">
+                  <div class="form-group form-group--wide">
+                    <label class="form-label" for="pet-allergies">Alergias</label>
+                    <textarea
+                      class="form-textarea"
+                      id="pet-allergies"
+                      name="allergies"
+                      rows="3"
+                      placeholder="Ej: Alergia al pollo"
+                    ></textarea>
+                  </div>
+
+                  <div class="form-group form-group--wide">
+                    <label class="form-label" for="pet-notes">Notas</label>
+                    <textarea
+                      class="form-textarea"
+                      id="pet-notes"
+                      name="notes"
+                      rows="3"
+                      placeholder="Ej: Le gusta pasear por la tarde"
+                    ></textarea>
+                  </div>
+
+                  <div class="form-group form-group--wide">
+                    <label class="form-label" for="pet-image">Foto de la mascota</label>
+                    <input
+                      class="form-input pet-file-input"
+                      id="pet-image"
+                      name="imageFile"
+                      type="file"
+                      accept="image/*"
+                    />
+                    <p class="form-help">Opcional. Usa una imagen liviana para cuidar el almacenamiento.</p>
+                  </div>
+                </div>
+              </fieldset>
 
               <p id="pet-message" class="form-help" aria-live="polite"></p>
 
@@ -319,16 +415,19 @@
           </span>
           <div>
             <h2 class="desktop-widget__title">Tip del dia</h2>
-            <p>
+            <p id="pet-tip-text">
               Asegurate de que tu mascota siempre tenga agua fresca disponible.
             </p>
+            <button class="desktop-tip__button" type="button" data-next-pet-tip>
+              Ver otro tip
+            </button>
           </div>
         </article>
       </aside>
 
       <nav class="bottom-nav" aria-label="Navegacion principal">
         <a class="bottom-nav__link" href="../index.html">
-          <span aria-hidden="true">⌂</span>
+          <i data-lucide="home" aria-hidden="true"></i>
           Inicio
         </a>
         <a
@@ -336,11 +435,11 @@
           href="./mascotas.html"
           aria-current="page"
         >
-          <span aria-hidden="true">🐾</span>
+          <i data-lucide="paw-print" aria-hidden="true"></i>
           Mascotas
         </a>
         <a class="bottom-nav__link" href="./agenda.html">
-          <span aria-hidden="true">▣</span>
+          <i data-lucide="clipboard-check" aria-hidden="true"></i>
           Agenda
         </a>
       </nav>
@@ -349,6 +448,7 @@
     <script src="../assets/js/data.js"></script>
     <script src="../assets/js/utils.js"></script>
     <script src="../assets/js/storage.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="../assets/js/mascotas.js"></script>
   </body>
 </html>
