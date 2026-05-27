@@ -27,14 +27,6 @@ const INITIAL_PETS = [
     age: "3 años",
     breed: "Golden Retriever",
     image: "assets/img/pets/dog-avatar.png",
-    birthDate: "2021-04-12",
-    sex: "Hembra",
-    weight: "28 kg",
-    size: "Grande",
-    vetName: "Vet. Maria Lopez",
-    clinic: "Patitas Felices",
-    allergies: "",
-    notes: "Le gusta pasear por la tarde.",
     createdAt: "2026-05-20T10:00:00.000Z"
   },
   {
@@ -44,14 +36,6 @@ const INITIAL_PETS = [
     age: "2 años",
     breed: "Común europeo",
     image: "assets/img/pets/cat-avatar.png",
-    birthDate: "2022-08-03",
-    sex: "Macho",
-    weight: "5 kg",
-    size: "Mediano",
-    vetName: "Vet. Maria Lopez",
-    clinic: "Patitas Felices",
-    allergies: "Evitar pollo",
-    notes: "Prefiere alimento humedo.",
     createdAt: "2026-05-20T10:05:00.000Z"
   },
   {
@@ -61,14 +45,6 @@ const INITIAL_PETS = [
     age: "1 año",
     breed: "Mini lop",
     image: "assets/img/pets/rabbit-avatar.png",
-    birthDate: "2023-01-20",
-    sex: "Hembra",
-    weight: "2 kg",
-    size: "Pequeno",
-    vetName: "Vet. Maria Lopez",
-    clinic: "Patitas Felices",
-    allergies: "",
-    notes: "Revisar dientes con frecuencia.",
     createdAt: "2026-05-20T10:10:00.000Z"
   }
 ];
