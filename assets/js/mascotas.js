@@ -13,6 +13,7 @@ const desktopPetSummaryElement = document.getElementById("desktop-pet-summary");
 const desktopSummaryTitleElement = document.getElementById("desktop-summary-title");
 const quickInfoListElement = document.getElementById("quick-info-list");
 const petFormSectionElement = document.getElementById("pet-form-section");
+const petTipTextElement = document.getElementById("pet-tip-text");
 
 const petFormElement = document.getElementById("pet-form");
 const petNameInput = document.getElementById("pet-name");
@@ -33,6 +34,17 @@ const petMessageElement = document.getElementById("pet-message");
 let selectedPetId = null;
 
 const MAX_PET_IMAGE_SIZE = 1024 * 1024;
+
+const PET_TIPS = [
+  "Asegurate de que tu mascota tenga agua fresca disponible todos los dias.",
+  "Revisa su comedero y bebedero al menos una vez al dia.",
+  "Anota vacunas y controles para no olvidarte de las fechas importantes.",
+  "Una rutina clara ayuda a reducir estres en perros y gatos.",
+  "Cepillar el pelaje ayuda a detectar nudos, pulgas o irritaciones.",
+  "Si notas cambios de apetito o conducta, consulta con tu veterinario.",
+  "Mantene actualizada la informacion de peso, alergias y veterinario.",
+  "Los controles preventivos ayudan a detectar problemas a tiempo."
+];
 
 const PET_COLORS = {
   Perro: "dog",
@@ -214,6 +226,25 @@ function renderLucideIcons() {
 
 function renderLucideIcon(iconName) {
   return `<i data-lucide="${iconName}" aria-hidden="true"></i>`;
+}
+
+function pickRandomPetTip(currentTip = "") {
+  const availableTips = PET_TIPS.filter((tip) => tip && tip !== currentTip);
+
+  if (availableTips.length === 0) {
+    return PET_TIPS[0] || "Cuida sus rutinas y registra sus cuidados importantes.";
+  }
+
+  return availableTips[Math.floor(Math.random() * availableTips.length)];
+}
+
+function updatePetTip() {
+  if (!petTipTextElement) {
+    return;
+  }
+
+  const nextTip = pickRandomPetTip(petTipTextElement.textContent.trim());
+  petTipTextElement.textContent = nextTip;
 }
 
 function resolveAssetPath(assetPath) {
@@ -830,6 +861,10 @@ function handlePageClick(event) {
   if (event.target.closest("[data-close-pet-form]")) {
     closePetForm();
   }
+
+  if (event.target.closest("[data-next-pet-tip]")) {
+    updatePetTip();
+  }
 }
 
 function handlePetFeatureTabsClick(event) {
@@ -863,6 +898,7 @@ function initMascotasPage() {
   renderSelectedPetTasks();
   setActivePetFeatureTab("Resumen");
   setupEventListeners();
+  updatePetTip();
   renderLucideIcons();
 }
 
