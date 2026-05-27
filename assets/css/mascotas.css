@@ -112,11 +112,23 @@ body {
   color: #ffffff;
   font-size: 1.8rem;
   box-shadow: 0 14px 30px rgba(109, 40, 217, 0.28);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
 }
 
 .add-shortcut:hover {
   background: var(--pet-purple-dark);
   color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 16px 32px rgba(109, 40, 217, 0.3);
+}
+
+.add-shortcut:active {
+  transform: translateY(0);
 }
 
 .pet-layout {
@@ -605,6 +617,23 @@ body {
   border: 1px solid var(--pet-purple);
   border-radius: 0.75rem;
   background: #ffffff;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.pet-profile-card__action:hover {
+  background: #faf7ff;
+  border-color: var(--pet-purple-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(109, 40, 217, 0.12);
+}
+
+.pet-profile-card__action:active {
+  transform: translateY(0);
 }
 
 .pet-feature-tabs {
@@ -923,6 +952,21 @@ body {
   border-radius: 0.8rem;
   background: linear-gradient(135deg, #7c3aed, #5b21b6);
   font-size: 1rem;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.pet-agenda-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(109, 40, 217, 0.22);
+}
+
+.pet-agenda-cta:active {
+  transform: translateY(0);
 }
 
 .pet-form-section {
@@ -1551,24 +1595,26 @@ body {
     display: flex;
     align-items: end;
     justify-content: center;
-    min-height: 7.3rem;
+    min-height: 10.8rem;
     margin-top: 1rem;
-    padding: 0.55rem;
+    padding: 0.75rem;
     border: 1px solid var(--pet-border);
-    border-radius: 1rem;
+    border-radius: 1.1rem;
     background: rgba(255, 255, 255, 0.86);
     box-shadow: var(--shadow-card);
+    overflow: hidden;
   }
 
   .sidebar-pets-image {
     position: absolute;
-    inset: auto 0.45rem 0.35rem;
+    inset: auto 0.35rem 0.2rem;
     z-index: 2;
-    width: calc(100% - 0.9rem);
+    width: calc(100% - 0.7rem);
+    height: 10rem;
     max-width: 100%;
-    max-height: 7.2rem;
-    filter: saturate(1.08) contrast(1.05);
-    object-fit: contain;
+    filter: saturate(1.1) contrast(1.06);
+    object-fit: cover;
+    object-position: center bottom;
   }
 
   .sidebar-pets-image[hidden] {
@@ -1592,7 +1638,7 @@ body {
     width: auto;
     max-width: none;
     margin: 0;
-    padding: 1.75rem 1.55rem 0 0;
+    padding: 2.05rem 1.95rem 0 0;
   }
 
   .pet-topbar .app-brand {
@@ -1601,7 +1647,9 @@ body {
 
   .pet-topbar .app-topbar__actions {
     margin-left: auto;
-    gap: 1.25rem;
+    gap: 1rem;
+    align-items: center;
+    padding-right: 0.25rem;
   }
 
   .pet-topbar .add-shortcut {
@@ -2002,6 +2050,12 @@ body {
       linear-gradient(135deg, #f4efff, #ffffff);
   }
 
+  .desktop-tip > div {
+    display: grid;
+    gap: 0.55rem;
+    min-width: 0;
+  }
+
   .desktop-tip__icon {
     width: 3.15rem;
     height: 3.15rem;
@@ -2026,6 +2080,29 @@ body {
   .desktop-tip__image:not([hidden]) + .desktop-tip__fallback {
     display: none;
   }
+
+  .desktop-tip__button {
+    justify-self: start;
+    border: 0;
+    background: transparent;
+    color: var(--pet-purple);
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 850;
+    cursor: pointer;
+    transition:
+      transform 160ms ease,
+      color 160ms ease;
+  }
+
+  .desktop-tip__button:hover {
+    color: var(--pet-purple-dark);
+    transform: translateY(-1px);
+  }
+
+  .desktop-tip__button:active {
+    transform: translateY(0);
+  }
 }
 
 @media (min-width: 640px) and (max-width: 1099px) {
@@ -2045,5 +2122,25 @@ body {
 
   .form-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .add-shortcut,
+  .pet-profile-card__action,
+  .pet-agenda-cta,
+  .desktop-tip__button {
+    transition: none;
+  }
+
+  .add-shortcut:hover,
+  .pet-profile-card__action:hover,
+  .pet-agenda-cta:hover,
+  .desktop-tip__button:hover,
+  .add-shortcut:active,
+  .pet-profile-card__action:active,
+  .pet-agenda-cta:active,
+  .desktop-tip__button:active {
+    transform: none;
   }
 }
