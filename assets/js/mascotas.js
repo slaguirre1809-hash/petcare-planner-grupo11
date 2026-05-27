@@ -5,6 +5,7 @@
 
 const petsListElement = document.getElementById("pets-list");
 const selectedPetDetailElement = document.getElementById("selected-pet-detail");
+const selectedPetTasksElement = document.getElementById("selected-pet-tasks");
 const selectedPetSummaryElement = document.getElementById("selected-pet-summary");
 const petFeatureTabsElement = document.getElementById("pet-feature-tabs");
 const petFeatureMessageElement = document.getElementById("pet-feature-message");
@@ -12,38 +13,15 @@ const desktopPetSummaryElement = document.getElementById("desktop-pet-summary");
 const desktopSummaryTitleElement = document.getElementById("desktop-summary-title");
 const quickInfoListElement = document.getElementById("quick-info-list");
 const petFormSectionElement = document.getElementById("pet-form-section");
-const petTipTextElement = document.getElementById("pet-tip-text");
 
 const petFormElement = document.getElementById("pet-form");
 const petNameInput = document.getElementById("pet-name");
 const petSpeciesSelect = document.getElementById("pet-species");
 const petAgeInput = document.getElementById("pet-age");
 const petBreedInput = document.getElementById("pet-breed");
-const petBirthDateInput = document.getElementById("pet-birth-date");
-const petSexSelect = document.getElementById("pet-sex");
-const petWeightInput = document.getElementById("pet-weight");
-const petSizeSelect = document.getElementById("pet-size");
-const petVetNameInput = document.getElementById("pet-vet-name");
-const petClinicInput = document.getElementById("pet-clinic");
-const petAllergiesInput = document.getElementById("pet-allergies");
-const petNotesInput = document.getElementById("pet-notes");
-const petImageInput = document.getElementById("pet-image");
 const petMessageElement = document.getElementById("pet-message");
 
 let selectedPetId = null;
-
-const MAX_PET_IMAGE_SIZE = 1024 * 1024;
-
-const PET_TIPS = [
-  "Asegurate de que tu mascota tenga agua fresca disponible todos los dias.",
-  "Revisa su comedero y bebedero al menos una vez al dia.",
-  "Anota vacunas y controles para no olvidarte de las fechas importantes.",
-  "Una rutina clara ayuda a reducir estres en perros y gatos.",
-  "Cepillar el pelaje ayuda a detectar nudos, pulgas o irritaciones.",
-  "Si notas cambios de apetito o conducta, consulta con tu veterinario.",
-  "Mantene actualizada la informacion de peso, alergias y veterinario.",
-  "Los controles preventivos ayudan a detectar problemas a tiempo."
-];
 
 const PET_COLORS = {
   Perro: "dog",
@@ -109,6 +87,7 @@ function validateRequiredElements() {
   const requiredElements = [
     petsListElement,
     selectedPetDetailElement,
+    selectedPetTasksElement,
     selectedPetSummaryElement,
     petFeatureTabsElement,
     petFeatureMessageElement,
@@ -118,15 +97,6 @@ function validateRequiredElements() {
     petSpeciesSelect,
     petAgeInput,
     petBreedInput,
-    petBirthDateInput,
-    petSexSelect,
-    petWeightInput,
-    petSizeSelect,
-    petVetNameInput,
-    petClinicInput,
-    petAllergiesInput,
-    petNotesInput,
-    petImageInput,
     petMessageElement
   ];
 
@@ -167,91 +137,9 @@ function displayText(value, fallback = "") {
   return normalizeDisplayText(cleanText(value) || fallback);
 }
 
-function displayOptionalText(value, fallback) {
-  const text = displayText(value).trim();
-  const normalizedText = text.toLowerCase();
-
-  if (!text || normalizedText === "undefined" || normalizedText === "null") {
-    return fallback;
-  }
-
-  return text;
-}
-
-function normalizePetAge(value, fallback = "Sin edad") {
-  const text = displayText(value).trim().toLowerCase();
-
-  if (!text) {
-    return fallback;
-  }
-
-  const numberMatch = text.match(/\d+/);
-
-  if (numberMatch) {
-    const ageNumber = Number(numberMatch[0]);
-
-    if (Number.isFinite(ageNumber) && ageNumber > 0) {
-      return `${ageNumber} ${ageNumber === 1 ? "año" : "años"}`;
-    }
-  }
-
-  return text
-    .replace(/\s+/g, " ")
-    .replace(/anos/g, "años")
-    .replace(/años\s+años/g, "años")
-    .trim();
-}
-
-function formatPetDate(value) {
-  const text = displayOptionalText(value, "Sin fecha");
-
-  if (text === "Sin fecha") {
-    return text;
-  }
-
-  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
-    return formatDateToDisplay(text);
-  }
-
-  return text;
-}
-
-function renderLucideIcons() {
-  if (window.lucide && typeof window.lucide.createIcons === "function") {
-    window.lucide.createIcons();
-  }
-}
-
-function renderLucideIcon(iconName) {
-  return `<i data-lucide="${iconName}" aria-hidden="true"></i>`;
-}
-
-function pickRandomPetTip(currentTip = "") {
-  const availableTips = PET_TIPS.filter((tip) => tip && tip !== currentTip);
-
-  if (availableTips.length === 0) {
-    return PET_TIPS[0] || "Cuida sus rutinas y registra sus cuidados importantes.";
-  }
-
-  return availableTips[Math.floor(Math.random() * availableTips.length)];
-}
-
-function updatePetTip() {
-  if (!petTipTextElement) {
-    return;
-  }
-
-  const nextTip = pickRandomPetTip(petTipTextElement.textContent.trim());
-  petTipTextElement.textContent = nextTip;
-}
-
 function resolveAssetPath(assetPath) {
   if (!assetPath) {
     return "";
-  }
-
-  if (/^(data:|blob:|https?:\/\/)/.test(assetPath)) {
-    return assetPath;
   }
 
   const isInsidePagesFolder = window.location.pathname.includes("/pages/");
@@ -291,17 +179,14 @@ function getPetDetails(pet) {
   const savedDetails = PET_DEFAULTS[pet.id] || {};
 
   return {
-    sex: displayOptionalText(pet.sex || savedDetails.sex, "Sin dato"),
-    birthDate: formatPetDate(pet.birthDate || savedDetails.birthDate),
-    weight: displayOptionalText(pet.weight || savedDetails.weight, "Sin dato"),
-    size: displayOptionalText(pet.size || savedDetails.size, "Sin dato"),
-    vet: displayOptionalText(pet.vetName || savedDetails.vet, "A completar"),
-    clinic: displayOptionalText(pet.clinic || savedDetails.clinic, "A completar"),
-    allergies: displayOptionalText(
-      pet.allergies || savedDetails.allergies,
-      "Sin alergias registradas"
-    ),
-    notes: displayOptionalText(pet.notes || savedDetails.notes, "Sin notas cargadas")
+    sex: pet.sex || savedDetails.sex || "Sin dato",
+    birthDate: pet.birthDate || savedDetails.birthDate || "Sin fecha",
+    weight: pet.weight || savedDetails.weight || "Sin dato",
+    size: pet.size || savedDetails.size || "Sin dato",
+    vet: pet.vetName || savedDetails.vet || "A completar",
+    clinic: pet.clinic || savedDetails.clinic || "A completar",
+    allergies: pet.allergies || savedDetails.allergies || "Sin alergias registradas",
+    notes: pet.notes || savedDetails.notes || "Sin notas cargadas"
   };
 }
 
@@ -393,7 +278,7 @@ function renderPets() {
         "pets"
       )}
       <button class="pet-add-card" type="button" data-open-pet-form>
-        <span class="pet-add-card__icon" aria-hidden="true">${renderLucideIcon("plus")}</span>
+        <span class="pet-add-card__icon" aria-hidden="true">+</span>
         <span class="pet-add-card__text">Agregar mascota</span>
       </button>
     `;
@@ -419,7 +304,7 @@ function renderPets() {
       <span class="pet-info">
         <span class="pet-name">${escapeHTML(displayText(pet.name))}</span>
         <span class="pet-breed">${escapeHTML(displayText(pet.breed || pet.species, "Mascota"))}</span>
-        <span class="pet-species-chip">${escapeHTML(normalizePetAge(pet.age))}</span>
+        <span class="pet-species-chip">${escapeHTML(displayText(pet.age, "Sin edad"))}</span>
       </span>
       <span class="pet-selector-dot" aria-hidden="true"></span>
     `;
@@ -432,7 +317,7 @@ function renderPets() {
   addPetButton.type = "button";
   addPetButton.dataset.openPetForm = "";
   addPetButton.innerHTML = `
-    <span class="pet-add-card__icon" aria-hidden="true">${renderLucideIcon("plus")}</span>
+    <span class="pet-add-card__icon" aria-hidden="true">+</span>
     <span class="pet-add-card__text">Agregar mascota</span>
   `;
   petsListElement.appendChild(addPetButton);
@@ -457,18 +342,18 @@ function renderSelectedPet() {
     <div class="pet-profile-card__main">
       <div class="pet-profile-card__avatar-wrap">
         ${renderPetAvatar(pet, "pet-avatar--xl")}
-        <span class="pet-camera" aria-hidden="true">${renderLucideIcon("camera")}</span>
+        <span class="pet-camera" aria-hidden="true">●</span>
       </div>
 
       <div class="pet-profile-card__body">
         <div class="pet-profile-card__title">
           <h2>${escapeHTML(displayText(pet.name))}</h2>
-          <span class="badge badge-primary">${escapeHTML(normalizePetAge(pet.age))}</span>
+          <span class="badge badge-primary">${escapeHTML(displayText(pet.age, "Sin edad"))}</span>
         </div>
         <p class="pet-profile-card__breed">${escapeHTML(displayText(pet.breed || pet.species, "Mascota"))}</p>
         <p class="pet-profile-card__meta">
-          <span>${renderLucideIcon("venus-and-mars")} ${escapeHTML(details.sex)}</span>
-          <span>${renderLucideIcon("calendar")} ${escapeHTML(details.birthDate)}</span>
+          <span aria-hidden="true">♀</span> ${escapeHTML(details.sex)}
+          <span aria-hidden="true">▣</span> ${escapeHTML(details.birthDate)}
         </p>
       </div>
     </div>
@@ -479,7 +364,7 @@ function renderSelectedPet() {
       aria-disabled="true"
       title="Funcion disponible proximamente"
     >
-      ${renderLucideIcon("pencil")} Editar
+      ✎ Editar
     </button>
   `;
 }
@@ -490,100 +375,33 @@ function getPetTaskSummary() {
   return [
     {
       className: "danger",
-      icon: "circle-alert",
+      icon: "▣",
       value: petTasks.filter((task) => getTaskVisualStatus(task).key === "overdue").length,
       label: "Pendientes",
       text: "Requieren atencion"
     },
     {
       className: "warning",
-      icon: "sun",
+      icon: "☼",
       value: getTodayTasksFromList(petTasks).length,
       label: "Hoy",
       text: "Para hoy"
     },
     {
       className: "success",
-      icon: "calendar-days",
+      icon: "▣",
       value: getTasksByVisualStatus(petTasks, "upcoming").length,
       label: "Proximas",
       text: "En los proximos dias"
     },
     {
       className: "primary",
-      icon: "circle-check",
+      icon: "✓",
       value: getDoneTasksFromList(petTasks).length,
       label: "Realizadas",
       text: "Buen trabajo"
     }
   ];
-}
-
-function getTaskTimestamp(task) {
-  if (!task.date) {
-    return Number.POSITIVE_INFINITY;
-  }
-
-  const time = task.time || "23:59";
-  const timestamp = new Date(`${task.date}T${time}`).getTime();
-
-  return Number.isNaN(timestamp) ? Number.POSITIVE_INFINITY : timestamp;
-}
-
-function getTaskSummaryVisualStatus(task) {
-  if (task.status !== "done" && getTaskTimestamp(task) < Date.now()) {
-    return {
-      key: "overdue",
-      label: "Vencida",
-      badgeClass: "badge-danger"
-    };
-  }
-
-  return getTaskVisualStatus(task);
-}
-
-function sortTasksByDateTime(tasks) {
-  return [...tasks].sort((a, b) => getTaskTimestamp(a) - getTaskTimestamp(b));
-}
-
-function getPendingTasksForSelectedPet() {
-  if (!selectedPetId) {
-    return [];
-  }
-
-  return getTasksByPetId(selectedPetId).filter((task) => task.status !== "done");
-}
-
-function getPriorityTaskForSelectedPet() {
-  const pendingTasks = getPendingTasksForSelectedPet();
-  const now = Date.now();
-  const overdueTasks = pendingTasks.filter((task) => getTaskTimestamp(task) < now);
-
-  if (overdueTasks.length > 0) {
-    return sortTasksByDateTime(overdueTasks)[0];
-  }
-
-  return sortTasksByDateTime(pendingTasks)[0] || null;
-}
-
-function renderSummaryTaskRow(task) {
-  const visualStatus = getTaskSummaryVisualStatus(task);
-
-  return `
-    <article class="summary-task-row summary-task-row--${visualStatus.key}">
-      ${renderTaskIcon(task.title)}
-      <div class="summary-task-row__body">
-        <h4>${escapeHTML(displayText(task.title, "Cuidado pendiente"))}</h4>
-        <p>${escapeHTML(displayText(task.description, "Sin descripcion adicional."))}</p>
-      </div>
-      <time class="summary-task-row__date" datetime="${escapeHTML(task.date || "")}">
-        ${escapeHTML(formatDateToDisplay(task.date))}<br />
-        ${escapeHTML(formatTimeToDisplay(task.time))}
-      </time>
-      <span class="badge ${visualStatus.badgeClass}">${escapeHTML(displayText(visualStatus.label))}</span>
-      <span class="summary-task-row__chevron" aria-hidden="true">${renderLucideIcon("chevron-right")}</span>
-    </article>
-  `;
 }
 
 function renderSelectedPetSummary() {
@@ -598,60 +416,19 @@ function renderSelectedPetSummary() {
     return;
   }
 
-  const pet = getSelectedPet();
-  const priorityTask = getPriorityTaskForSelectedPet();
+  selectedPetSummaryElement.innerHTML = "";
 
-  if (!pet || !priorityTask) {
-    selectedPetSummaryElement.innerHTML = `
-      <div class="pet-summary-dashboard pet-summary-dashboard--empty">
-        ${renderEmptyState(
-          "Sin cuidados pendientes",
-          "Esta mascota no tiene tareas pendientes por ahora.",
-          "tasks"
-        )}
-      </div>
+  getPetTaskSummary().forEach((item) => {
+    const summaryCard = document.createElement("article");
+    summaryCard.className = `pet-summary-card pet-summary-card--${item.className}`;
+    summaryCard.innerHTML = `
+      <span class="pet-summary-card__icon" aria-hidden="true">${item.icon}</span>
+      <strong class="pet-summary-card__value">${item.value}</strong>
+      <span class="pet-summary-card__label">${item.label}</span>
+      <span class="pet-summary-card__text">${item.text}</span>
     `;
-    return;
-  }
-
-  const priorityStatus = getTaskSummaryVisualStatus(priorityTask);
-  const priorityLabel = priorityStatus.key === "overdue" ? "Tarea vencida" : "Proxima tarea";
-  const pendingTasks = sortTasksByDateTime(getPendingTasksForSelectedPet())
-    .filter((task) => task.id !== priorityTask.id)
-    .slice(0, 3);
-  const taskListContent =
-    pendingTasks.length > 0
-      ? pendingTasks.map((task) => renderSummaryTaskRow(task)).join("")
-      : `<p class="summary-task-list__empty">No hay otras tareas pendientes para esta mascota.</p>`;
-
-  selectedPetSummaryElement.innerHTML = `
-    <div class="pet-summary-dashboard">
-      <article class="priority-task-card priority-task-card--${priorityStatus.key}">
-        ${renderTaskIcon(priorityTask.title)}
-        <span class="priority-task-card__eyebrow">${escapeHTML(priorityLabel)}</span>
-        <h3>${escapeHTML(displayText(priorityTask.title, "Cuidado pendiente"))}</h3>
-        <p>${escapeHTML(displayText(priorityTask.description, "Sin descripcion adicional."))}</p>
-        <time datetime="${escapeHTML(priorityTask.date || "")}">
-          ${escapeHTML(formatDateToDisplay(priorityTask.date))} - ${escapeHTML(formatTimeToDisplay(priorityTask.time))}
-        </time>
-        <span class="badge ${priorityStatus.badgeClass}">${escapeHTML(displayText(priorityStatus.label))}</span>
-      </article>
-
-      <section class="summary-task-list" aria-labelledby="summary-task-list-title">
-        <div class="summary-task-list__header">
-          <h3 id="summary-task-list-title">Proximas tareas</h3>
-        </div>
-        <div class="summary-task-list__items">
-          ${taskListContent}
-        </div>
-      </section>
-
-      <a class="btn btn-primary pet-summary-dashboard__cta" href="./agenda.html">
-        ${renderLucideIcon("clipboard-check")}
-        Ver agenda completa de ${escapeHTML(displayText(pet.name, "la mascota"))}
-      </a>
-    </div>
-  `;
+    selectedPetSummaryElement.appendChild(summaryCard);
+  });
 }
 
 function renderDesktopPetSummary() {
@@ -667,7 +444,7 @@ function renderDesktopPetSummary() {
     const row = document.createElement("div");
     row.className = `desktop-summary-row desktop-summary-row--${item.className}`;
     row.innerHTML = `
-      <span class="desktop-summary-row__icon" aria-hidden="true">${renderLucideIcon(item.icon)}</span>
+      <span class="desktop-summary-row__icon" aria-hidden="true">${item.icon}</span>
       <span class="desktop-summary-row__label">${escapeHTML(displayText(item.label))}</span>
       <strong class="desktop-summary-row__value">${item.value}</strong>
     `;
@@ -689,14 +466,12 @@ function renderQuickInfo() {
 
   const details = getPetDetails(pet);
   const infoItems = [
-    { icon: "venus-and-mars", label: "Sexo", value: details.sex },
-    { icon: "calendar", label: "Fecha", value: details.birthDate },
-    { icon: "weight", label: "Peso", value: details.weight },
-    { icon: "ruler", label: "Tamano", value: details.size },
-    { icon: "stethoscope", label: "Veterinario", value: details.vet },
-    { icon: "hospital", label: "Clinica", value: details.clinic },
-    { icon: "triangle-alert", label: "Alergias", value: details.allergies },
-    { icon: "clipboard-list", label: "Notas", value: details.notes }
+    { icon: "⚖", label: "Peso", value: details.weight },
+    { icon: "↔", label: "Tamano", value: details.size },
+    { icon: "⚕", label: "Veterinario", value: details.vet },
+    { icon: "⌂", label: "Clinica", value: details.clinic },
+    { icon: "!", label: "Alergias", value: details.allergies },
+    { icon: "□", label: "Notas", value: details.notes }
   ];
 
   quickInfoListElement.innerHTML = "";
@@ -704,13 +479,62 @@ function renderQuickInfo() {
   infoItems.forEach((item) => {
     const listItem = document.createElement("li");
     listItem.innerHTML = `
-      <span aria-hidden="true">${renderLucideIcon(item.icon)}</span>
+      <span aria-hidden="true">${item.icon}</span>
       <div>
         <strong>${escapeHTML(item.label)}</strong>
         <p>${escapeHTML(displayText(item.value))}</p>
       </div>
     `;
     quickInfoListElement.appendChild(listItem);
+  });
+}
+
+function renderSelectedPetTasks() {
+  if (!selectedPetId) {
+    selectedPetTasksElement.innerHTML = `
+      ${renderEmptyState(
+        "Sin mascota seleccionada",
+        "Selecciona una mascota para ver sus proximos cuidados.",
+        "tasks"
+      )}
+    `;
+    return;
+  }
+
+  const pendingTasks = getTasksByPetId(selectedPetId).filter((task) => task.status !== "done");
+  const visibleTasks = sortTasksByDate(pendingTasks).slice(0, 4);
+
+  selectedPetTasksElement.innerHTML = "";
+
+  if (visibleTasks.length === 0) {
+    selectedPetTasksElement.innerHTML = `
+      ${renderEmptyState(
+        "Sin cuidados pendientes",
+        "Esta mascota no tiene cuidados pendientes por ahora.",
+        "tasks"
+      )}
+    `;
+    return;
+  }
+
+  visibleTasks.forEach((task) => {
+    const visualStatus = getTaskVisualStatus(task);
+    const taskCard = document.createElement("article");
+    taskCard.className = `pet-task-card pet-task-card--${visualStatus.key}`;
+    taskCard.innerHTML = `
+      ${renderTaskIcon(task.title)}
+      <div class="pet-task-card__body">
+        <h3>${escapeHTML(displayText(task.title))}</h3>
+        <p>${escapeHTML(displayText(task.description, "Sin descripcion adicional."))}</p>
+      </div>
+      <time class="pet-task-card__date" datetime="${escapeHTML(task.date || "")}">
+        ${escapeHTML(formatDateToDisplay(task.date))}<br />
+        ${escapeHTML(formatTimeToDisplay(task.time))}
+      </time>
+      <span class="badge ${visualStatus.badgeClass}">${escapeHTML(displayText(visualStatus.label))}</span>
+      <span class="pet-task-card__chevron" aria-hidden="true">›</span>
+    `;
+    selectedPetTasksElement.appendChild(taskCard);
   });
 }
 
@@ -729,39 +553,19 @@ function renderPetFeatureMessage(sectionName = "Resumen") {
   petFeatureMessageElement.hidden = false;
 
   if (sectionName === "Informacion" && pet && details) {
-    const infoItems = [
-      { icon: "paw-print", label: "Especie", value: displayOptionalText(pet.species, "Sin especie") },
-      { icon: "badge-info", label: "Raza", value: displayOptionalText(pet.breed, "Sin raza") },
-      { icon: "venus-and-mars", label: "Sexo", value: details.sex },
-      { icon: "calendar", label: "Fecha", value: details.birthDate },
-      { icon: "weight", label: "Peso", value: details.weight },
-      { icon: "ruler", label: "Tamano", value: details.size },
-      { icon: "stethoscope", label: "Veterinario", value: details.vet },
-      { icon: "hospital", label: "Clinica", value: details.clinic },
-      { icon: "triangle-alert", label: "Alergias", value: details.allergies },
-      { icon: "clipboard-list", label: "Notas", value: details.notes }
-    ];
-
     petFeatureMessageElement.innerHTML = `
       <div class="info-tab-grid">
-        ${infoItems
-          .map(
-            (item) => `
-              <article>
-                <span class="info-tab-grid__icon" aria-hidden="true">${renderLucideIcon(item.icon)}</span>
-                <strong>${escapeHTML(item.label)}</strong>
-                <span>${escapeHTML(item.value)}</span>
-              </article>
-            `
-          )
-          .join("")}
+        <article><strong>Especie</strong><span>${escapeHTML(displayText(pet.species, "Sin especie"))}</span></article>
+        <article><strong>Raza</strong><span>${escapeHTML(displayText(pet.breed, "Sin raza"))}</span></article>
+        <article><strong>Alergias</strong><span>${escapeHTML(displayText(details.allergies))}</span></article>
+        <article><strong>Veterinario</strong><span>${escapeHTML(displayText(details.vet))}</span></article>
       </div>
     `;
     return;
   }
 
   petFeatureMessageElement.innerHTML = `
-    <span class="coming-soon-card__icon" aria-hidden="true">${renderLucideIcon("calendar-clock")}</span>
+    <span class="coming-soon-card__icon" aria-hidden="true">▣</span>
     <div>
       <h3 class="coming-soon-card__title">${escapeHTML(sectionName)} proximamente</h3>
       <p class="coming-soon-card__text">
@@ -781,7 +585,6 @@ function setActivePetFeatureTab(sectionName = "Resumen") {
   });
 
   renderPetFeatureMessage(sectionName);
-  renderLucideIcons();
 }
 
 function selectPet(petId) {
@@ -792,10 +595,10 @@ function selectPet(petId) {
   renderSelectedPetSummary();
   renderDesktopPetSummary();
   renderQuickInfo();
+  renderSelectedPetTasks();
   setActivePetFeatureTab("Resumen");
 
   petMessageElement.textContent = "";
-  renderLucideIcons();
 }
 
 function openPetForm() {
@@ -812,53 +615,15 @@ function showPetMessage(message, type = "success") {
   petMessageElement.className = type === "error" ? "form-error" : "form-success";
 }
 
-function readPetImageFile(file) {
-  return new Promise((resolve, reject) => {
-    if (!file) {
-      resolve("");
-      return;
-    }
-
-    if (!file.type.startsWith("image/")) {
-      reject(new Error("Selecciona un archivo de imagen valido."));
-      return;
-    }
-
-    if (file.size > MAX_PET_IMAGE_SIZE) {
-      reject(new Error("La foto es demasiado pesada. Usa una imagen de hasta 1 MB."));
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.addEventListener("load", () => resolve(String(reader.result || "")));
-    reader.addEventListener("error", () => {
-      reject(new Error("No se pudo leer la foto. Intenta con otra imagen."));
-    });
-    reader.readAsDataURL(file);
-  });
-}
-
-async function handlePetSubmit(event) {
+function handlePetSubmit(event) {
   event.preventDefault();
 
   const petData = {
     name: petNameInput.value,
     species: petSpeciesSelect.value,
-    age: normalizePetAge(petAgeInput.value, ""),
+    age: petAgeInput.value,
     breed: petBreedInput.value,
     image: ""
-  };
-
-  const extraPetData = {
-    birthDate: cleanText(petBirthDateInput.value),
-    sex: cleanText(petSexSelect.value),
-    weight: cleanText(petWeightInput.value),
-    size: cleanText(petSizeSelect.value),
-    vetName: cleanText(petVetNameInput.value),
-    clinic: cleanText(petClinicInput.value),
-    allergies: cleanText(petAllergiesInput.value),
-    notes: cleanText(petNotesInput.value)
   };
 
   if (!cleanText(petData.name)) {
@@ -873,14 +638,6 @@ async function handlePetSubmit(event) {
     return;
   }
 
-  try {
-    petData.image = await readPetImageFile(petImageInput.files[0]);
-  } catch (error) {
-    showPetMessage(error.message, "error");
-    petImageInput.focus();
-    return;
-  }
-
   const newPet = addPet(petData);
 
   if (!newPet) {
@@ -888,11 +645,9 @@ async function handlePetSubmit(event) {
     return;
   }
 
-  const updatedPet = updatePet(newPet.id, extraPetData) || newPet;
-
   petFormElement.reset();
-  selectPet(updatedPet.id);
-  showPetMessage(`Mascota "${displayText(updatedPet.name)}" agregada correctamente.`);
+  selectPet(newPet.id);
+  showPetMessage(`Mascota "${displayText(newPet.name)}" agregada correctamente.`);
 }
 
 function handlePetsListClick(event) {
@@ -916,10 +671,6 @@ function handlePageClick(event) {
 
   if (event.target.closest("[data-close-pet-form]")) {
     closePetForm();
-  }
-
-  if (event.target.closest("[data-next-pet-tip]")) {
-    updatePetTip();
   }
 }
 
@@ -951,10 +702,9 @@ function initMascotasPage() {
   renderSelectedPetSummary();
   renderDesktopPetSummary();
   renderQuickInfo();
+  renderSelectedPetTasks();
   setActivePetFeatureTab("Resumen");
   setupEventListeners();
-  updatePetTip();
-  renderLucideIcons();
 }
 
 initMascotasPage();
