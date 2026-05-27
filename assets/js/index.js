@@ -136,17 +136,11 @@ function createUpcomingTaskElement(task, pets) {
 function getDashboardTasks(tasks, limit) {
   var overdue = getOverdueTasksFromList(tasks);
   var today = getTodayTasksFromList(tasks);
-  var upcoming = getUpcomingTasksFromList(tasks, 10); // obtener hasta 10 próximas sin límite aún
+  var upcoming = getUpcomingTasksFromList(tasks, 10); 
 
-  function sortByDate(a, b) {
-    var dateTimeA = (a.date || '9999-12-31') + ' ' + (a.time || '23:59');
-    var dateTimeB = (b.date || '9999-12-31') + ' ' + (b.time || '23:59');
-    return dateTimeA.localeCompare(dateTimeB);
-  }
-
-  overdue.sort(sortByDate);
-  today.sort(sortByDate);
-  upcoming.sort(sortByDate);
+  overdue = sortTasksByDate(overdue);
+  today = sortTasksByDate(today);
+  upcoming = sortTasksByDate(upcoming);
 
   var combined = overdue.concat(today, upcoming);
   return combined.slice(0, limit);
