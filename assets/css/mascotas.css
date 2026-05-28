@@ -1142,17 +1142,8 @@ body {
 }
 
 .form-textarea {
-  width: 100%;
-  max-width: 100%;
   min-height: 5.5rem;
-  resize: vertical;
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
-  padding: 0.8rem 0.9rem;
   color: var(--pet-text);
-  font: inherit;
-  line-height: 1.45;
-  background: #fff;
 }
 
 .form-textarea:focus,
