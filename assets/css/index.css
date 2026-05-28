@@ -178,7 +178,7 @@
   font-weight: 700;
   color: var(--color-muted);
   text-decoration: none;
-  transition: background-color 0.2s, color 0.2s;
+  transition: var(--transition-colors);
 }
 
 .task-link:hover {
@@ -251,6 +251,7 @@
   font-weight: 700;
   color: var(--color-primary);
   text-decoration: none;
+  transition: var(--transition-colors);
 }
 
 .tip-of-the-day__button:hover {

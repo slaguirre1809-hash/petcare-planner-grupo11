@@ -112,12 +112,7 @@ body {
   color: #ffffff;
   font-size: 1.8rem;
   box-shadow: 0 14px 30px rgba(109, 40, 217, 0.28);
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease;
+  transition: var(--transition-interactive);
 }
 
 .add-shortcut:hover {
@@ -616,12 +611,7 @@ body {
   border: 1px solid var(--pet-purple);
   border-radius: 0.75rem;
   background: #ffffff;
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease;
+  transition: var(--transition-interactive);
 }
 
 .pet-profile-card__action:hover {
@@ -1152,17 +1142,8 @@ body {
 }
 
 .form-textarea {
-  width: 100%;
-  max-width: 100%;
   min-height: 5.5rem;
-  resize: vertical;
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
-  padding: 0.8rem 0.9rem;
   color: var(--pet-text);
-  font: inherit;
-  line-height: 1.45;
-  background: #fff;
 }
 
 .form-textarea:focus,
@@ -1691,9 +1672,7 @@ body {
     color: var(--pet-text);
     font-weight: 750;
     text-decoration: none;
-    transition:
-      background-color var(--transition-fast),
-      color var(--transition-fast);
+    transition: var(--transition-colors);
   }
 
   .desktop-sidebar__link span {
@@ -2254,8 +2233,9 @@ body {
     font-weight: 850;
     cursor: pointer;
     transition:
-      transform 160ms ease,
-      color 160ms ease;
+      transform var(--transition-ui),
+      color var(--transition-ui),
+      text-decoration-color var(--transition-ui);
   }
 
   .desktop-tip__button:hover {

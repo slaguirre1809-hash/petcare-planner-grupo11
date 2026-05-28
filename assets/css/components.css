@@ -64,11 +64,7 @@
   text-align: center;
   cursor: pointer;
   text-decoration: none;
-  transition:
-    transform var(--transition-fast, 0.2s ease),
-    background-color var(--transition-fast, 0.2s ease),
-    color var(--transition-fast, 0.2s ease),
-    box-shadow var(--transition-fast, 0.2s ease);
+  transition: var(--transition-interactive);
 }
 
 .btn:hover {
@@ -76,7 +72,7 @@
 }
 
 .btn:active {
-  transform: scale(0.98);
+  transform: translateY(0);
 }
 
 .btn:disabled,
@@ -140,10 +136,7 @@
   background: var(--color-surface);
   color: var(--color-text);
   box-shadow: var(--shadow-soft);
-  transition:
-    transform var(--transition-fast, 0.2s ease),
-    background-color var(--transition-fast, 0.2s ease),
-    color var(--transition-fast, 0.2s ease);
+  transition: var(--transition-interactive);
 }
 
 .icon-btn:hover {
@@ -153,7 +146,7 @@
 }
 
 .icon-btn:active {
-  transform: scale(0.96);
+  transform: translateY(0);
 }
 
 /* =========================
@@ -290,14 +283,18 @@
 .form-select,
 .form-textarea {
   width: 100%;
+  max-width: 100%;
+  min-height: 2.75rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-white, #ffffff);
   color: var(--color-text);
+  font: inherit;
+  line-height: 1.45;
   padding: 0.85rem 1rem;
   transition:
-    border-color var(--transition-fast, 0.2s ease),
-    box-shadow var(--transition-fast, 0.2s ease);
+    border-color var(--transition-ui),
+    box-shadow var(--transition-ui);
 }
 
 .form-input::placeholder,
@@ -398,10 +395,7 @@
   font-size: 0.9rem;
   font-weight: 800;
   cursor: pointer;
-  transition:
-    background-color var(--transition-fast, 0.2s ease),
-    color var(--transition-fast, 0.2s ease),
-    border-color var(--transition-fast, 0.2s ease);
+  transition: var(--transition-colors);
 }
 
 .chip:hover,
@@ -441,9 +435,9 @@
   white-space: nowrap;
   cursor: pointer;
   transition:
-    background-color var(--transition-fast, 0.2s ease),
-    color var(--transition-fast, 0.2s ease),
-    box-shadow var(--transition-fast, 0.2s ease);
+    background-color var(--transition-ui),
+    color var(--transition-ui),
+    box-shadow var(--transition-ui);
 }
 
 .tab.is-active {
@@ -483,9 +477,7 @@
   font-size: 0.78rem;
   font-weight: 800;
   color: var(--color-muted);
-  transition:
-    background-color var(--transition-fast, 0.2s ease),
-    color var(--transition-fast, 0.2s ease);
+  transition: var(--transition-colors);
 }
 
 .bottom-nav__link:hover,
@@ -514,17 +506,17 @@
   font-weight: 900;
   box-shadow: 0 14px 30px rgba(111, 53, 232, 0.35);
   transition:
-    transform var(--transition-fast, 0.2s ease),
-    background-color var(--transition-fast, 0.2s ease);
+    transform var(--transition-ui),
+    background-color var(--transition-ui);
 }
 
 .fab:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-1px);
   background: var(--color-primary-dark);
 }
 
 .fab:active {
-  transform: scale(0.96);
+  transform: translateY(0);
 }
 
 /* =========================
@@ -554,6 +546,7 @@
   font-size: 0.9rem;
   font-weight: 800;
   color: var(--color-primary);
+  transition: var(--transition-colors);
 }
 
 /* =========================
@@ -685,9 +678,9 @@
   background: var(--color-surface);
   box-shadow: var(--shadow-card, var(--shadow-soft));
   transition:
-    border-color var(--transition-fast, 0.2s ease),
-    background-color var(--transition-fast, 0.2s ease),
-    box-shadow var(--transition-fast, 0.2s ease);
+    border-color var(--transition-ui),
+    background-color var(--transition-ui),
+    box-shadow var(--transition-ui);
 }
 
 .pet-mini-card.is-selected {

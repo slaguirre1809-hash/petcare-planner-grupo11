@@ -145,68 +145,6 @@ function validateRequiredElements() {
   return true;
 }
 
-function escapeHTML(value) {
-  return String(value || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function normalizeDisplayText(value) {
-  const text = String(value || "");
-
-  if (!/[ÃÂ]/.test(text)) {
-    return text;
-  }
-
-  try {
-    return decodeURIComponent(escape(text));
-  } catch (error) {
-    return text;
-  }
-}
-
-function displayText(value, fallback = "") {
-  return normalizeDisplayText(cleanText(value) || fallback);
-}
-
-function displayOptionalText(value, fallback) {
-  const text = displayText(value).trim();
-  const normalizedText = text.toLowerCase();
-
-  if (!text || normalizedText === "undefined" || normalizedText === "null") {
-    return fallback;
-  }
-
-  return text;
-}
-
-function normalizePetAge(value, fallback = "Sin edad") {
-  const text = displayText(value).trim().toLowerCase();
-
-  if (!text) {
-    return fallback;
-  }
-
-  const numberMatch = text.match(/\d+/);
-
-  if (numberMatch) {
-    const ageNumber = Number(numberMatch[0]);
-
-    if (Number.isFinite(ageNumber) && ageNumber > 0) {
-      return `${ageNumber} ${ageNumber === 1 ? "año" : "años"}`;
-    }
-  }
-
-  return text
-    .replace(/\s+/g, " ")
-    .replace(/anos/g, "años")
-    .replace(/años\s+años/g, "años")
-    .trim();
-}
-
 function formatPetDate(value) {
   const text = displayOptionalText(value, "Sin fecha");
 
@@ -219,22 +157,6 @@ function formatPetDate(value) {
   }
 
   return text;
-}
-
-function formatDateForInput(value) {
-  const text = displayText(value).trim();
-
-  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
-    return text;
-  }
-
-  const dateParts = text.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-
-  if (dateParts) {
-    return `${dateParts[3]}-${dateParts[2]}-${dateParts[1]}`;
-  }
-
-  return "";
 }
 
 function normalizeSizeForInput(value) {
@@ -550,17 +472,6 @@ function getPetTaskSummary() {
   ];
 }
 
-function getTaskTimestamp(task) {
-  if (!task.date) {
-    return Number.POSITIVE_INFINITY;
-  }
-
-  const time = task.time || "23:59";
-  const timestamp = new Date(`${task.date}T${time}`).getTime();
-
-  return Number.isNaN(timestamp) ? Number.POSITIVE_INFINITY : timestamp;
-}
-
 function getTaskSummaryVisualStatus(task) {
   if (task.status !== "done" && getTaskTimestamp(task) < Date.now()) {
     return {
@@ -571,10 +482,6 @@ function getTaskSummaryVisualStatus(task) {
   }
 
   return getTaskVisualStatus(task);
-}
-
-function sortTasksByDateTime(tasks) {
-  return [...tasks].sort((a, b) => getTaskTimestamp(a) - getTaskTimestamp(b));
 }
 
 function getPendingTasksForSelectedPet() {
@@ -1005,34 +912,17 @@ async function handlePetSubmit(event) {
     return;
   }
 
-  const newPet = addPet({
-    name: petData.name,
-    species: petData.species,
-    age: petData.age,
-    breed: petData.breed,
-    image: petData.image
-  });
+  const newPet = addPet(petData);
 
   if (!newPet) {
     showPetMessage("No se pudo guardar la mascota. Revisa los datos.", "error");
     return;
   }
 
-  const updatedPet = updatePet(newPet.id, {
-    birthDate: petData.birthDate,
-    sex: petData.sex,
-    weight: petData.weight,
-    size: petData.size,
-    vetName: petData.vetName,
-    clinic: petData.clinic,
-    allergies: petData.allergies,
-    notes: petData.notes
-  }) || newPet;
-
   clearPetForm();
   resetPetFormMode();
-  selectPet(updatedPet.id);
-  showPetMessage(`Mascota "${displayText(updatedPet.name)}" agregada correctamente.`);
+  selectPet(newPet.id);
+  showPetMessage(`Mascota "${displayText(newPet.name)}" agregada correctamente.`);
 }
 
 function handlePetsListClick(event) {

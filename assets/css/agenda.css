@@ -5,9 +5,9 @@
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f5f6fb;
-    color: #2d2d2d;
+    font-family: var(--font-main);
+    background-color: var(--color-bg);
+    color: var(--color-text);
     line-height: 1.5;
 }
 
@@ -16,34 +16,37 @@ body {
 ========================= */
 
 header {
-    background-color: white;
-    border-bottom: 1px solid #e8e8e8;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .navbar {
     display: flex;
     flex-direction: column;
-
-    gap: 1rem;
-
-    padding: 1rem;
+    gap: var(--space-md);
+    padding: var(--space-md);
 }
 
 .navbar h1 {
-    color: #6c4df6;
+    color: var(--color-primary);
     font-size: 1.8rem;
 }
 
 .nav-links {
     display: flex;
-    gap: 1rem;
-
+    gap: var(--space-md);
     flex-wrap: wrap;
 }
 
 .nav-links a {
+    color: var(--color-muted);
     font-weight: bold;
-    color: #555;
+    text-decoration: none;
+    transition: var(--transition-colors);
+}
+
+.nav-links a:hover {
+    color: var(--color-primary);
 }
 
 /* =========================
@@ -53,11 +56,9 @@ header {
 main {
     width: 90%;
     margin: 2rem auto;
-
     display: flex;
     flex-direction: column;
-
-    gap: 2rem;
+    gap: var(--space-xl);
 }
 
 /* =========================
@@ -65,22 +66,20 @@ main {
 ========================= */
 
 .agenda-intro {
-    background-color: white;
-
-    padding: 1.5rem;
-
-    border-radius: 18px;
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-card);
 }
 
 .agenda-intro h2 {
+    margin-bottom: var(--space-sm);
     font-size: 2rem;
-    margin-bottom: 0.5rem;
 }
 
 .agenda-intro p {
-    color: #666;
+    color: var(--color-muted);
 }
 
 /* =========================
@@ -91,80 +90,102 @@ main {
 .filters-section {
     display: flex;
     flex-direction: column;
+    gap: var(--space-md);
+}
 
-    gap: 1rem;
+.task-form-section {
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-card);
 }
 
 .task-form-section h2 {
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-md);
 }
 
 #task-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--space-md);
 }
 
 fieldset {
-    border: none;
-
     display: flex;
     flex-direction: column;
-
     gap: 0.8rem;
+    border: none;
 }
 
 legend {
-    color: #6c4df6;
+    margin-bottom: var(--space-md);
+    color: var(--color-primary);
     font-weight: bold;
-
-    margin-bottom: 1rem;
 }
 
 label {
+    color: var(--color-text);
     font-weight: bold;
 }
 
-input,
-textarea,
-select {
-    border: 1px solid #ddd;
-
-    border-radius: 10px;
-
-    padding: 0.8rem;
+#task-form input,
+#task-form textarea,
+#task-form select {
+    width: 100%;
+    max-width: 100%;
+    min-height: 2.75rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    color: var(--color-text);
+    font: inherit;
+    line-height: 1.45;
+    transition:
+        border-color var(--transition-ui),
+        box-shadow var(--transition-ui);
 }
 
-textarea {
+#task-form input:focus,
+#task-form textarea:focus,
+#task-form select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(111, 53, 232, 0.12);
+    outline: none;
+}
+
+#task-form textarea {
+    min-height: 7rem;
     resize: vertical;
-    min-height: 120px;
 }
 
 button {
-    cursor: pointer;
-
-    border: none;
-
-    border-radius: 10px;
-
     padding: 0.8rem 1rem;
-
+    border: none;
+    border-radius: var(--radius-pill);
     font-weight: bold;
-
-    transition: 0.3s;
+    cursor: pointer;
+    transition: var(--transition-interactive);
 }
 
 /* =========================
-   BOTÓN PRINCIPAL
+   BOTON PRINCIPAL
 ========================= */
 
 button[type="submit"] {
-    background-color: #6c4df6;
-    color: white;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    box-shadow: var(--shadow-soft);
 }
 
 button[type="submit"]:hover {
-    background-color: #5a3fe0;
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 /* =========================
@@ -172,34 +193,45 @@ button[type="submit"]:hover {
 ========================= */
 
 .filters-section {
-    background-color: white;
-
-    padding: 1.5rem;
-
-    border-radius: 18px;
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-card);
 }
 
 .filters-section h2 {
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-md);
 }
 
 .filters {
     display: flex;
     gap: 0.8rem;
-
     overflow-x: auto;
+    padding-bottom: 0.8rem;
+    scrollbar-width: none;
+}
 
-    padding-bottom: 0.8rem 1rem;
+.filters::-webkit-scrollbar {
+    display: none;
 }
 
 .filters button {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-muted);
     white-space: nowrap;
 }
 
 .filters button:hover {
-    background-color: #dcd3ff;
+    border-color: var(--color-primary-light);
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.filters button:active {
+    transform: translateY(0);
 }
 
 /* =========================
@@ -209,27 +241,25 @@ button[type="submit"]:hover {
 #tasks-list {
     display: flex;
     flex-direction: column;
-
-    gap: 1rem;
+    gap: var(--space-md);
 }
 
 #tasks-list h2 {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-sm);
 }
 
 .task-card {
     display: flex;
     flex-direction: column;
-
-    gap: 1rem;
+    gap: var(--space-md);
+    border-color: var(--color-border);
 }
 
 .task-card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-
-    gap: 1rem;
+    gap: var(--space-md);
 }
 
 .task-card h3 {
@@ -237,7 +267,7 @@ button[type="submit"]:hover {
 }
 
 .task-card p {
-    color: #666;
+    color: var(--color-muted);
 }
 
 /* =========================
@@ -246,54 +276,35 @@ button[type="submit"]:hover {
 
 .task-status {
     padding: 0.4rem 0.8rem;
-
-    border-radius: 999px;
-
+    border-radius: var(--radius-pill);
     font-size: 0.9rem;
-
     font-weight: bold;
 }
 
 .warning {
-    background-color: #fff3d6;
-    color: #e69a00;
+    background-color: var(--color-warning-light);
+    color: #9a5f00;
 }
 
 .overdue {
-    /* Deja el fondo completamente transparente o invisible */
-    background-color: transparent; 
-    
-    /* Pinta solo las letras con el verde que te guste */
-    color: #d63031; 
-    
-    /* Opcional: quita bordes o sombreados si es que los tiene */
+    margin-top: var(--space-sm);
     border: none;
     background: none;
-    
-    /* Opcional: un poquito de espacio arriba para que no se pegue al botón */
-    margin-top: 10px; 
+    color: var(--color-danger);
     font-weight: bold;
 }
 
 .upcoming {
-    /* Deja el fondo completamente transparente o invisible */
-    background-color: transparent; 
-    
-    /* Pinta solo las letras con el verde que te guste */
-    color: #27ae60; 
-    
-    /* Opcional: quita bordes o sombreados si es que los tiene */
+    margin-top: var(--space-sm);
     border: none;
     background: none;
-    
-    /* Opcional: un poquito de espacio arriba para que no se pegue al botón */
-    margin-top: 10px; 
+    color: var(--color-success);
     font-weight: bold;
 }
 
 .done {
-    background-color: #e6ddff;
-    color: #6c4df6;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
 }
 
 /* =========================
@@ -306,37 +317,44 @@ button[type="submit"]:hover {
 }
 
 .task-card-actions button {
-    background-color: #6c4df6;
-    color: white;
+    background-color: var(--color-primary);
+    color: var(--color-white);
 }
 
 .task-card-actions button:hover {
-    background-color: #5a3fe0;
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
 }
 
-/* BOTÓN FLOTANTE */
+.task-card-actions button:active {
+    transform: translateY(0);
+}
+
+/* BOTON FLOTANTE */
 
 .floating-button {
     position: fixed;
-
-    bottom: 1.5rem;
     right: 1.5rem;
-
+    bottom: 1.5rem;
     width: 60px;
     height: 60px;
-
-    border-radius: 50%;
-
     border: none;
-
-    background-color: #6c4df6;
-    color: white;
-
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: var(--color-white);
     font-size: 1.5rem;
-
     cursor: pointer;
+    box-shadow: 0 14px 30px rgba(111, 53, 232, 0.35);
+    transition: var(--transition-interactive);
+}
 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+.floating-button:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+.floating-button:active {
+    transform: translateY(0);
 }
 
 /* =========================
@@ -344,16 +362,15 @@ button[type="submit"]:hover {
 ========================= */
 
 #task-message {
+    color: var(--color-muted);
     font-weight: bold;
 }
 
 /* DESKTOP */
 
 @media (min-width: 768px) {
-
     .navbar {
         flex-direction: row;
-
         justify-content: space-between;
         align-items: center;
     }
@@ -365,7 +382,6 @@ button[type="submit"]:hover {
     .task-card {
         padding: 2rem;
     }
-
 }
 
 /* =========================
@@ -373,7 +389,6 @@ button[type="submit"]:hover {
 ========================= */
 
 @media (min-width: 768px) {
-
     .navbar {
         flex-direction: row;
         justify-content: space-between;
@@ -382,10 +397,8 @@ button[type="submit"]:hover {
 
     #task-form {
         display: grid;
-
         grid-template-columns: 1fr 1fr;
-
-        gap: 1.5rem;
+        gap: var(--space-lg);
     }
 
     fieldset {
@@ -395,5 +408,4 @@ button[type="submit"]:hover {
     button[type="submit"] {
         width: fit-content;
     }
-
 }
