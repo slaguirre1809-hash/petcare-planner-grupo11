@@ -19,11 +19,17 @@ const petFormTitleElement = document.getElementById("pet-form-title");
 const petFormSubmitElement = document.getElementById("pet-form-submit");
 const petNameInput = document.getElementById("pet-name");
 const petSpeciesSelect = document.getElementById("pet-species");
+const petKnowsBirthDateSelect = document.getElementById("pet-knows-birth-date");
+const petBirthDateGroup = document.getElementById("pet-birth-date-group");
+const petAgeGroup = document.getElementById("pet-age-group");
+const petAgeUnitGroup = document.getElementById("pet-age-unit-group");
 const petAgeInput = document.getElementById("pet-age");
+const petAgeUnitSelect = document.getElementById("pet-age-unit");
 const petBreedInput = document.getElementById("pet-breed");
 const petBirthDateInput = document.getElementById("pet-birth-date");
 const petSexSelect = document.getElementById("pet-sex");
 const petWeightInput = document.getElementById("pet-weight");
+const petWeightUnitSelect = document.getElementById("pet-weight-unit");
 const petSizeSelect = document.getElementById("pet-size");
 const petVetNameInput = document.getElementById("pet-vet-name");
 const petClinicInput = document.getElementById("pet-clinic");
@@ -36,6 +42,15 @@ let selectedPetId = null;
 let editingPetId = null;
 
 const MAX_PET_IMAGE_SIZE = 1024 * 1024;
+
+const AGE_UNIT_LABELS = {
+  days: ["día", "días"],
+  months: ["mes", "meses"],
+  years: ["año", "años"]
+};
+
+const VALID_AGE_UNITS = ["days", "months", "years"];
+const VALID_WEIGHT_UNITS = ["kg", "g"];
 
 const PET_TIPS = [
   "Asegurate de que tu mascota tenga agua fresca disponible todos los días.",
@@ -121,11 +136,17 @@ function validateRequiredElements() {
     petFormSubmitElement,
     petNameInput,
     petSpeciesSelect,
+    petKnowsBirthDateSelect,
+    petBirthDateGroup,
+    petAgeGroup,
+    petAgeUnitGroup,
     petAgeInput,
+    petAgeUnitSelect,
     petBreedInput,
     petBirthDateInput,
     petSexSelect,
     petWeightInput,
+    petWeightUnitSelect,
     petSizeSelect,
     petVetNameInput,
     petClinicInput,
@@ -168,6 +189,163 @@ function normalizeSizeForInput(value) {
   }
 
   return size;
+}
+
+function parsePetAgeInput(value) {
+  const normalizedAge = normalizePetAge(value, "");
+  const ageParts = normalizedAge.match(/^(\d+)\s+(días|día|meses|mes|años|año)$/);
+
+  if (!ageParts) {
+    return {
+      value: "",
+      unit: "years"
+    };
+  }
+
+  const unitText = ageParts[2];
+  let unit = "years";
+
+  if (unitText === "día" || unitText === "días") {
+    unit = "days";
+  } else if (unitText === "mes" || unitText === "meses") {
+    unit = "months";
+  }
+
+  return {
+    value: ageParts[1],
+    unit
+  };
+}
+
+function formatManualPetAge(value, unit) {
+  const cleanValue = cleanText(value).replace(",", ".");
+  const ageNumber = Number(cleanValue);
+  const labels = AGE_UNIT_LABELS[unit];
+
+  if (!labels || !Number.isFinite(ageNumber) || ageNumber <= 0) {
+    return "";
+  }
+
+  const normalizedNumber = Math.floor(ageNumber);
+
+  if (normalizedNumber !== ageNumber || normalizedNumber <= 0) {
+    return "";
+  }
+
+  return `${normalizedNumber} ${normalizedNumber === 1 ? labels[0] : labels[1]}`;
+}
+
+function parsePetWeightInput(value) {
+  const text = displayText(value).trim().toLowerCase();
+  const weightParts = text.match(/^(\d+(?:[,.]\d+)?)\s*(kg|g)?$/);
+
+  if (!weightParts) {
+    return {
+      value: "",
+      unit: "kg"
+    };
+  }
+
+  return {
+    value: weightParts[1].replace(".", ","),
+    unit: weightParts[2] || "kg"
+  };
+}
+
+function normalizePetWeight(value, unit) {
+  const text = cleanText(value);
+
+  if (!text) {
+    return {
+      isValid: true,
+      weight: ""
+    };
+  }
+
+  if (/^-\s*\d/.test(text)) {
+    return {
+      isValid: false,
+      message: "El peso no puede ser negativo ni cero.",
+      focusElement: petWeightInput
+    };
+  }
+
+  const weightParts = text.toLowerCase().match(/^(\d+(?:[,.]\d+)?)\s*(kg|g)?$/);
+
+  if (!weightParts) {
+    return {
+      isValid: false,
+      message: "Ingresá un peso válido.",
+      focusElement: petWeightInput
+    };
+  }
+
+  const normalizedUnit = weightParts[2] || (VALID_WEIGHT_UNITS.includes(unit) ? unit : "kg");
+  const normalizedNumberText = weightParts[1].replace(",", ".");
+  const weightNumber = Number(normalizedNumberText);
+
+  if (!Number.isFinite(weightNumber)) {
+    return {
+      isValid: false,
+      message: "Ingresá un peso válido.",
+      focusElement: petWeightInput
+    };
+  }
+
+  if (weightNumber <= 0) {
+    return {
+      isValid: false,
+      message: "El peso no puede ser negativo ni cero.",
+      focusElement: petWeightInput
+    };
+  }
+
+  const displayNumber = normalizedNumberText.replace(".", ",");
+
+  return {
+    isValid: true,
+    weight: `${displayNumber} ${normalizedUnit}`
+  };
+}
+
+function setPetBirthDateMax() {
+  petBirthDateInput.max = getTodayISO();
+}
+
+function setFormGroupVisibility(groupElement, shouldShow) {
+  groupElement.hidden = !shouldShow;
+  groupElement.style.display = shouldShow ? "" : "none";
+}
+
+function setPetAgeMode(mode, shouldClear = false) {
+  const usesBirthDate = mode === "birthdate";
+  const usesManualAge = mode === "manual";
+
+  if (usesBirthDate) {
+    setPetBirthDateMax();
+  }
+
+  petBirthDateInput.disabled = !usesBirthDate;
+  petAgeInput.disabled = !usesManualAge;
+  petAgeUnitSelect.disabled = !usesManualAge;
+  setFormGroupVisibility(petBirthDateGroup, usesBirthDate);
+  setFormGroupVisibility(petAgeGroup, usesManualAge);
+  setFormGroupVisibility(petAgeUnitGroup, usesManualAge);
+
+  if (shouldClear && usesBirthDate) {
+    petAgeInput.value = "";
+    petAgeUnitSelect.value = "years";
+  }
+
+  if (shouldClear && usesManualAge) {
+    petBirthDateInput.value = "";
+  }
+
+  if (shouldClear && !usesBirthDate && !usesManualAge) {
+    petBirthDateInput.value = "";
+    petAgeInput.value = "";
+    petAgeUnitSelect.value = "years";
+  }
 }
 
 function renderLucideIcons() {
@@ -257,6 +435,14 @@ function getPetDetails(pet) {
     ),
     notes: displayOptionalText(pet.notes || savedDetails.notes, "Sin notas cargadas")
   };
+}
+
+function getPetDisplayAge(pet, fallback = "Sin edad") {
+  const savedDetails = PET_DEFAULTS[pet.id] || {};
+  const birthDate = formatDateForInput(pet.birthDate || savedDetails.birthDate);
+  const calculatedAge = calculateAgeFromBirthDate(birthDate);
+
+  return calculatedAge || normalizePetAge(pet.age, fallback);
 }
 
 function getTaskIcon(title) {
@@ -373,7 +559,7 @@ function renderPets() {
       <span class="pet-info">
         <span class="pet-name">${escapeHTML(displayText(pet.name))}</span>
         <span class="pet-breed">${escapeHTML(displayText(pet.breed || pet.species, "Mascota"))}</span>
-        <span class="pet-species-chip">${escapeHTML(normalizePetAge(pet.age))}</span>
+        <span class="pet-species-chip">${escapeHTML(getPetDisplayAge(pet))}</span>
       </span>
       <span class="pet-selector-dot" aria-hidden="true"></span>
     `;
@@ -417,7 +603,7 @@ function renderSelectedPet() {
       <div class="pet-profile-card__body">
         <div class="pet-profile-card__title">
           <h2>${escapeHTML(displayText(pet.name))}</h2>
-          <span class="badge badge-primary">${escapeHTML(normalizePetAge(pet.age))}</span>
+          <span class="badge badge-primary">${escapeHTML(getPetDisplayAge(pet))}</span>
         </div>
         <p class="pet-profile-card__breed">${escapeHTML(displayText(pet.breed || pet.species, "Mascota"))}</p>
         <p class="pet-profile-card__meta">
@@ -750,11 +936,15 @@ function resetPetFormMode() {
 function clearPetForm() {
   petFormElement.reset();
   petImageInput.value = "";
+  petWeightUnitSelect.value = "kg";
+  petAgeUnitSelect.value = "years";
+  setPetAgeMode("", true);
 }
 
 function openPetFormForCreate() {
   resetPetFormMode();
   clearPetForm();
+  setPetBirthDateMax();
   petMessageElement.textContent = "";
   petMessageElement.className = "form-help";
   petFormSectionElement.hidden = false;
@@ -763,20 +953,29 @@ function openPetFormForCreate() {
 
 function fillPetForm(pet) {
   const details = getPetDetails(pet);
+  const birthDate = formatDateForInput(pet.birthDate || details.birthDate);
+  const parsedAge = parsePetAgeInput(pet.age);
+  const parsedWeight = parsePetWeightInput(details.weight === "Sin dato" ? "" : details.weight);
+  const ageMode = birthDate ? "birthdate" : parsedAge.value ? "manual" : "";
 
   petNameInput.value = displayText(pet.name);
   petSpeciesSelect.value = displayText(pet.species);
-  petAgeInput.value = normalizePetAge(pet.age, "");
+  petKnowsBirthDateSelect.value = ageMode;
+  petBirthDateInput.value = birthDate;
+  petAgeInput.value = birthDate ? "" : parsedAge.value;
+  petAgeUnitSelect.value = parsedAge.unit;
   petBreedInput.value = displayText(pet.breed);
-  petBirthDateInput.value = formatDateForInput(pet.birthDate || details.birthDate);
   petSexSelect.value = displayText(pet.sex || details.sex) === "Sin dato" ? "" : displayText(pet.sex || details.sex);
-  petWeightInput.value = details.weight === "Sin dato" ? "" : details.weight;
+  petWeightInput.value = parsedWeight.value;
+  petWeightUnitSelect.value = parsedWeight.unit;
   petSizeSelect.value = details.size === "Sin dato" ? "" : normalizeSizeForInput(details.size);
   petVetNameInput.value = details.vet === "A completar" ? "" : details.vet;
   petClinicInput.value = details.clinic === "A completar" ? "" : details.clinic;
   petAllergiesInput.value = details.allergies === "Sin alergias registradas" ? "" : details.allergies;
   petNotesInput.value = details.notes === "Sin notas cargadas" ? "" : details.notes;
   petImageInput.value = "";
+  setPetBirthDateMax();
+  setPetAgeMode(ageMode, false);
 }
 
 function openPetFormForEdit(petId) {
@@ -811,6 +1010,103 @@ function showPetMessage(message, type = "success") {
   petMessageElement.className = type === "error" ? "form-error" : "form-success";
 }
 
+function getValidatedPetAge() {
+  const ageMode = cleanText(petKnowsBirthDateSelect.value);
+  const birthDate = cleanText(petBirthDateInput.value);
+  const manualAge = cleanText(petAgeInput.value);
+  const ageUnit = cleanText(petAgeUnitSelect.value);
+
+  if (!ageMode) {
+    return {
+      isValid: false,
+      message: "Seleccioná si conocés la fecha de nacimiento.",
+      focusElement: petKnowsBirthDateSelect
+    };
+  }
+
+  if (ageMode === "birthdate") {
+    if (!birthDate) {
+      return {
+        isValid: false,
+        message: "Ingresá una fecha de nacimiento válida.",
+        focusElement: petBirthDateInput
+      };
+    }
+
+    if (isFutureDate(birthDate)) {
+      return {
+        isValid: false,
+        message: "La fecha de nacimiento no puede ser futura.",
+        focusElement: petBirthDateInput
+      };
+    }
+
+    const calculatedAge = calculateAgeFromBirthDate(birthDate);
+
+    if (!calculatedAge) {
+      return {
+        isValid: false,
+        message: "La fecha de nacimiento no es válida.",
+        focusElement: petBirthDateInput
+      };
+    }
+
+    return {
+      isValid: true,
+      age: calculatedAge,
+      birthDate
+    };
+  }
+
+  if (ageMode !== "manual") {
+    return {
+      isValid: false,
+      message: "Seleccioná si conocés la fecha de nacimiento.",
+      focusElement: petKnowsBirthDateSelect
+    };
+  }
+
+  if (!manualAge) {
+    return {
+      isValid: false,
+      message: "Ingresá una edad válida, por ejemplo: 3 meses, 12 días o 2 años.",
+      focusElement: petAgeInput
+    };
+  }
+
+  if (/^-\s*\d/.test(manualAge)) {
+    return {
+      isValid: false,
+      message: "La edad no puede ser negativa.",
+      focusElement: petAgeInput
+    };
+  }
+
+  if (!VALID_AGE_UNITS.includes(ageUnit)) {
+    return {
+      isValid: false,
+      message: "Ingresá una edad válida, por ejemplo: 3 meses, 12 días o 2 años.",
+      focusElement: petAgeUnitSelect
+    };
+  }
+
+  const normalizedAge = formatManualPetAge(manualAge, ageUnit);
+
+  if (!normalizedAge) {
+    return {
+      isValid: false,
+      message: "Ingresá una edad válida, por ejemplo: 3 meses, 12 días o 2 años.",
+      focusElement: petAgeInput
+    };
+  }
+
+  return {
+    isValid: true,
+    age: normalizedAge,
+    birthDate: ""
+  };
+}
+
 function readPetImageFile(file) {
   return new Promise((resolve, reject) => {
     if (!file) {
@@ -838,16 +1134,16 @@ function readPetImageFile(file) {
   });
 }
 
-function getPetFormPayload(imageValue) {
+function getPetFormPayload(imageValue, ageValidation, weightValue) {
   return {
     name: petNameInput.value,
     species: petSpeciesSelect.value,
-    age: normalizePetAge(petAgeInput.value, ""),
+    age: ageValidation.age,
     breed: petBreedInput.value,
     image: imageValue,
-    birthDate: cleanText(petBirthDateInput.value),
+    birthDate: ageValidation.birthDate || "",
     sex: cleanText(petSexSelect.value),
-    weight: cleanText(petWeightInput.value),
+    weight: weightValue,
     size: cleanText(petSizeSelect.value),
     vetName: cleanText(petVetNameInput.value),
     clinic: cleanText(petClinicInput.value),
@@ -869,7 +1165,11 @@ async function handlePetSubmit(event) {
 
   const isEditing = Boolean(editingPetId && existingPet);
   let imageValue = isEditing ? existingPet.image || "" : "";
-  const basicPetData = getPetFormPayload(imageValue);
+  const ageValidation = getValidatedPetAge();
+  const basicPetData = {
+    name: petNameInput.value,
+    species: petSpeciesSelect.value
+  };
 
   if (!cleanText(basicPetData.name)) {
     showPetMessage("Completá el nombre de la mascota.", "error");
@@ -880,6 +1180,20 @@ async function handlePetSubmit(event) {
   if (!cleanText(basicPetData.species)) {
     showPetMessage("Seleccioná la especie de la mascota.", "error");
     petSpeciesSelect.focus();
+    return;
+  }
+
+  if (!ageValidation.isValid) {
+    showPetMessage(ageValidation.message, "error");
+    ageValidation.focusElement.focus();
+    return;
+  }
+
+  const weightValidation = normalizePetWeight(petWeightInput.value, petWeightUnitSelect.value);
+
+  if (!weightValidation.isValid) {
+    showPetMessage(weightValidation.message, "error");
+    weightValidation.focusElement.focus();
     return;
   }
 
@@ -895,7 +1209,7 @@ async function handlePetSubmit(event) {
     return;
   }
 
-  const petData = getPetFormPayload(imageValue);
+  const petData = getPetFormPayload(imageValue, ageValidation, weightValidation.weight);
 
   if (isEditing) {
     const updatedPet = updatePet(existingPet.id, petData);
@@ -967,9 +1281,14 @@ function handlePetFeatureTabsClick(event) {
   setActivePetFeatureTab(tabButton.dataset.petSection);
 }
 
+function handlePetAgeModeChange() {
+  setPetAgeMode(petKnowsBirthDateSelect.value, true);
+}
+
 function setupEventListeners() {
   petsListElement.addEventListener("click", handlePetsListClick);
   petFeatureTabsElement.addEventListener("click", handlePetFeatureTabsClick);
+  petKnowsBirthDateSelect.addEventListener("change", handlePetAgeModeChange);
   petFormElement.addEventListener("submit", handlePetSubmit);
   document.addEventListener("click", handlePageClick);
 }
@@ -979,6 +1298,8 @@ function initMascotasPage() {
     return;
   }
 
+  setPetBirthDateMax();
+  setPetAgeMode("", false);
   loadInitialData();
   renderPets();
   renderSelectedPet();
