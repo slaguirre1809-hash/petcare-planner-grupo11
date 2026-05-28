@@ -230,6 +230,10 @@ button:active {
     transform: translateY(-1px);
 }
 
+.filters button:active {
+    transform: translateY(0);
+}
+
 /* =========================
    TASKS
 ========================= */
@@ -271,10 +275,15 @@ button:active {
 ========================= */
 
 .task-status {
-    padding: 0.4rem 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.35rem 0.65rem;
     border-radius: var(--radius-pill);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: bold;
+    line-height: 1;
+    white-space: nowrap;
 }
 
 .warning {
@@ -284,18 +293,14 @@ button:active {
 
 .overdue {
     margin-top: var(--space-sm);
-    border: none;
-    background: none;
+    background: var(--color-danger-light);
     color: var(--color-danger);
-    font-weight: bold;
 }
 
 .upcoming {
     margin-top: var(--space-sm);
-    border: none;
-    background: none;
+    background: var(--color-success-light);
     color: var(--color-success);
-    font-weight: bold;
 }
 
 .done {
@@ -322,6 +327,10 @@ button:active {
     transform: translateY(-1px);
 }
 
+.task-card-actions button:active {
+    transform: translateY(0);
+}
+
 /* BOTON FLOTANTE */
 
 .floating-button {
@@ -343,6 +352,10 @@ button:active {
 .floating-button:hover {
     background-color: var(--color-primary-dark);
     transform: translateY(-1px);
+}
+
+.floating-button:active {
+    transform: translateY(0);
 }
 
 /* =========================
