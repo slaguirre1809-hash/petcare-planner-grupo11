@@ -64,11 +64,7 @@
   text-align: center;
   cursor: pointer;
   text-decoration: none;
-  transition:
-    transform var(--transition-fast, 0.2s ease),
-    background-color var(--transition-fast, 0.2s ease),
-    color var(--transition-fast, 0.2s ease),
-    box-shadow var(--transition-fast, 0.2s ease);
+  transition: var(--transition-interactive);
 }
 
 .btn:hover {
@@ -140,10 +136,7 @@
   background: var(--color-surface);
   color: var(--color-text);
   box-shadow: var(--shadow-soft);
-  transition:
-    transform var(--transition-fast, 0.2s ease),
-    background-color var(--transition-fast, 0.2s ease),
-    color var(--transition-fast, 0.2s ease);
+  transition: var(--transition-interactive);
 }
 
 .icon-btn:hover {
@@ -296,8 +289,8 @@
   color: var(--color-text);
   padding: 0.85rem 1rem;
   transition:
-    border-color var(--transition-fast, 0.2s ease),
-    box-shadow var(--transition-fast, 0.2s ease);
+    border-color var(--transition-ui),
+    box-shadow var(--transition-ui);
 }
 
 .form-input::placeholder,
@@ -398,10 +391,7 @@
   font-size: 0.9rem;
   font-weight: 800;
   cursor: pointer;
-  transition:
-    background-color var(--transition-fast, 0.2s ease),
-    color var(--transition-fast, 0.2s ease),
-    border-color var(--transition-fast, 0.2s ease);
+  transition: var(--transition-colors);
 }
 
 .chip:hover,
@@ -441,9 +431,9 @@
   white-space: nowrap;
   cursor: pointer;
   transition:
-    background-color var(--transition-fast, 0.2s ease),
-    color var(--transition-fast, 0.2s ease),
-    box-shadow var(--transition-fast, 0.2s ease);
+    background-color var(--transition-ui),
+    color var(--transition-ui),
+    box-shadow var(--transition-ui);
 }
 
 .tab.is-active {
@@ -483,9 +473,7 @@
   font-size: 0.78rem;
   font-weight: 800;
   color: var(--color-muted);
-  transition:
-    background-color var(--transition-fast, 0.2s ease),
-    color var(--transition-fast, 0.2s ease);
+  transition: var(--transition-colors);
 }
 
 .bottom-nav__link:hover,
@@ -514,8 +502,8 @@
   font-weight: 900;
   box-shadow: 0 14px 30px rgba(111, 53, 232, 0.35);
   transition:
-    transform var(--transition-fast, 0.2s ease),
-    background-color var(--transition-fast, 0.2s ease);
+    transform var(--transition-ui),
+    background-color var(--transition-ui);
 }
 
 .fab:hover {
@@ -685,9 +673,9 @@
   background: var(--color-surface);
   box-shadow: var(--shadow-card, var(--shadow-soft));
   transition:
-    border-color var(--transition-fast, 0.2s ease),
-    background-color var(--transition-fast, 0.2s ease),
-    box-shadow var(--transition-fast, 0.2s ease);
+    border-color var(--transition-ui),
+    background-color var(--transition-ui),
+    box-shadow var(--transition-ui);
 }
 
 .pet-mini-card.is-selected {

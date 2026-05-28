@@ -112,12 +112,7 @@ body {
   color: #ffffff;
   font-size: 1.8rem;
   box-shadow: 0 14px 30px rgba(109, 40, 217, 0.28);
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease;
+  transition: var(--transition-interactive);
 }
 
 .add-shortcut:hover {
@@ -616,12 +611,7 @@ body {
   border: 1px solid var(--pet-purple);
   border-radius: 0.75rem;
   background: #ffffff;
-  transition:
-    transform 160ms ease,
-    box-shadow 160ms ease,
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease;
+  transition: var(--transition-interactive);
 }
 
 .pet-profile-card__action:hover {
@@ -2254,8 +2244,8 @@ body {
     font-weight: 850;
     cursor: pointer;
     transition:
-      transform 160ms ease,
-      color 160ms ease;
+      transform var(--transition-ui),
+      color var(--transition-ui);
   }
 
   .desktop-tip__button:hover {
