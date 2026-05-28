@@ -129,29 +129,34 @@ label {
     font-weight: bold;
 }
 
-input,
-textarea,
-select {
-    padding: 0.8rem;
+#task-form input,
+#task-form textarea,
+#task-form select {
+    width: 100%;
+    max-width: 100%;
+    min-height: 2.75rem;
+    padding: 0.85rem 1rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     background: var(--color-white);
     color: var(--color-text);
+    font: inherit;
+    line-height: 1.45;
     transition:
         border-color var(--transition-ui),
         box-shadow var(--transition-ui);
 }
 
-input:focus,
-textarea:focus,
-select:focus {
+#task-form input:focus,
+#task-form textarea:focus,
+#task-form select:focus {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 4px rgba(111, 53, 232, 0.12);
     outline: none;
 }
 
-textarea {
-    min-height: 120px;
+#task-form textarea {
+    min-height: 7rem;
     resize: vertical;
 }
 
