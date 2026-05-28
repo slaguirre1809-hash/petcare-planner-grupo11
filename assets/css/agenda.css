@@ -230,6 +230,10 @@ button:active {
     transform: translateY(-1px);
 }
 
+.filters button:active {
+    transform: translateY(0);
+}
+
 /* =========================
    TASKS
 ========================= */
@@ -322,6 +326,10 @@ button:active {
     transform: translateY(-1px);
 }
 
+.task-card-actions button:active {
+    transform: translateY(0);
+}
+
 /* BOTON FLOTANTE */
 
 .floating-button {
@@ -343,6 +351,10 @@ button:active {
 .floating-button:hover {
     background-color: var(--color-primary-dark);
     transform: translateY(-1px);
+}
+
+.floating-button:active {
+    transform: translateY(0);
 }
 
 /* =========================

@@ -251,6 +251,7 @@
   font-weight: 700;
   color: var(--color-primary);
   text-decoration: none;
+  transition: var(--transition-colors);
 }
 
 .tip-of-the-day__button:hover {
