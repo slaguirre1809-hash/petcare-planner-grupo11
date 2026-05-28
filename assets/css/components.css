@@ -232,6 +232,7 @@
   font-size: 0.8rem;
   font-weight: 800;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .badge-danger {
@@ -254,7 +255,8 @@
   color: var(--color-info);
 }
 
-.badge-primary {
+.badge-primary,
+.badge-purple {
   background: var(--color-primary-light);
   color: var(--color-primary);
 }

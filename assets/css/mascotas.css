@@ -834,7 +834,7 @@ body {
 .summary-task-list__empty {
   margin: 0;
   padding: 1rem;
-  color: #475569;
+  color: var(--color-muted);
   font-size: 0.9rem;
 }
 
@@ -1036,11 +1036,11 @@ body {
 }
 
 .pet-task-card--overdue .pet-task-card__icon {
-  background: #ffe4e6;
+  background: var(--color-danger-light);
 }
 
 .pet-task-card--upcoming .pet-task-card__icon {
-  background: #dcfce7;
+  background: var(--color-success-light);
 }
 
 .pet-task-card__body {
@@ -1075,7 +1075,7 @@ body {
 }
 
 .pet-task-card--overdue .pet-task-card__date {
-  color: #e11d48;
+  color: var(--color-danger);
 }
 
 .pet-task-card .badge {
