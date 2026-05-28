@@ -72,7 +72,7 @@
 }
 
 .btn:active {
-  transform: scale(0.98);
+  transform: translateY(0);
 }
 
 .btn:disabled,
@@ -146,7 +146,7 @@
 }
 
 .icon-btn:active {
-  transform: scale(0.96);
+  transform: translateY(0);
 }
 
 /* =========================
@@ -513,12 +513,12 @@
 }
 
 .fab:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-1px);
   background: var(--color-primary-dark);
 }
 
 .fab:active {
-  transform: scale(0.96);
+  transform: translateY(0);
 }
 
 /* =========================
@@ -548,6 +548,7 @@
   font-size: 0.9rem;
   font-weight: 800;
   color: var(--color-primary);
+  transition: var(--transition-colors);
 }
 
 /* =========================

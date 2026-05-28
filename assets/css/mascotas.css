@@ -1672,9 +1672,7 @@ body {
     color: var(--pet-text);
     font-weight: 750;
     text-decoration: none;
-    transition:
-      background-color var(--transition-fast),
-      color var(--transition-fast);
+    transition: var(--transition-colors);
   }
 
   .desktop-sidebar__link span {
@@ -2236,7 +2234,8 @@ body {
     cursor: pointer;
     transition:
       transform var(--transition-ui),
-      color var(--transition-ui);
+      color var(--transition-ui),
+      text-decoration-color var(--transition-ui);
   }
 
   .desktop-tip__button:hover {
