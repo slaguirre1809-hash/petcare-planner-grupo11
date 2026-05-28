@@ -62,6 +62,17 @@
   /* Transiciones */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
+  --transition-ui: 160ms ease;
+  --transition-colors:
+    background-color var(--transition-ui),
+    border-color var(--transition-ui),
+    color var(--transition-ui);
+  --transition-interactive:
+    transform var(--transition-ui),
+    box-shadow var(--transition-ui),
+    background-color var(--transition-ui),
+    border-color var(--transition-ui),
+    color var(--transition-ui);
 }
 
 /* Reset básico */
