@@ -93,7 +93,7 @@
 }
 
 #today-count {
-  color: #9a5f00;
+  color: var(--color-warning);
 }
 
 #upcoming-count {
