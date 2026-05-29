@@ -38,13 +38,13 @@ let editingPetId = null;
 const MAX_PET_IMAGE_SIZE = 1024 * 1024;
 
 const PET_TIPS = [
-  "Asegurate de que tu mascota tenga agua fresca disponible todos los dias.",
-  "Revisa su comedero y bebedero al menos una vez al dia.",
-  "Anota vacunas y controles para no olvidarte de las fechas importantes.",
-  "Una rutina clara ayuda a reducir estres en perros y gatos.",
+  "Asegurate de que tu mascota tenga agua fresca disponible todos los días.",
+  "Revisá su comedero y bebedero al menos una vez al día.",
+  "Anotá vacunas y controles para no olvidarte de las fechas importantes.",
+  "Una rutina clara ayuda a reducir estrés en perros y gatos.",
   "Cepillar el pelaje ayuda a detectar nudos, pulgas o irritaciones.",
-  "Si notas cambios de apetito o conducta, consulta con tu veterinario.",
-  "Mantene actualizada la informacion de peso, alergias y veterinario.",
+  "Si notás cambios de apetito o conducta, consultá con tu veterinario.",
+  "Mantené actualizada la información de peso, alergias y veterinario.",
   "Los controles preventivos ayudan a detectar problemas a tiempo."
 ];
 
@@ -81,7 +81,7 @@ const PET_DEFAULTS = {
     birthDate: "12/04/2021",
     weight: "28 kg",
     size: "Grande",
-    vet: "Vet. Maria Lopez",
+    vet: "Vet. María López",
     clinic: "Patitas Felices",
     allergies: "Sin alergias registradas",
     notes: "Le gusta pasear por la tarde."
@@ -91,17 +91,17 @@ const PET_DEFAULTS = {
     birthDate: "03/08/2022",
     weight: "5 kg",
     size: "Mediano",
-    vet: "Vet. Maria Lopez",
+    vet: "Vet. María López",
     clinic: "Patitas Felices",
     allergies: "Evitar pollo",
-    notes: "Prefiere alimento humedo."
+    notes: "Prefiere alimento húmedo."
   },
   "pet-luna": {
     sex: "Hembra",
     birthDate: "20/01/2023",
     weight: "2 kg",
-    size: "Pequena",
-    vet: "Vet. Maria Lopez",
+    size: "Pequeña",
+    vet: "Vet. María López",
     clinic: "Patitas Felices",
     allergies: "Sin alergias registradas",
     notes: "Revisar dientes con frecuencia."
@@ -184,7 +184,7 @@ function pickRandomPetTip(currentTip = "") {
   const availableTips = PET_TIPS.filter((tip) => tip && tip !== currentTip);
 
   if (availableTips.length === 0) {
-    return PET_TIPS[0] || "Cuida sus rutinas y registra sus cuidados importantes.";
+    return PET_TIPS[0] || "Cuidá sus rutinas y registrá sus cuidados importantes.";
   }
 
   return availableTips[Math.floor(Math.random() * availableTips.length)];
@@ -342,8 +342,8 @@ function renderPets() {
   if (pets.length === 0) {
     petsListElement.innerHTML = `
       ${renderEmptyState(
-        "Todavia no agregaste mascotas",
-        "Agrega tu primera mascota para empezar a organizar sus cuidados.",
+        "Todavía no agregaste mascotas",
+        "Agregá tu primera mascota para empezar a organizar sus cuidados.",
         "pets"
       )}
       <button class="pet-add-card" type="button" data-open-pet-form>
@@ -399,7 +399,7 @@ function renderSelectedPet() {
     selectedPetDetailElement.className = "card";
     selectedPetDetailElement.innerHTML = `
       <p class="card-text">
-        Selecciona una mascota para ver su informacion y proximos cuidados.
+        Seleccioná una mascota para ver su información y próximos cuidados.
       </p>
     `;
     return;
@@ -446,7 +446,7 @@ function getPetTaskSummary() {
       icon: "circle-alert",
       value: petTasks.filter((task) => getTaskVisualStatus(task).key === "overdue").length,
       label: "Pendientes",
-      text: "Requieren atencion"
+      text: "Requieren atención"
     },
     {
       className: "warning",
@@ -459,8 +459,8 @@ function getPetTaskSummary() {
       className: "success",
       icon: "calendar-days",
       value: getTasksByVisualStatus(petTasks, "upcoming").length,
-      label: "Proximas",
-      text: "En los proximos dias"
+      label: "Próximas",
+      text: "En los próximos días"
     },
     {
       className: "primary",
@@ -512,7 +512,7 @@ function renderSummaryTaskRow(task) {
       ${renderTaskIcon(task.title)}
       <div class="summary-task-row__body">
         <h4>${escapeHTML(displayText(task.title, "Cuidado pendiente"))}</h4>
-        <p>${escapeHTML(displayText(task.description, "Sin descripcion adicional."))}</p>
+        <p>${escapeHTML(displayText(task.description, "Sin descripción adicional."))}</p>
       </div>
       <time class="summary-task-row__date" datetime="${escapeHTML(task.date || "")}">
         ${escapeHTML(formatDateToDisplay(task.date))}<br />
@@ -529,7 +529,7 @@ function renderSelectedPetSummary() {
     selectedPetSummaryElement.innerHTML = `
       ${renderEmptyState(
         "Sin mascota seleccionada",
-        "Selecciona una mascota para ver el resumen de cuidados.",
+        "Seleccioná una mascota para ver el resumen de cuidados.",
         "pets"
       )}
     `;
@@ -553,7 +553,7 @@ function renderSelectedPetSummary() {
   }
 
   const priorityStatus = getTaskSummaryVisualStatus(priorityTask);
-  const priorityLabel = priorityStatus.key === "overdue" ? "Tarea vencida" : "Proxima tarea";
+  const priorityLabel = priorityStatus.key === "overdue" ? "Tarea vencida" : "Próxima tarea";
   const pendingTasks = sortTasksByDateTime(getPendingTasksForSelectedPet())
     .filter((task) => task.id !== priorityTask.id)
     .slice(0, 3);
@@ -568,7 +568,7 @@ function renderSelectedPetSummary() {
         ${renderTaskIcon(priorityTask.title)}
         <span class="priority-task-card__eyebrow">${escapeHTML(priorityLabel)}</span>
         <h3>${escapeHTML(displayText(priorityTask.title, "Cuidado pendiente"))}</h3>
-        <p>${escapeHTML(displayText(priorityTask.description, "Sin descripcion adicional."))}</p>
+        <p>${escapeHTML(displayText(priorityTask.description, "Sin descripción adicional."))}</p>
         <time datetime="${escapeHTML(priorityTask.date || "")}">
           ${escapeHTML(formatDateToDisplay(priorityTask.date))} - ${escapeHTML(formatTimeToDisplay(priorityTask.time))}
         </time>
@@ -577,7 +577,7 @@ function renderSelectedPetSummary() {
 
       <section class="summary-task-list" aria-labelledby="summary-task-list-title">
         <div class="summary-task-list__header">
-          <h3 id="summary-task-list-title">Proximas tareas</h3>
+          <h3 id="summary-task-list-title">Próximas tareas</h3>
         </div>
         <div class="summary-task-list__items">
           ${taskListContent}
@@ -621,7 +621,7 @@ function renderQuickInfo() {
   const pet = getSelectedPet();
 
   if (!pet) {
-    quickInfoListElement.innerHTML = "<li>Selecciona una mascota.</li>";
+    quickInfoListElement.innerHTML = "<li>Seleccioná una mascota.</li>";
     return;
   }
 
@@ -630,9 +630,9 @@ function renderQuickInfo() {
     { icon: "venus-and-mars", label: "Sexo", value: details.sex },
     { icon: "calendar", label: "Fecha", value: details.birthDate },
     { icon: "weight", label: "Peso", value: details.weight },
-    { icon: "ruler", label: "Tamano", value: details.size },
+    { icon: "ruler", label: "Tamaño", value: details.size },
     { icon: "stethoscope", label: "Veterinario", value: details.vet },
-    { icon: "hospital", label: "Clinica", value: details.clinic },
+    { icon: "hospital", label: "Clínica", value: details.clinic },
     { icon: "triangle-alert", label: "Alergias", value: details.allergies },
     { icon: "clipboard-list", label: "Notas", value: details.notes }
   ];
@@ -673,9 +673,9 @@ function renderPetFeatureMessage(sectionName = "Resumen") {
       { icon: "venus-and-mars", label: "Sexo", value: details.sex },
       { icon: "calendar", label: "Fecha", value: details.birthDate },
       { icon: "weight", label: "Peso", value: details.weight },
-      { icon: "ruler", label: "Tamano", value: details.size },
+      { icon: "ruler", label: "Tamaño", value: details.size },
       { icon: "stethoscope", label: "Veterinario", value: details.vet },
-      { icon: "hospital", label: "Clinica", value: details.clinic },
+      { icon: "hospital", label: "Clínica", value: details.clinic },
       { icon: "triangle-alert", label: "Alergias", value: details.allergies },
       { icon: "clipboard-list", label: "Notas", value: details.notes }
     ];
@@ -701,9 +701,9 @@ function renderPetFeatureMessage(sectionName = "Resumen") {
   petFeatureMessageElement.innerHTML = `
     <span class="coming-soon-card__icon" aria-hidden="true">${renderLucideIcon("calendar-clock")}</span>
     <div>
-      <h3 class="coming-soon-card__title">${escapeHTML(sectionName)} proximamente</h3>
+      <h3 class="coming-soon-card__title">${escapeHTML(sectionName)} próximamente</h3>
       <p class="coming-soon-card__text">
-        Esta seccion queda preparada para una proxima version del MVP.
+        Esta sección queda preparada para una próxima versión del MVP.
       </p>
     </div>
   `;
@@ -783,7 +783,7 @@ function openPetFormForEdit(petId) {
   const pet = getPetById(petId);
 
   if (!pet) {
-    showPetMessage("No se encontro la mascota seleccionada.", "error");
+    showPetMessage("No se encontró la mascota seleccionada.", "error");
     return;
   }
 
@@ -819,7 +819,7 @@ function readPetImageFile(file) {
     }
 
     if (!file.type.startsWith("image/")) {
-      reject(new Error("Selecciona un archivo de imagen valido."));
+      reject(new Error("Seleccioná un archivo de imagen válido."));
       return;
     }
 
@@ -832,7 +832,7 @@ function readPetImageFile(file) {
 
     reader.addEventListener("load", () => resolve(String(reader.result || "")));
     reader.addEventListener("error", () => {
-      reject(new Error("No se pudo leer la foto. Intenta con otra imagen."));
+      reject(new Error("No se pudo leer la foto. Intentá con otra imagen."));
     });
     reader.readAsDataURL(file);
   });
@@ -862,7 +862,7 @@ async function handlePetSubmit(event) {
   const existingPet = editingPetId ? getPetById(editingPetId) : null;
 
   if (editingPetId && !existingPet) {
-    showPetMessage("No se encontro la mascota que querias editar.", "error");
+    showPetMessage("No se encontró la mascota que querías editar.", "error");
     resetPetFormMode();
     return;
   }
@@ -872,13 +872,13 @@ async function handlePetSubmit(event) {
   const basicPetData = getPetFormPayload(imageValue);
 
   if (!cleanText(basicPetData.name)) {
-    showPetMessage("Completa el nombre de la mascota.", "error");
+    showPetMessage("Completá el nombre de la mascota.", "error");
     petNameInput.focus();
     return;
   }
 
   if (!cleanText(basicPetData.species)) {
-    showPetMessage("Selecciona la especie de la mascota.", "error");
+    showPetMessage("Seleccioná la especie de la mascota.", "error");
     petSpeciesSelect.focus();
     return;
   }
@@ -901,7 +901,7 @@ async function handlePetSubmit(event) {
     const updatedPet = updatePet(existingPet.id, petData);
 
     if (!updatedPet) {
-      showPetMessage("No se pudieron guardar los cambios. Revisa los datos.", "error");
+      showPetMessage("No se pudieron guardar los cambios. Revisá los datos.", "error");
       return;
     }
 
@@ -915,7 +915,7 @@ async function handlePetSubmit(event) {
   const newPet = addPet(petData);
 
   if (!newPet) {
-    showPetMessage("No se pudo guardar la mascota. Revisa los datos.", "error");
+    showPetMessage("No se pudo guardar la mascota. Revisá los datos.", "error");
     return;
   }
 

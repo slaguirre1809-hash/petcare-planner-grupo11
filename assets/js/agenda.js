@@ -1,287 +1,183 @@
-import { getTasks, saveTasks } from "./storage.js";
-
 const taskForm = document.querySelector("#task-form");
-
 const taskPet = document.querySelector("#task-pet");
 const taskTitle = document.querySelector("#task-title");
 const taskDescription = document.querySelector("#task-description");
 const taskDate = document.querySelector("#task-date");
 const taskTime = document.querySelector("#task-time");
-
 const taskMessage = document.querySelector("#task-message");
-
 const tasksList = document.querySelector("#tasks-list");
-
 const filterButtons = document.querySelectorAll("[data-filter]");
 
-let tasks = getTasks();
+let currentFilter = "all";
 
-//CREAR MENSAJE DOM//
+seedInitialData();
 
-function showTaskMessage(message, type) {
+function showTaskMessage(message, type = "") {
+  if (!taskMessage) {
+    return;
+  }
 
-    taskMessage.textContent = message;
-
-    taskMessage.className = type;
-
+  taskMessage.textContent = message;
+  taskMessage.className = type;
 }
 
-//CREAR ESTADOS VISUALES//
+function getPetNameById(petId) {
+  const pets = getPets();
+  const pet = pets.find((item) => item.id === petId || item.name === petId);
 
-function getTaskVisualStatus(task) {
-
-    const today = new Date().toISOString().split("T")[0];
-
-    if (task.status === "done") {
-        return {
-            text: "Realizada",
-            className: "badge-purple"
-        };
-    }
-
-    if (task.date < today) {
-        return {
-            text: "Vencida",
-            className: "badge-danger"
-        };
-    }
-
-    if (task.date === today) {
-        return {
-            text: "Hoy",
-            className: "badge-warning"
-        };
-    }
-
-    return {
-        text: "Próxima",
-        className: "badge-success"
-    };
-
+  return pet ? pet.name : "Mascota";
 }
 
-//RENDERIZAR TAREAS//
+function renderPetOptions() {
+  if (!taskPet) {
+    return;
+  }
 
-function renderTasks(filter = "all") {
+  const pets = getPets();
+  const options = pets.map((pet) => {
+    return `<option value="${escapeHTML(pet.id)}">${escapeHTML(pet.name)}</option>`;
+  });
 
-    tasksList.innerHTML = "";
-
-    if (tasks.length === 0) {
-
-        tasksList.innerHTML = `
-            <p>No hay tareas registradas.</p>
-        `;
-
-        return;
-    }
-
-    let filteredTasks = tasks;
-
-    if (filter === "done") {
-
-        filteredTasks = tasks.filter(task => task.status === "done");
-
-    } else if (filter === "overdue") {
-
-        const today = new Date().toISOString().split("T")[0];
-
-        filteredTasks = tasks.filter(task =>
-            task.status !== "done" &&
-            task.date < today
-        );
-
-    } else if (filter === "today") {
-
-        const today = new Date().toISOString().split("T")[0];
-
-        filteredTasks = tasks.filter(task =>
-            task.date === today
-        );
-
-    } else if (filter === "upcoming") {
-
-        const today = new Date().toISOString().split("T")[0];
-
-        filteredTasks = tasks.filter(task =>
-            task.date > today &&
-            task.status !== "done"
-        );
-    }
-
-    filteredTasks.forEach(task => {
-
-        const visualStatus = getTaskVisualStatus(task);
-
-        tasksList.innerHTML += `
-        
-            <article class="card task-card">
-
-                <header class="task-card-header">
-
-                    <section>
-
-                        <h3>${task.title}</h3>
-
-                        <p>
-                            ${task.petId} ·
-                            ${task.date} ·
-                            ${task.time}
-                        </p>
-
-                    </section>
-
-                    <p class="badge ${visualStatus.className}">
-                        ${visualStatus.text}
-                    </p>
-
-                </header>
-
-                <p>${task.description}</p>
-
-                <footer class="task-card-actions">
-
-                    ${
-                        task.status !== "done"
-                        ?
-                        `
-                        <button
-                            class="btn btn-primary"
-                            data-done="${task.id}"
-                        >
-                            Marcar realizada
-                        </button>
-                        `
-                        :
-                        ""
-                    }
-
-                </footer>
-
-            </article>
-        
-        `;
-    });
-
+  taskPet.innerHTML = `
+    <option value="">Seleccionar mascota</option>
+    ${options.join("")}
+  `;
 }
 
-//CREAR TAREAS//
+function getFilteredTasks(tasks, filter) {
+  if (filter === "all") {
+    return tasks;
+  }
+
+  return filterTasksByVisualStatus(tasks, filter);
+}
+
+function renderTaskCard(task) {
+  const visualStatus = getTaskVisualStatus(task);
+  const petName = getPetNameById(task.petId);
+  const date = formatDateToDisplay(task.date);
+  const time = formatTimeToDisplay(task.time);
+  const description = task.description || "Sin descripcion cargada.";
+  const doneAction = task.status !== "done"
+    ? `
+      <footer class="task-card-actions">
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-done="${escapeHTML(task.id)}"
+        >
+          Marcar realizada
+        </button>
+      </footer>
+    `
+    : "";
+
+  return `
+    <article class="card task-card">
+      <header class="task-card-header">
+        <section>
+          <h3>${escapeHTML(task.title)}</h3>
+          <p>
+            ${escapeHTML(petName)} &middot;
+            ${escapeHTML(date)} &middot;
+            ${escapeHTML(time)}
+          </p>
+        </section>
+
+        <p class="badge ${escapeHTML(visualStatus.badgeClass)}">
+          ${escapeHTML(visualStatus.label)}
+        </p>
+      </header>
+
+      <p>${escapeHTML(description)}</p>
+
+      ${doneAction}
+    </article>
+  `;
+}
+
+function renderTasks(filter = currentFilter) {
+  if (!tasksList) {
+    return;
+  }
+
+  currentFilter = filter;
+
+  const tasks = sortTasksByDate(getTasks());
+  const filteredTasks = getFilteredTasks(tasks, filter);
+  const content = filteredTasks.length > 0
+    ? filteredTasks.map(renderTaskCard).join("")
+    : '<p class="empty-state">No hay tareas para mostrar.</p>';
+
+  tasksList.innerHTML = `
+    <h2>Listado de tareas</h2>
+    ${content}
+  `;
+}
 
 function handleTaskSubmit(event) {
+  event.preventDefault();
 
-    event.preventDefault();
+  const taskData = {
+    petId: taskPet.value,
+    title: taskTitle.value,
+    description: taskDescription.value,
+    date: taskDate.value,
+    time: taskTime.value,
+    status: "pending"
+  };
 
-    if (
-        !taskPet.value ||
-        !taskTitle.value ||
-        !taskDate.value
-    ) {
+  const createdTask = addTask(taskData);
 
-        showTaskMessage(
-            "Completa los campos obligatorios.",
-            "overdue"
-        );
+  if (!createdTask) {
+    showTaskMessage("Completa los campos obligatorios.", "overdue");
+    return;
+  }
 
-        return;
-    }
-
-    const newTask = {
-
-        id: crypto.randomUUID(),
-
-        petId: taskPet.value,
-
-        title: taskTitle.value,
-
-        description: taskDescription.value,
-
-        date: taskDate.value,
-
-        time: taskTime.value,
-
-        status: "pending"
-    };
-
-    tasks.push(newTask);
-
-    saveTasks(tasks);
-
-    renderTasks();
-
-    showTaskMessage(
-        "Tarea creada correctamente.",
-        "upcoming"
-    );
-
-    taskForm.reset();
-
+  taskForm.reset();
+  showTaskMessage("Tarea creada correctamente.", "upcoming");
+  renderTasks(currentFilter);
 }
-
-//FILTROS//
 
 function handleTaskFilter(event) {
+  const button = event.target.closest("[data-filter]");
 
-    const filter = event.target.dataset.filter;
+  if (!button) {
+    return;
+  }
 
-    renderTasks(filter);
-
+  renderTasks(button.dataset.filter);
 }
-
-//MARCAR TAREA COMO REALIZADA//
 
 function handleMarkTaskAsDone(taskId) {
+  const updatedTask = markTaskAsDone(taskId);
 
-    tasks = tasks.map(task => {
+  if (!updatedTask) {
+    showTaskMessage("No se pudo actualizar la tarea.", "overdue");
+    return;
+  }
 
-        if (task.id === taskId) {
-
-            return {
-                ...task,
-                status: "done"
-            };
-        }
-
-        return task;
-
-    });
-
-    saveTasks(tasks);
-
-    renderTasks();
-
+  showTaskMessage("Tarea marcada como realizada.", "upcoming");
+  renderTasks(currentFilter);
 }
 
-//EVENT LISTENERS//
+if (taskForm) {
+  taskForm.addEventListener("submit", handleTaskSubmit);
+}
 
-taskForm.addEventListener(
-    "submit",
-    handleTaskSubmit
-);
-
-//FILTROS//
-
-filterButtons.forEach(button => {
-
-    button.addEventListener(
-        "click",
-        handleTaskFilter
-    );
-
+filterButtons.forEach((button) => {
+  button.addEventListener("click", handleTaskFilter);
 });
 
-//BOTÓN REALIZADA//
+if (tasksList) {
+  tasksList.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-done]");
 
-tasksList.addEventListener("click", function(event) {
-
-    const taskId = event.target.dataset.done;
-
-    if (taskId) {
-
-        handleMarkTaskAsDone(taskId);
-
+    if (button) {
+      handleMarkTaskAsDone(button.dataset.done);
     }
+  });
+}
 
-});
-
-//RENDER INICIAL//
-
+renderPetOptions();
 renderTasks();
