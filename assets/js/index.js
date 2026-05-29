@@ -1,5 +1,5 @@
 /* =====================================================
-   Mapa de emojis por especie
+   Mapa de emojis por especie (fallback)
    ===================================================== */
 
 const SPECIES_EMOJI = {
@@ -14,10 +14,33 @@ const SPECIES_EMOJI = {
 };
 
 /* =====================================================
+   Imágenes de mascotas por ID
+   ===================================================== */
+
+const PET_IMAGE_BY_ID = {
+  "pet-kira": "assets/img/pets/dog-avatar.png",
+  "pet-mishi": "assets/img/pets/cat-avatar.png",
+  "pet-luna": "assets/img/pets/rabbit-avatar.png"
+};
+
+/* =====================================================
+   Iconos de tareas por tipo
+   ===================================================== */
+
+const TASK_ICON_ASSETS = {
+  vaccine: "assets/img/icons/icon-vaccine.png",
+  food: "assets/img/icons/icon-food.png",
+  bath: "assets/img/icons/icon-bath.png",
+  vet: "assets/img/icons/icon-vet.png",
+  medicine: "assets/img/icons/icon-medicine.png",
+  calendar: "assets/img/icons/icon-calendar.png"
+};
+
+/* =====================================================
    Mensajes para estados vacíos
    ===================================================== */
 
-var EMPTY_MESSAGES = {
+const EMPTY_MESSAGES = {
   noTasks: 'No hay tareas a mostrar',
   noPets: 'No hay mascotas registradas'
 };
@@ -32,10 +55,69 @@ function getEmojiForSpecies(species) {
 }
 
 function getUserName() {
-  // Por ahora, saludo genérico. En el futuro se podría leer de localStorage:
-  // const userName = localStorage.getItem('petcare_user_name');
-  // return userName || 'Cuidador';
   return 'Cuidador';
+}
+
+/* =====================================================
+   Resolución de rutas de assets
+   ===================================================== */
+
+function resolveAssetPath(assetPath) {
+  if (!assetPath) return '';
+  if (/^(data:|blob:|https?:\/\/)/.test(assetPath)) return assetPath;
+  return './' + assetPath;
+}
+
+/* =====================================================
+   Imagen opcional con fallback 
+   ===================================================== */
+
+function renderOptionalImage(assetPath, className, altText, isLazy) {
+  var resolvedPath = resolveAssetPath(assetPath);
+  if (!resolvedPath) return '';
+  var lazyAttr = isLazy !== false ? ' loading="lazy"' : '';
+  return '<img class="' + className + '" src="' + resolvedPath + '" alt="' + (altText || '') + '"' + lazyAttr + ' onload="this.closest(\'.pet-avatar, .task-avatar\')?.classList.add(\'has-image\')" onerror="this.hidden = true; this.closest(\'.pet-avatar, .task-avatar\')?.classList.remove(\'has-image\')" />';
+}
+
+/* =====================================================
+   Imagen de mascota 
+   ===================================================== */
+
+function getPetImage(pet) {
+  return (pet.image ? pet.image.trim() : '') || PET_IMAGE_BY_ID[pet.id] || '';
+}
+
+/* =====================================================
+   Icono de tarea según título
+   ===================================================== */
+
+function getTaskIconFallback(title) {
+  var t = (title || '').toLowerCase();
+  if (t.indexOf('vacuna') !== -1) return '💉';
+  if (t.indexOf('aliment') !== -1) return '🥣';
+  if (t.indexOf('baño') !== -1) return '🛁';
+  if (t.indexOf('cepill') !== -1) return '🧹';
+  if (t.indexOf('control') !== -1 || t.indexOf('veterin') !== -1) return '⚕️';
+  if (t.indexOf('medic') !== -1 || t.indexOf('pastilla') !== -1) return '💊';
+  return '⚠️';
+}
+
+function getTaskIconKey(title) {
+  var t = (title || '').toLowerCase();
+  if (t.indexOf('vacuna') !== -1) return 'vaccine';
+  if (t.indexOf('aliment') !== -1) return 'food';
+  if (t.indexOf('baño') !== -1) return 'bath';
+  if (t.indexOf('control') !== -1 || t.indexOf('veterin') !== -1) return 'vet';
+  if (t.indexOf('medic') !== -1 || t.indexOf('pastilla') !== -1) return 'medicine';
+  return '';
+}
+
+function renderTaskIcon(title) {
+  var iconKey = getTaskIconKey(title);
+  var iconAsset = iconKey ? TASK_ICON_ASSETS[iconKey] : '';
+  var fallback = getTaskIconFallback(title);
+  var imgHtml = iconAsset ? renderOptionalImage(iconAsset, 'task-avatar__image', '', true) : '';
+  return imgHtml + '<span class="task-avatar__fallback" aria-hidden="true">' + fallback + '</span>';
 }
 
 /* =====================================================
@@ -58,7 +140,6 @@ function pickRandomTip() {
 function updateTipOfTheDay() {
   var tipContainer = document.getElementById('tip-of-the-day');
   if (!tipContainer) return;
-
   var paragraph = tipContainer.querySelector('p');
   if (paragraph) paragraph.textContent = pickRandomTip();
 }
@@ -107,14 +188,14 @@ function createUpcomingTaskElement(task, pets) {
   var pet = getPetByIdFromList(pets, task.petId);
   var petName = pet ? pet.name : 'Mascota';
   var species = pet ? pet.species : '';
-  var emoji = getEmojiForSpecies(species);
   var dateDisplay = formatDateToDisplay(task.date);
   var timeDisplay = formatTimeToDisplay(task.time);
+  var taskIconHtml = renderTaskIcon(task.title);
 
   var li = document.createElement('li');
   li.innerHTML =
     '<article class="task-card">' +
-      '<span class="task-avatar" aria-hidden="true">' + emoji + '</span>' +
+      '<span class="task-avatar" aria-hidden="true">' + taskIconHtml + '</span>' +
       '<div class="task-card__body">' +
         '<h3 class="task-card__title">' + task.title + '</h3>' +
         '<p class="task-card__meta">' +
@@ -125,18 +206,17 @@ function createUpcomingTaskElement(task, pets) {
       '</div>' +
       '<a class="task-link" href="#" aria-label="Ver detalle de la tarea">›</a>' +
     '</article>';
-
   return li;
 }
 
 /* =====================================================
-   Obtener tareas para el dashboard (prioridad: vencidas → hoy → próximas, máximo 3)
+   Obtener tareas para el dashboard
    ===================================================== */
 
 function getDashboardTasks(tasks, limit) {
   var overdue = getOverdueTasksFromList(tasks);
   var today = getTodayTasksFromList(tasks);
-  var upcoming = getUpcomingTasksFromList(tasks, 10); 
+  var upcoming = getUpcomingTasksFromList(tasks, 10);
 
   overdue = sortTasksByDate(overdue);
   today = sortTasksByDate(today);
@@ -155,20 +235,17 @@ function renderUpcomingTasks(tasks, pets) {
   if (!container) return;
 
   container.innerHTML = '';
-
   var dashboardTasks = getDashboardTasks(tasks, 3);
 
-if (dashboardTasks.length === 0) {
-  container.innerHTML = '<li class="empty-state">' + EMPTY_MESSAGES.noTasks + '</li>';
-  return;
-}
+  if (dashboardTasks.length === 0) {
+    container.innerHTML = '<li class="empty-state">' + EMPTY_MESSAGES.noTasks + '</li>';
+    return;
+  }
 
-var fragment = document.createDocumentFragment();
-
-for (var i = 0; i < dashboardTasks.length; i++) {
-  fragment.appendChild(createUpcomingTaskElement(dashboardTasks[i], pets));
-}
-
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < dashboardTasks.length; i++) {
+    fragment.appendChild(createUpcomingTaskElement(dashboardTasks[i], pets));
+  }
   container.appendChild(fragment);
 }
 
@@ -194,21 +271,24 @@ function renderPets(pets) {
     var pet = displayPets[i];
     var emoji = getEmojiForSpecies(pet.species);
     var age = pet.age || 'Edad no especificada';
+    var petImage = getPetImage(pet);
+    var imgHtml = renderOptionalImage(petImage, 'pet-avatar__image', 'Foto de ' + pet.name, true);
+    var hiddenAttr = petImage ? '' : ' aria-hidden="true"';
 
     var li = document.createElement('li');
     li.className = 'pet-mini-card';
-
     li.innerHTML =
-      '<span class="pet-avatar" aria-hidden="true">' + emoji + '</span>' +
+      '<span class="pet-avatar"' + hiddenAttr + '>' +
+        imgHtml +
+        '<span class="pet-avatar__fallback" aria-hidden="true">' + emoji + '</span>' +
+      '</span>' +
       '<div class="pet-info">' +
         '<p class="pet-name">' + pet.name + '</p>' +
         '<p class="pet-specie">' + pet.species + '</p>' +
         '<p class="pet-meta">' + age + '</p>' +
       '</div>';
-
     fragment.appendChild(li);
   }
-
   container.appendChild(fragment);
 }
 
@@ -219,9 +299,17 @@ function renderPets(pets) {
 function renderGreeting() {
   var greetingElement = document.getElementById('user-greeting');
   if (!greetingElement) return;
+  greetingElement.textContent = '¡Hola, ' + getUserName() + '! 🐾';
+}
 
-  var userName = getUserName();
-  greetingElement.textContent = '¡Hola, ' + userName + '! 🐾';
+
+/* =====================================================
+   Crear iconos de Lucide
+   ===================================================== */
+function createLucideIcons() {
+  if (typeof lucide !== 'undefined' && lucide.createIcons) {
+    lucide.createIcons();
+  }
 }
 
 /* =====================================================
@@ -240,14 +328,14 @@ function initDashboard() {
     renderUpcomingTasks(tasks, pets);
     renderPets(pets);
     updateTipOfTheDay();
+    createLucideIcons();
 
     var tipLink = document.querySelector('.tip-of-the-day__button');
     if (tipLink) {
-      tipLink.addEventListener('click', function (event) {
+      tipLink.addEventListener('click', function() {
         updateTipOfTheDay();
       });
     }
-
   } catch (error) {
     console.error('Error al inicializar el dashboard:', error);
   }

@@ -318,9 +318,7 @@ button:active {
     transform: translateY(0);
 }
 
-/* =========================
-   Boton flotante
-========================= */
+/* BOTON FLOTANTE */
 
 .floating-button {
     position: fixed;
