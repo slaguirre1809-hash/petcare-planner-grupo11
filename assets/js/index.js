@@ -1,7 +1,3 @@
-/* =====================================================
-   Mapa de emojis por especie (fallback)
-   ===================================================== */
-
 const SPECIES_EMOJI = {
   perro: '🐕',
   gato: '🐱',
@@ -13,19 +9,11 @@ const SPECIES_EMOJI = {
   default: '🐾'
 };
 
-/* =====================================================
-   Imágenes de mascotas por ID
-   ===================================================== */
-
 const PET_IMAGE_BY_ID = {
   "pet-kira": "assets/img/pets/dog-avatar.png",
   "pet-mishi": "assets/img/pets/cat-avatar.png",
   "pet-luna": "assets/img/pets/rabbit-avatar.png"
 };
-
-/* =====================================================
-   Iconos de tareas por tipo
-   ===================================================== */
 
 const TASK_ICON_ASSETS = {
   vaccine: "assets/img/icons/icon-vaccine.png",
@@ -36,18 +24,10 @@ const TASK_ICON_ASSETS = {
   calendar: "assets/img/icons/icon-calendar.png"
 };
 
-/* =====================================================
-   Mensajes para estados vacíos
-   ===================================================== */
-
 const EMPTY_MESSAGES = {
   noTasks: 'No hay tareas a mostrar',
   noPets: 'No hay mascotas registradas'
 };
-
-/* =====================================================
-   Utilidades
-   ===================================================== */
 
 function getEmojiForSpecies(species) {
   var key = (species || '').trim().toLowerCase();
@@ -55,22 +35,24 @@ function getEmojiForSpecies(species) {
 }
 
 function getUserName() {
+  // Por ahora, saludo genérico. En el futuro se podría leer de localStorage:
+  // const userName = localStorage.getItem('petcare_user_name');
+  // return userName || 'Cuidador';
   return 'Cuidador';
 }
 
-/* =====================================================
-   Resolución de rutas de assets
-   ===================================================== */
+function getUserPhoto() {
+  // Por ahora se utiliza una imagen por defecto. En el futuro se podría leer desde localStorage:
+  // const userPhoto = localStorage.getItem('petcare_user_photo');
+  // return userPhoto || './assets/img/states/cuidador-default-avatar.png';
+  return './assets/img/states/cuidador-default-avatar.png';
+}
 
 function resolveAssetPath(assetPath) {
   if (!assetPath) return '';
   if (/^(data:|blob:|https?:\/\/)/.test(assetPath)) return assetPath;
   return './' + assetPath;
 }
-
-/* =====================================================
-   Imagen opcional con fallback 
-   ===================================================== */
 
 function renderOptionalImage(assetPath, className, altText, isLazy) {
   var resolvedPath = resolveAssetPath(assetPath);
@@ -79,17 +61,23 @@ function renderOptionalImage(assetPath, className, altText, isLazy) {
   return '<img class="' + className + '" src="' + resolvedPath + '" alt="' + (altText || '') + '"' + lazyAttr + ' onload="this.closest(\'.pet-avatar, .task-avatar\')?.classList.add(\'has-image\')" onerror="this.hidden = true; this.closest(\'.pet-avatar, .task-avatar\')?.classList.remove(\'has-image\')" />';
 }
 
-/* =====================================================
-   Imagen de mascota 
-   ===================================================== */
+function renderUserProfile() {
+  var nameElement = document.getElementById('user-name');
+  var avatarElement = document.getElementById('user-avatar');
+
+  if (nameElement) {
+    nameElement.textContent = getUserName();
+  }
+
+  if (avatarElement) {
+    avatarElement.src = getUserPhoto();
+  }
+}
+
 
 function getPetImage(pet) {
   return (pet.image ? pet.image.trim() : '') || PET_IMAGE_BY_ID[pet.id] || '';
 }
-
-/* =====================================================
-   Icono de tarea según título
-   ===================================================== */
 
 function getTaskIconFallback(title) {
   var t = (title || '').toLowerCase();
@@ -120,10 +108,6 @@ function renderTaskIcon(title) {
   return imgHtml + '<span class="task-avatar__fallback" aria-hidden="true">' + fallback + '</span>';
 }
 
-/* =====================================================
-   Tips del día
-   ===================================================== */
-
 var TIPS = [
   'Cepillar a tu mascota regularmente ayuda a reducir el estrés y fortalece el vínculo.',
   'Mantener al día las vacunas es clave para la salud de tu compañero.',
@@ -144,10 +128,6 @@ function updateTipOfTheDay() {
   if (paragraph) paragraph.textContent = pickRandomTip();
 }
 
-/* =====================================================
-   Renderizar contadores del resumen de hoy
-   ===================================================== */
-
 function renderStats(tasks) {
   var overdueCount = getOverdueTasksFromList(tasks).length;
   var todayCount = getTodayTasksFromList(tasks).length;
@@ -165,10 +145,6 @@ function renderStats(tasks) {
   if (doneEl) doneEl.textContent = doneCount;
 }
 
-/* =====================================================
-   Badge por estado
-   ===================================================== */
-
 function getBadgeEmoji(statusKey) {
   switch (statusKey) {
     case 'overdue': return '⚠️';
@@ -178,10 +154,6 @@ function getBadgeEmoji(statusKey) {
     default: return '';
   }
 }
-
-/* =====================================================
-   Crear elemento de tarea próxima
-   ===================================================== */
 
 function createUpcomingTaskElement(task, pets) {
   var status = getTaskVisualStatus(task);
@@ -209,9 +181,6 @@ function createUpcomingTaskElement(task, pets) {
   return li;
 }
 
-/* =====================================================
-   Obtener tareas para el dashboard
-   ===================================================== */
 
 function getDashboardTasks(tasks, limit) {
   var overdue = getOverdueTasksFromList(tasks);
@@ -226,9 +195,6 @@ function getDashboardTasks(tasks, limit) {
   return combined.slice(0, limit);
 }
 
-/* =====================================================
-   Renderizar lista de próximas tareas
-   ===================================================== */
 
 function renderUpcomingTasks(tasks, pets) {
   var container = document.getElementById('upcoming-tasks-list');
@@ -248,10 +214,6 @@ function renderUpcomingTasks(tasks, pets) {
   }
   container.appendChild(fragment);
 }
-
-/* =====================================================
-   Renderizar lista de mascotas
-   ===================================================== */
 
 function renderPets(pets) {
   var container = document.getElementById('pets-list-container');
@@ -292,29 +254,27 @@ function renderPets(pets) {
   container.appendChild(fragment);
 }
 
-/* =====================================================
-   Renderizar saludo
-   ===================================================== */
-
 function renderGreeting() {
   var greetingElement = document.getElementById('user-greeting');
   if (!greetingElement) return;
-  greetingElement.textContent = '¡Hola, ' + getUserName() + '! 🐾';
+  greetingElement.textContent = '¡Hola, ' + getUserName() + '! 👋';
 }
 
 
-/* =====================================================
-   Crear iconos de Lucide
-   ===================================================== */
 function createLucideIcons() {
   if (typeof lucide !== 'undefined' && lucide.createIcons) {
     lucide.createIcons();
   }
 }
 
-/* =====================================================
-   Inicialización del dashboard
-   ===================================================== */
+function addPetBtnHandler() {
+  const addPetBtn = document.querySelector('.pet-add-card');
+if (addPetBtn) {
+  addPetBtn.addEventListener('click', () => {
+    window.location.href = './pages/mascotas.html';
+  });
+}
+}
 
 function initDashboard() {
   try {
@@ -329,6 +289,8 @@ function initDashboard() {
     renderPets(pets);
     updateTipOfTheDay();
     createLucideIcons();
+    addPetBtnHandler();
+    renderUserProfile();
 
     var tipLink = document.querySelector('.tip-of-the-day__button');
     if (tipLink) {

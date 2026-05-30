@@ -1,4 +1,3 @@
-
 :root {
   --pet-purple: #6d28d9;
   --pet-purple-dark: #5b21b6;
@@ -30,8 +29,13 @@ body {
    ========================= */
 
 .index-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   position: relative;
   z-index: 5;
+
   padding-top: 1.35rem;
   padding-bottom: 0.5rem;
 }
@@ -84,24 +88,26 @@ body {
   display: grid;
   gap: 1.5rem;
   padding: 1rem 1rem 2rem;
-  order: 2;
 }
 
 .index-aside {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 0 1rem 2rem;
-  order: 3;
+  padding: 0 1rem 0;
   align-items: stretch;
 }
 
+.tip-of-the-day {
+  padding: 0;
+  margin-top: 1rem;
+}
+
 .bottom-nav {
-  order: 4;
+  margin-top: auto;
 }
 
 .app-footer {
-  order: 5;
   margin-top: auto;
 }
 
@@ -111,7 +117,7 @@ body {
 
 .index-hero {
   display: block;
-  padding-top: 1rem;
+  padding-top: 0rem;
   padding-bottom: 0.1rem;
 }
 
@@ -120,6 +126,7 @@ body {
 }
 
 .index-greeting {
+  margin-top: 0;
   font-size: 1.8rem;
   font-weight: 900;
   color: var(--pet-purple);
@@ -289,10 +296,6 @@ body {
   color: #6f35e8;
 }
 
-/* =========================
-   Mis mascotas y tarjeta "Agregar"
-   ========================= */
-
 .pets-list-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -396,7 +399,7 @@ body {
 }
 
 /* =========================
-   Próximas tareas (dentro del aside)
+   Próximas tareas 
    ========================= */
 
 .upcoming-tasks-aside .tasks-list {
@@ -507,19 +510,16 @@ body {
 }
 
 /* =========================
-   Tip del día 
+   Tip del día
    ========================= */
 
 .tip-of-the-day {
   background: var(--color-primary-light);
   border-radius: var(--radius-lg);
-  padding: 1rem;
-  text-align: center;
   border: 1px solid var(--pet-soft-border);
   box-shadow: var(--pet-shadow);
+  text-align: center;
   align-self: start;
-  height: auto;
-  min-height: unset;
 }
 
 .tip-content {
@@ -527,6 +527,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
+  padding: 1rem;
 }
 
 .tip-icon {
@@ -535,6 +536,7 @@ body {
   line-height: 1;
   flex-shrink: 0;
   position: relative;
+  margin: 0;
 }
 
 .tip-icon img {
@@ -595,9 +597,98 @@ body {
   width: 100%;
 }
 
-/* =========================
-   Sidebar izquierdo (solo desktop)
-   ========================= */
+.notification-btn {
+  position: relative;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--pet-muted);
+  font-size: 1.55rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.notification-btn .lucide {
+  display: block;
+}
+.notification-btn span {
+  position: absolute;
+  top: 0.15rem;
+  right: 0.1rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--pet-purple);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.aside-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.user-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+
+  padding: 0.45rem 0.75rem;
+
+  border: 1px solid var(--pet-border);
+  border-radius: 999px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    transform 0.2s;
+}
+
+.user-profile-btn:hover {
+  background: #f8fafc;
+  border-color: #d8dce2;
+}
+
+.user-profile-btn__avatar {
+  width: 2.4rem;
+  height: 2.4rem;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  flex-shrink: 0;
+}
+
+.user-profile-btn__avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-profile-btn__name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--pet-text);
+}
+
+.user-profile-btn__arrow {
+  width: 1rem;
+  height: 1rem;
+  color: var(--pet-muted);
+}
+
 
 .desktop-sidebar {
   display: none;
@@ -612,8 +703,9 @@ body {
     display: grid;
     grid-template-columns: 15.5rem minmax(0, 1fr) 22rem;
     grid-template-areas:
-      "sidebar main aside"
-      "footer footer footer";
+      "sidebar  main  topbar"
+      "sidebar  main    aside"
+      "footer   footer  footer";
     column-gap: 1.5rem;
     row-gap: 0;
     max-width: 96rem;
@@ -624,12 +716,54 @@ body {
     background: rgba(255, 255, 255, 0.9);
   }
 
+  .index-hero {
+    margin-top: 3rem;   
+  }
+
+  .index-topbar {
+    grid-area: topbar;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0rem 1.5rem 0 1rem;
+    margin: 0;
+  }
+  .index-topbar .app-brand {
+    display: none; 
+  }
+  .aside-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: auto;
+  }
+
+  /* Main y aside */
+  .index-main {
+    grid-area: main;
+    padding: 0 0 2rem 1rem;
+    margin: 0;
+  }
+  .index-aside {
+    grid-area: aside;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0 1rem 2rem 0;
+    margin: 0;
+  }
+
+  .tip-of-the-day {
+    margin-top: 2rem; 
+    padding: 0;
+  }
+
   .desktop-sidebar {
     grid-area: sidebar;
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    padding: 2rem 1.25rem;
+    padding: 1rem 1.25rem;
     border-right: 1px solid var(--pet-border);
     background:
       radial-gradient(circle at 40% 82%, rgba(196, 181, 253, 0.28), transparent 12rem),
@@ -646,16 +780,13 @@ body {
     line-height: 1.02;
     text-decoration: none;
   }
-
   .desktop-sidebar__brand strong {
     color: var(--pet-purple);
   }
-
   .desktop-sidebar__nav {
     display: grid;
     gap: 0.55rem;
   }
-
   .desktop-sidebar__link {
     display: flex;
     align-items: center;
@@ -668,50 +799,42 @@ body {
     text-decoration: none;
     transition: background-color 0.2s, color 0.2s;
   }
-
   .desktop-sidebar__link .lucide {
     width: 1.25rem;
     height: 1.25rem;
     color: #64748b;
   }
-
   .desktop-sidebar__link:hover,
   .desktop-sidebar__link.is-active {
     background: var(--pet-purple-soft);
     color: var(--pet-purple);
   }
-
   .desktop-sidebar__link.is-active .lucide {
     color: var(--pet-purple);
   }
-
   .desktop-sidebar__link.is-disabled {
     color: #475569;
     cursor: not-allowed;
   }
-
   .desktop-sidebar__message {
-  margin-top: auto;
-  padding: 1rem 0.95rem 0.85rem;
-  border-radius: 1rem;
-  background:
-    radial-gradient(circle at 82% 76%, rgba(196, 181, 253, 0.42), transparent 4.5rem),
-    linear-gradient(180deg, #f5f0ff, #ffffff);
-}
-
-.desktop-sidebar__message header strong {
-  display: block;
-  color: var(--pet-purple-dark);
-  font-size: 1rem;
-}
-
-.desktop-sidebar__message p {
-  margin-top: 0.5rem;
-  color: var(--pet-text);
-  font-size: 0.86rem;
-}
-
-.mini-illustration {
+    margin-top: auto;
+    padding: 1rem 0.95rem 0.85rem;
+    border-radius: 1rem;
+    background:
+      radial-gradient(circle at 82% 76%, rgba(196, 181, 253, 0.42), transparent 4.5rem),
+      linear-gradient(180deg, #f5f0ff, #ffffff);
+  }
+  .desktop-sidebar__message header strong {
+    display: block;
+    color: var(--pet-purple-dark);
+    font-size: 1rem;
+  }
+  .desktop-sidebar__message p {
+    margin-top: 0.5rem;
+    color: var(--pet-text);
+    font-size: 0.86rem;
+  }
+  .mini-illustration {
     position: relative;
     display: flex;
     align-items: end;
@@ -725,8 +848,7 @@ body {
     box-shadow: var(--shadow-card);
     overflow: hidden;
   }
-
-.sidebar-pets-image {
+  .sidebar-pets-image {
     position: absolute;
     inset: auto 0.2rem 0;
     z-index: 2;
@@ -737,90 +859,70 @@ body {
     object-fit: cover;
     object-position: center bottom;
   }
-
-.sidebar-pets-image[hidden] {
+  .sidebar-pets-image[hidden] {
     display: none;
   }
-
-.mini-illustration .pet-face {
-  position: relative;
-  z-index: 1;
-  width: 4.25rem;
-  height: 4.25rem;
-  margin-inline: -0.3rem;
-}
-
-.sidebar-pets-image:not([hidden]) ~ .pet-face {
-  visibility: hidden;
-}
-
-  .index-topbar {
-    display: none;
+  .mini-illustration .pet-face {
+    position: relative;
+    z-index: 1;
+    width: 4.25rem;
+    height: 4.25rem;
+    margin-inline: -0.3rem;
   }
-
-  .index-main {
-    grid-area: main;
-    padding: 2rem 0 2rem 1rem;
-    margin: 0;
+  .sidebar-pets-image:not([hidden]) ~ .pet-face {
+    visibility: hidden;
   }
-
-  .index-aside {
-    grid-area: aside;
-    padding: 2rem 1rem 2rem 0;
-    margin: 0;
-  }
-
   .bottom-nav {
     display: none;
   }
-
   .app-footer {
     grid-area: footer;
     margin-top: 0;
     border-top: 1px solid var(--pet-border);
   }
-
   .stats-grid {
     grid-template-columns: repeat(4, 1fr);
   }
-
   .pets-list-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-
   .upcoming-tasks-aside .tasks-list {
     grid-template-columns: 1fr;
   }
-
   .highlight-buttons .btn {
     flex: 0 0 auto;
   }
 }
 
 /* =========================
-   Tablet / desktop pequeño (768px - 1099px)
+   Tablet / desktop pequeño
    ========================= */
 
 @media (min-width: 768px) and (max-width: 1099px) {
   .stats-grid {
     grid-template-columns: repeat(4, 1fr);
   }
+
   .pets-list-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+
   .highlight-block {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: var(--space-lg);
   }
+
   .highlight-buttons {
     margin-top: 0;
   }
+
   .highlight-buttons .btn {
     flex: 0 0 auto;
     margin-left: var(--space-md);
   }
+
   .upcoming-tasks-aside .tasks-list {
     grid-template-columns: repeat(2, 1fr);
   }
