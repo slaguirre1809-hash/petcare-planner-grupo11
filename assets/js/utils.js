@@ -26,6 +26,14 @@ function cleanText(value) {
   return String(value || "").trim();
 }
 
+function normalizeSpaces(value) {
+  return cleanText(value).replace(/\s+/g, " ");
+}
+
+function validateTextLength(value, maxLength) {
+  return normalizeSpaces(value).length <= maxLength;
+}
+
 function escapeHTML(value) {
   return String(value || "")
     .replaceAll("&", "&amp;")
@@ -247,6 +255,93 @@ function calculateAgeFromBirthDate(value) {
   }
 
   return formatCalculatedPetAge(Math.max(totalMonths, 0), Math.max(totalDays, 0));
+}
+
+/* =====================================================
+   Peso de mascotas
+===================================================== */
+
+function parsePetWeight(value, fallbackUnit = "") {
+  const text = displayText(value).trim().toLowerCase();
+  const weightParts = text.match(/^(\d+(?:[,.]\d+)?)\s*(kg|g)?$/);
+
+  if (!weightParts) {
+    return null;
+  }
+
+  const unit = weightParts[2] || fallbackUnit;
+
+  if (unit !== "kg" && unit !== "g") {
+    return null;
+  }
+
+  return {
+    value: weightParts[1].replace(".", ","),
+    unit
+  };
+}
+
+function formatPetWeight(value, unit) {
+  const text = cleanText(value);
+
+  if (!text) {
+    return {
+      isValid: true,
+      weight: ""
+    };
+  }
+
+  if (!unit) {
+    return {
+      isValid: false,
+      error: "unit"
+    };
+  }
+
+  if (/^-\s*\d/.test(text)) {
+    return {
+      isValid: false,
+      error: "nonPositive"
+    };
+  }
+
+  const parsedWeight = parsePetWeight(text, unit);
+
+  if (!parsedWeight) {
+    return {
+      isValid: false,
+      error: "invalid"
+    };
+  }
+
+  const normalizedNumberText = parsedWeight.value.replace(",", ".");
+  const weightNumber = Number(normalizedNumberText);
+
+  if (!Number.isFinite(weightNumber)) {
+    return {
+      isValid: false,
+      error: "invalid"
+    };
+  }
+
+  if (weightNumber <= 0) {
+    return {
+      isValid: false,
+      error: "nonPositive"
+    };
+  }
+
+  if (parsedWeight.unit === "g" && !Number.isInteger(weightNumber)) {
+    return {
+      isValid: false,
+      error: "invalid"
+    };
+  }
+
+  return {
+    isValid: true,
+    weight: `${parsedWeight.value} ${parsedWeight.unit}`
+  };
 }
 
 /* =====================================================
