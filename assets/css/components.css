@@ -655,15 +655,18 @@
 
 .app-footer {
   margin-top: auto;
-  padding: 1.25rem 1rem calc(6rem + env(safe-area-inset-bottom));
+  padding: 1.1rem 1rem calc(6rem + env(safe-area-inset-bottom));
   text-align: center;
   color: var(--color-muted);
   font-size: 0.85rem;
+  line-height: 1.4;
 }
 
 @media (min-width: 1100px) {
   .app-footer {
-    padding: 1rem;
+    align-self: end;
+    margin-top: 0;
+    padding: 1rem 1.25rem 1.15rem;
   }
 }
 

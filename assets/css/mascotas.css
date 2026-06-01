@@ -1612,7 +1612,8 @@ body {
     grid-template-columns: 15.5rem minmax(0, 1fr) 19rem;
     grid-template-areas:
       "sidebar topbar topbar"
-      "sidebar main aside";
+      "sidebar main aside"
+      "footer footer footer";
     column-gap: 1.55rem;
     row-gap: 0.45rem;
     max-width: 96rem;
@@ -1818,6 +1819,11 @@ body {
     align-content: start;
     gap: 1.25rem;
     padding: 0.35rem 1.55rem 1.75rem 0;
+  }
+
+  .pet-page > [data-layout-footer] {
+    grid-area: footer;
+    border-top: 1px solid var(--pet-border);
   }
 
   .bottom-nav {
