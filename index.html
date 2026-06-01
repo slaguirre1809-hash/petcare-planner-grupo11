@@ -8,38 +8,11 @@
   <link rel="stylesheet" href="./assets/css/components.css">
   <link rel="stylesheet" href="./assets/css/index.css">
 </head>
-<body>
+<body data-page="index">
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
   <div class="page index-page">
 
-    <!-- Sidebar desktop -->
-    <aside class="desktop-sidebar" aria-label="Navegacion lateral">
-      <a class="desktop-sidebar__brand" href="./index.html" aria-label="Ir al inicio de PetCare Planner">
-        <span class="brand-paw" aria-hidden="true">
-          <img src="./assets/img/brand/isotipo-paw.png" alt="">
-          <span>👋</span>
-        </span>
-        <span>PetCare<br><strong>Planner</strong></span>
-      </a>
-      <nav class="desktop-sidebar__nav" aria-label="Navegacion principal">
-        <a class="desktop-sidebar__link is-active" href="./index.html" aria-current="page"><i data-lucide="home" aria-hidden="true"></i>Inicio</a>
-        <a class="desktop-sidebar__link" href="./pages/mascotas.html"><i data-lucide="paw-print" aria-hidden="true"></i>Mis Mascotas</a>
-        <a class="desktop-sidebar__link" href="./pages/agenda.html"><i data-lucide="clipboard-check" aria-hidden="true"></i>Agenda de cuidados</a>
-        <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true"><i data-lucide="bell" aria-hidden="true"></i>Recordatorios</a>
-        <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true"><i data-lucide="calendar-days" aria-hidden="true"></i>Calendario</a>
-        <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true"><i data-lucide="circle-user" aria-hidden="true"></i>Perfil</a>
-        <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true"><i data-lucide="settings" aria-hidden="true"></i>Configuracion</a>
-      </nav>
-      <article class="desktop-sidebar__message">
-        <header><strong>El amor se demuestra cada dia</strong></header>
-        <p>Pequeñas rutinas, grandes beneficios para su calidad de vida.</p>
-        <div class="mini-illustration" aria-hidden="true">
-          <img class="sidebar-pets-image" src="./assets/img/pets/sidebar-pets.png" alt="" loading="lazy" onerror="this.hidden = true">
-          <span class="pet-face pet-face--dog"></span>
-          <span class="pet-face pet-face--cat"></span>
-        </div>
-      </article>
-    </aside>
+    <div data-layout-sidebar></div>
 
     <!-- Header mobile -->
     <header class="app-container app-topbar index-topbar">
@@ -184,17 +157,8 @@
 
 </aside>
 
-    <!-- Bottom nav mobile -->
-    <nav class="bottom-nav" aria-label="Navegación principal">
-      <a class="bottom-nav__link is-active" href="./index.html" aria-current="page">Inicio</a>
-      <a class="bottom-nav__link" href="./pages/mascotas.html">Mascotas</a>
-      <a class="bottom-nav__link" href="./pages/agenda.html"> Agenda </a>
-    </nav>
-
-    <!-- Footer -->
-    <footer class="app-footer">
-      <p>🐾 PetCare Planner – Cuidados que mejoran vidas</p>
-    </footer>
+    <div data-layout-bottom-nav></div>
+    <footer data-layout-footer></footer>
 
   </div>
 
@@ -202,6 +166,7 @@
   <script src="./assets/js/utils.js"></script>
   <script src="./assets/js/storage.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="./assets/js/layout.js"></script>
   <script src="./assets/js/index.js"></script>
 </body>
 </html>
