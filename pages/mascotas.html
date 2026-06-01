@@ -226,6 +226,7 @@
                       id="pet-name"
                       name="name"
                       type="text"
+                      maxlength="40"
                       placeholder="Ej: Kira"
                       required
                     />
@@ -243,14 +244,45 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label" for="pet-age">Edad</label>
+                    <label class="form-label" for="pet-knows-birth-date">¿Sabés la fecha de nacimiento?</label>
+                    <select class="form-select" id="pet-knows-birth-date" name="knowsBirthDate">
+                      <option value="">Seleccioná una opción</option>
+                      <option value="birthdate">Sí, sé la fecha</option>
+                      <option value="manual">No, cargar edad aproximada</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group" id="pet-birth-date-group" hidden style="display: none;">
+                    <label class="form-label" for="pet-birth-date">Fecha de nacimiento</label>
+                    <input
+                      class="form-input"
+                      id="pet-birth-date"
+                      name="birthDate"
+                      type="date"
+                    />
+                    <p class="form-help">La usamos para calcular la edad automáticamente.</p>
+                  </div>
+
+                  <div class="form-group" id="pet-age-group" hidden style="display: none;">
+                    <label class="form-label" for="pet-age">Cantidad</label>
                     <input
                       class="form-input"
                       id="pet-age"
                       name="age"
                       type="text"
-                      placeholder="Ej: 3 años"
+                      inputmode="numeric"
+                      placeholder="Ej: 3"
                     />
+                    <p class="form-help">Usá una edad aproximada si no sabés la fecha exacta.</p>
+                  </div>
+
+                  <div class="form-group" id="pet-age-unit-group" hidden style="display: none;">
+                    <label class="form-label" for="pet-age-unit">Unidad de edad</label>
+                    <select class="form-select" id="pet-age-unit" name="ageUnit">
+                      <option value="days">días</option>
+                      <option value="months">meses</option>
+                      <option value="years" selected>años</option>
+                    </select>
                   </div>
 
                   <div class="form-group">
@@ -260,17 +292,8 @@
                       id="pet-breed"
                       name="breed"
                       type="text"
+                      maxlength="60"
                       placeholder="Ej: Golden Retriever"
-                    />
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label" for="pet-birth-date">Fecha de nacimiento</label>
-                    <input
-                      class="form-input"
-                      id="pet-birth-date"
-                      name="birthDate"
-                      type="date"
                     />
                   </div>
 
@@ -290,14 +313,25 @@
                 <legend>Salud y cuidados</legend>
                 <div class="form-grid">
                   <div class="form-group">
-                    <label class="form-label" for="pet-weight">Peso</label>
+                    <label class="form-label" for="pet-weight">Peso aproximado</label>
                     <input
                       class="form-input"
                       id="pet-weight"
                       name="weight"
                       type="text"
-                      placeholder="Ej: 28 kg"
+                      inputmode="decimal"
+                      placeholder="Ej: 4,5"
                     />
+                    <p class="form-help">Podés usar coma decimal. Ej: 4,5 kg o 450 g.</p>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="pet-weight-unit">Unidad de peso</label>
+                    <select class="form-select" id="pet-weight-unit" name="weightUnit">
+                      <option value="">Seleccioná una unidad</option>
+                      <option value="kg">kg</option>
+                      <option value="g">g</option>
+                    </select>
                   </div>
 
                   <div class="form-group">
@@ -319,6 +353,7 @@
                       id="pet-vet-name"
                       name="vetName"
                       type="text"
+                      maxlength="80"
                       placeholder="Ej: Vet. María López"
                     />
                   </div>
@@ -330,6 +365,7 @@
                       id="pet-clinic"
                       name="clinic"
                       type="text"
+                      maxlength="80"
                       placeholder="Ej: Patitas Felices"
                     />
                   </div>
@@ -346,6 +382,7 @@
                       id="pet-allergies"
                       name="allergies"
                       rows="3"
+                      maxlength="300"
                       placeholder="Ej: Alergia al pollo"
                     ></textarea>
                   </div>
@@ -357,6 +394,7 @@
                       id="pet-notes"
                       name="notes"
                       rows="3"
+                      maxlength="500"
                       placeholder="Ej: Le gusta pasear por la tarde"
                     ></textarea>
                   </div>

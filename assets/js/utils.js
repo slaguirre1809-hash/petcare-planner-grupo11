@@ -26,6 +26,14 @@ function cleanText(value) {
   return String(value || "").trim();
 }
 
+function normalizeSpaces(value) {
+  return cleanText(value).replace(/\s+/g, " ");
+}
+
+function validateTextLength(value, maxLength) {
+  return normalizeSpaces(value).length <= maxLength;
+}
+
 function escapeHTML(value) {
   return String(value || "")
     .replaceAll("&", "&amp;")
@@ -71,21 +79,43 @@ function normalizePetAge(value, fallback = "Sin edad") {
     return fallback;
   }
 
-  const numberMatch = text.match(/\d+/);
-
-  if (numberMatch) {
-    const ageNumber = Number(numberMatch[0]);
-
-    if (Number.isFinite(ageNumber) && ageNumber > 0) {
-      return `${ageNumber} ${ageNumber === 1 ? "año" : "años"}`;
-    }
+  if (/^-\s*\d/.test(text)) {
+    return fallback;
   }
 
-  return text
+  const cleanAgeText = text
     .replace(/\s+/g, " ")
+    .replace(/dias/g, "días")
+    .replace(/dia/g, "día")
     .replace(/anos/g, "años")
-    .replace(/años\s+años/g, "años")
+    .replace(/ano/g, "año")
+    .replace(/\b(días|día)\s+(días|día)\b/g, "$1")
+    .replace(/\b(meses|mes)\s+(meses|mes)\b/g, "$1")
+    .replace(/\b(años|año)\s+(años|año)\b/g, "$1")
     .trim();
+
+  const ageParts = cleanAgeText.match(/^(\d+)\s*(días|día|meses|mes|años|año)?$/);
+
+  if (!ageParts) {
+    return fallback;
+  }
+
+  const ageNumber = Number(ageParts[1]);
+  const ageUnit = ageParts[2] || "años";
+
+  if (!Number.isFinite(ageNumber) || ageNumber <= 0) {
+    return fallback;
+  }
+
+  if (ageUnit === "día" || ageUnit === "días") {
+    return `${ageNumber} ${ageNumber === 1 ? "día" : "días"}`;
+  }
+
+  if (ageUnit === "mes" || ageUnit === "meses") {
+    return `${ageNumber} ${ageNumber === 1 ? "mes" : "meses"}`;
+  }
+
+  return `${ageNumber} ${ageNumber === 1 ? "año" : "años"}`;
 }
 
 /* =====================================================
@@ -145,6 +175,173 @@ function formatDateForInput(value) {
   }
 
   return "";
+}
+
+function parseDateOnly(value) {
+  const text = displayText(value).trim();
+  const dateParts = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+  if (!dateParts) {
+    return null;
+  }
+
+  const year = Number(dateParts[1]);
+  const month = Number(dateParts[2]);
+  const day = Number(dateParts[3]);
+  const date = new Date(year, month - 1, day);
+
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return null;
+  }
+
+  return date;
+}
+
+function isFutureDate(value) {
+  const date = parseDateOnly(value);
+
+  if (!date) {
+    return false;
+  }
+
+  const today = new Date();
+  const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  return date.getTime() > todayOnly.getTime();
+}
+
+function formatCalculatedPetAge(totalMonths, totalDays) {
+  if (totalDays < 30) {
+    return `${totalDays} ${totalDays === 1 ? "día" : "días"}`;
+  }
+
+  if (totalMonths < 24) {
+    const safeMonths = Math.max(totalMonths, 1);
+    return `${safeMonths} ${safeMonths === 1 ? "mes" : "meses"}`;
+  }
+
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+  const yearsText = `${years} ${years === 1 ? "año" : "años"}`;
+
+  if (months > 0) {
+    return `${yearsText} y ${months} ${months === 1 ? "mes" : "meses"}`;
+  }
+
+  return yearsText;
+}
+
+function calculateAgeFromBirthDate(value) {
+  const birthDate = parseDateOnly(value);
+
+  if (!birthDate || isFutureDate(value)) {
+    return "";
+  }
+
+  const today = new Date();
+  const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const millisecondsPerDay = 24 * 60 * 60 * 1000;
+  const totalDays = Math.floor((todayOnly.getTime() - birthDate.getTime()) / millisecondsPerDay);
+  let totalMonths =
+    (todayOnly.getFullYear() - birthDate.getFullYear()) * 12 +
+    (todayOnly.getMonth() - birthDate.getMonth());
+
+  if (todayOnly.getDate() < birthDate.getDate()) {
+    totalMonths -= 1;
+  }
+
+  return formatCalculatedPetAge(Math.max(totalMonths, 0), Math.max(totalDays, 0));
+}
+
+/* =====================================================
+   Peso de mascotas
+===================================================== */
+
+function parsePetWeight(value, fallbackUnit = "") {
+  const text = displayText(value).trim().toLowerCase();
+  const weightParts = text.match(/^(\d+(?:[,.]\d+)?)\s*(kg|g)?$/);
+
+  if (!weightParts) {
+    return null;
+  }
+
+  const unit = weightParts[2] || fallbackUnit;
+
+  if (unit !== "kg" && unit !== "g") {
+    return null;
+  }
+
+  return {
+    value: weightParts[1].replace(".", ","),
+    unit
+  };
+}
+
+function formatPetWeight(value, unit) {
+  const text = cleanText(value);
+
+  if (!text) {
+    return {
+      isValid: true,
+      weight: ""
+    };
+  }
+
+  if (!unit) {
+    return {
+      isValid: false,
+      error: "unit"
+    };
+  }
+
+  if (/^-\s*\d/.test(text)) {
+    return {
+      isValid: false,
+      error: "nonPositive"
+    };
+  }
+
+  const parsedWeight = parsePetWeight(text, unit);
+
+  if (!parsedWeight) {
+    return {
+      isValid: false,
+      error: "invalid"
+    };
+  }
+
+  const normalizedNumberText = parsedWeight.value.replace(",", ".");
+  const weightNumber = Number(normalizedNumberText);
+
+  if (!Number.isFinite(weightNumber)) {
+    return {
+      isValid: false,
+      error: "invalid"
+    };
+  }
+
+  if (weightNumber <= 0) {
+    return {
+      isValid: false,
+      error: "nonPositive"
+    };
+  }
+
+  if (parsedWeight.unit === "g" && !Number.isInteger(weightNumber)) {
+    return {
+      isValid: false,
+      error: "invalid"
+    };
+  }
+
+  return {
+    isValid: true,
+    weight: `${parsedWeight.value} ${parsedWeight.unit}`
+  };
 }
 
 /* =====================================================
