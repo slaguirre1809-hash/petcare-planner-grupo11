@@ -1,5 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.5;
+}
+
 /* =========================
-   Header / navegacion
+   NAVBAR
 ========================= */
 
 header {
@@ -37,7 +50,7 @@ header {
 }
 
 /* =========================
-   Layout principal
+   MAIN
 ========================= */
 
 main {
@@ -49,7 +62,7 @@ main {
 }
 
 /* =========================
-   Intro
+   INTRO
 ========================= */
 
 .agenda-intro {
@@ -70,7 +83,7 @@ main {
 }
 
 /* =========================
-   Formulario
+   FORMULARIO
 ========================= */
 
 .task-form-section,
@@ -157,7 +170,7 @@ button {
 }
 
 /* =========================
-   Botones de formulario
+   BOTON PRINCIPAL
 ========================= */
 
 button[type="submit"] {
@@ -176,7 +189,7 @@ button:active {
 }
 
 /* =========================
-   Filtros
+   FILTROS
 ========================= */
 
 .filters-section {
@@ -222,7 +235,7 @@ button:active {
 }
 
 /* =========================
-   Lista de tareas
+   TASKS
 ========================= */
 
 #tasks-list {
@@ -258,7 +271,7 @@ button:active {
 }
 
 /* =========================
-   Estados
+   ESTADOS
 ========================= */
 
 .task-status {
@@ -296,7 +309,7 @@ button:active {
 }
 
 /* =========================
-   Acciones de tarea
+   CARD ACTIONS
 ========================= */
 
 .task-card-actions {
@@ -346,7 +359,7 @@ button:active {
 }
 
 /* =========================
-   Mensaje
+   MENSAJE
 ========================= */
 
 #task-message {
@@ -354,9 +367,7 @@ button:active {
     font-weight: bold;
 }
 
-/* =========================
-   Desktop
-========================= */
+/* DESKTOP */
 
 @media (min-width: 768px) {
     .navbar {
@@ -371,6 +382,18 @@ button:active {
 
     .task-card {
         padding: 2rem;
+    }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (min-width: 768px) {
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
     #task-form {

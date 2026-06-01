@@ -14,7 +14,7 @@
     <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
 
     <div class="page pet-page">
-      <aside class="desktop-sidebar" aria-label="Navegación lateral">
+      <aside class="desktop-sidebar" aria-label="Navegacion lateral">
         <a
           class="desktop-sidebar__brand"
           href="../index.html"
@@ -30,7 +30,7 @@
           </span>
         </a>
 
-        <nav class="desktop-sidebar__nav" aria-label="Navegación principal">
+        <nav class="desktop-sidebar__nav" aria-label="Navegacion principal">
           <a class="desktop-sidebar__link" href="../index.html">
             <i data-lucide="home" aria-hidden="true"></i>
             Inicio
@@ -61,13 +61,13 @@
           </a>
           <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true">
             <i data-lucide="settings" aria-hidden="true"></i>
-            Configuración
+            Configuracion
           </a>
         </nav>
 
         <article class="desktop-sidebar__message">
-          <strong>El amor se demuestra cada día</strong>
-          <p>Pequeñas rutinas, grandes beneficios para su calidad de vida.</p>
+          <strong>El amor se demuestra cada dia</strong>
+          <p>Pequenas rutinas, grandes beneficios para su calidad de vida.</p>
           <div class="mini-illustration" aria-hidden="true">
             <img
               class="sidebar-pets-image"
@@ -120,7 +120,7 @@
           <div class="pet-hero__content">
             <h1 class="page-title" id="pets-page-title">Mis Mascotas</h1>
             <p class="page-subtitle">
-              Administrá la información y cuidados de tus compañeros.
+              Administra la informacion y cuidados de tus companeros.
             </p>
           </div>
 
@@ -157,7 +157,7 @@
 
           <div id="selected-pet-detail" class="card" aria-live="polite">
             <p class="card-text">
-              Seleccioná una mascota para ver su información y próximos cuidados.
+              Selecciona una mascota para ver su informacion y proximos cuidados.
             </p>
           </div>
         </section>
@@ -179,7 +179,7 @@
             </button>
             <button class="tab" type="button" data-pet-section="Informacion">
               <i data-lucide="info" aria-hidden="true"></i>
-              Información
+              Informacion
             </button>
             <button class="tab" type="button" data-pet-section="Historial">
               <i data-lucide="history" aria-hidden="true"></i>
@@ -217,7 +217,7 @@
 
             <form id="pet-form" class="form">
               <fieldset class="pet-form-group">
-                <legend>Datos básicos</legend>
+                <legend>Datos basicos</legend>
                 <div class="form-grid">
                   <div class="form-group">
                     <label class="form-label" for="pet-name">Nombre</label>
@@ -226,7 +226,6 @@
                       id="pet-name"
                       name="name"
                       type="text"
-                      maxlength="40"
                       placeholder="Ej: Kira"
                       required
                     />
@@ -244,45 +243,14 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label" for="pet-knows-birth-date">¿Sabés la fecha de nacimiento?</label>
-                    <select class="form-select" id="pet-knows-birth-date" name="knowsBirthDate">
-                      <option value="">Seleccioná una opción</option>
-                      <option value="birthdate">Sí, sé la fecha</option>
-                      <option value="manual">No, cargar edad aproximada</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group" id="pet-birth-date-group" hidden style="display: none;">
-                    <label class="form-label" for="pet-birth-date">Fecha de nacimiento</label>
-                    <input
-                      class="form-input"
-                      id="pet-birth-date"
-                      name="birthDate"
-                      type="date"
-                    />
-                    <p class="form-help">La usamos para calcular la edad automáticamente.</p>
-                  </div>
-
-                  <div class="form-group" id="pet-age-group" hidden style="display: none;">
-                    <label class="form-label" for="pet-age">Cantidad</label>
+                    <label class="form-label" for="pet-age">Edad</label>
                     <input
                       class="form-input"
                       id="pet-age"
                       name="age"
                       type="text"
-                      inputmode="numeric"
-                      placeholder="Ej: 3"
+                      placeholder="Ej: 3 anos"
                     />
-                    <p class="form-help">Usá una edad aproximada si no sabés la fecha exacta.</p>
-                  </div>
-
-                  <div class="form-group" id="pet-age-unit-group" hidden style="display: none;">
-                    <label class="form-label" for="pet-age-unit">Unidad de edad</label>
-                    <select class="form-select" id="pet-age-unit" name="ageUnit">
-                      <option value="days">días</option>
-                      <option value="months">meses</option>
-                      <option value="years" selected>años</option>
-                    </select>
                   </div>
 
                   <div class="form-group">
@@ -292,8 +260,17 @@
                       id="pet-breed"
                       name="breed"
                       type="text"
-                      maxlength="60"
                       placeholder="Ej: Golden Retriever"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="pet-birth-date">Fecha de nacimiento</label>
+                    <input
+                      class="form-input"
+                      id="pet-birth-date"
+                      name="birthDate"
+                      type="date"
                     />
                   </div>
 
@@ -313,33 +290,22 @@
                 <legend>Salud y cuidados</legend>
                 <div class="form-grid">
                   <div class="form-group">
-                    <label class="form-label" for="pet-weight">Peso aproximado</label>
+                    <label class="form-label" for="pet-weight">Peso</label>
                     <input
                       class="form-input"
                       id="pet-weight"
                       name="weight"
                       type="text"
-                      inputmode="decimal"
-                      placeholder="Ej: 4,5"
+                      placeholder="Ej: 28 kg"
                     />
-                    <p class="form-help">Podés usar coma decimal. Ej: 4,5 kg o 450 g.</p>
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label" for="pet-weight-unit">Unidad de peso</label>
-                    <select class="form-select" id="pet-weight-unit" name="weightUnit">
-                      <option value="">Seleccioná una unidad</option>
-                      <option value="kg">kg</option>
-                      <option value="g">g</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label" for="pet-size">Tamaño</label>
+                    <label class="form-label" for="pet-size">Tamano</label>
                     <select class="form-select" id="pet-size" name="size">
                       <option value="">Sin dato</option>
                       <option value="Toy / mini">Toy / mini</option>
-                      <option value="Pequeno">Pequeño</option>
+                      <option value="Pequeno">Pequeno</option>
                       <option value="Mediano">Mediano</option>
                       <option value="Grande">Grande</option>
                       <option value="Gigante">Gigante</option>
@@ -353,19 +319,17 @@
                       id="pet-vet-name"
                       name="vetName"
                       type="text"
-                      maxlength="80"
-                      placeholder="Ej: Vet. María López"
+                      placeholder="Ej: Vet. Maria Lopez"
                     />
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label" for="pet-clinic">Clínica</label>
+                    <label class="form-label" for="pet-clinic">Clinica</label>
                     <input
                       class="form-input"
                       id="pet-clinic"
                       name="clinic"
                       type="text"
-                      maxlength="80"
                       placeholder="Ej: Patitas Felices"
                     />
                   </div>
@@ -373,7 +337,7 @@
               </fieldset>
 
               <fieldset class="pet-form-group">
-                <legend>Información adicional</legend>
+                <legend>Informacion adicional</legend>
                 <div class="form-grid">
                   <div class="form-group form-group--wide">
                     <label class="form-label" for="pet-allergies">Alergias</label>
@@ -382,7 +346,6 @@
                       id="pet-allergies"
                       name="allergies"
                       rows="3"
-                      maxlength="300"
                       placeholder="Ej: Alergia al pollo"
                     ></textarea>
                   </div>
@@ -394,7 +357,6 @@
                       id="pet-notes"
                       name="notes"
                       rows="3"
-                      maxlength="500"
                       placeholder="Ej: Le gusta pasear por la tarde"
                     ></textarea>
                   </div>
@@ -409,15 +371,6 @@
                       accept="image/*"
                     />
                     <p class="form-help">Opcional. Usa una imagen liviana para cuidar el almacenamiento.</p>
-                    <div id="pet-image-preview" class="form-help" hidden>
-                      <p id="pet-image-preview-text">Vista previa</p>
-                      <img
-                        id="pet-image-preview-img"
-                        src=""
-                        alt="Vista previa de la foto de la mascota"
-                        style="max-width: 180px; width: 100%; height: auto; border-radius: 0.75rem;"
-                      />
-                    </div>
                   </div>
                 </div>
               </fieldset>
@@ -443,9 +396,9 @@
         </article>
 
         <article class="desktop-widget">
-          <h2 class="desktop-widget__title">Información rápida</h2>
+          <h2 class="desktop-widget__title">Informacion rapida</h2>
           <ul id="quick-info-list" class="quick-info-list">
-            <!-- JS: información rápida -->
+            <!-- JS: informacion rapida -->
           </ul>
         </article>
 
@@ -461,7 +414,7 @@
             <span class="desktop-tip__fallback">💧</span>
           </span>
           <div>
-            <h2 class="desktop-widget__title">Tip del día</h2>
+            <h2 class="desktop-widget__title">Tip del dia</h2>
             <p id="pet-tip-text">
               Asegurate de que tu mascota siempre tenga agua fresca disponible.
             </p>
@@ -472,7 +425,7 @@
         </article>
       </aside>
 
-      <nav class="bottom-nav" aria-label="Navegación principal">
+      <nav class="bottom-nav" aria-label="Navegacion principal">
         <a class="bottom-nav__link" href="../index.html">
           <i data-lucide="home" aria-hidden="true"></i>
           Inicio
