@@ -372,6 +372,7 @@ button:active {
         min-height: calc(100vh - 1.2rem);
         display: grid;
         grid-template-columns: 15.5rem minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr) auto;
         grid-template-areas:
             "sidebar topbar"
             "sidebar main"
@@ -413,5 +414,6 @@ button:active {
 
     .agenda-page > [data-layout-footer] {
         grid-area: footer;
+        border-top: 1px solid var(--color-border);
     }
 }
