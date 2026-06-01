@@ -36,6 +36,9 @@ const petClinicInput = document.getElementById("pet-clinic");
 const petAllergiesInput = document.getElementById("pet-allergies");
 const petNotesInput = document.getElementById("pet-notes");
 const petImageInput = document.getElementById("pet-image");
+const petImagePreviewElement = document.getElementById("pet-image-preview");
+const petImagePreviewImageElement = document.getElementById("pet-image-preview-img");
+const petImagePreviewTextElement = document.getElementById("pet-image-preview-text");
 const petMessageElement = document.getElementById("pet-message");
 
 let selectedPetId = null;
@@ -151,6 +154,9 @@ function validateRequiredElements() {
     petAllergiesInput,
     petNotesInput,
     petImageInput,
+    petImagePreviewElement,
+    petImagePreviewImageElement,
+    petImagePreviewTextElement,
     petMessageElement
   ];
 
@@ -287,6 +293,39 @@ function setPetAgeMode(mode, shouldClear = false) {
     petAgeInput.value = "";
     petAgeUnitSelect.value = "years";
   }
+}
+
+function showPetImagePreview(imageSrc, text = "Vista previa") {
+  const previewSrc = cleanText(imageSrc);
+
+  if (!previewSrc) {
+    clearPetImagePreview();
+    return;
+  }
+
+  petImagePreviewImageElement.src = previewSrc;
+  petImagePreviewTextElement.textContent = text;
+  petImagePreviewElement.hidden = false;
+}
+
+function clearPetImagePreview() {
+  petImagePreviewImageElement.src = "";
+  petImagePreviewTextElement.textContent = "Vista previa";
+  petImagePreviewElement.hidden = true;
+}
+
+function getPetImagePreviewSource(imageValue) {
+  const cleanImage = cleanText(imageValue);
+
+  if (!cleanImage) {
+    return "";
+  }
+
+  if (/^(data:|blob:|https?:\/\/)/.test(cleanImage)) {
+    return cleanImage;
+  }
+
+  return resolveAssetPath(cleanImage);
 }
 
 function renderLucideIcons() {
@@ -877,6 +916,7 @@ function resetPetFormMode() {
 function clearPetForm() {
   petFormElement.reset();
   petImageInput.value = "";
+  clearPetImagePreview();
   petWeightUnitSelect.value = "";
   petAgeUnitSelect.value = "years";
   setPetAgeMode("", true);
@@ -915,6 +955,14 @@ function fillPetForm(pet) {
   petAllergiesInput.value = details.allergies === "Sin alergias registradas" ? "" : details.allergies;
   petNotesInput.value = details.notes === "Sin notas cargadas" ? "" : details.notes;
   petImageInput.value = "";
+  const previewSource = getPetImagePreviewSource(getPetImage(pet));
+
+  if (previewSource) {
+    showPetImagePreview(previewSource, "Foto actual");
+  } else {
+    clearPetImagePreview();
+  }
+
   setPetBirthDateMax();
   setPetAgeMode(ageMode, false);
 }
@@ -1073,6 +1121,24 @@ function readPetImageFile(file) {
     });
     reader.readAsDataURL(file);
   });
+}
+
+async function handlePetImageChange() {
+  if (!petImageInput.files || petImageInput.files.length === 0) {
+    clearPetImagePreview();
+    return;
+  }
+
+  try {
+    const previewImage = await readPetImageFile(petImageInput.files[0]);
+    showPetImagePreview(previewImage, "Nueva foto seleccionada");
+    petMessageElement.textContent = "";
+    petMessageElement.className = "form-help";
+  } catch (error) {
+    showPetMessage(error.message, "error");
+    petImageInput.value = "";
+    clearPetImagePreview();
+  }
 }
 
 function getPetFormPayload(imageValue, ageValidation, weightValue) {
@@ -1319,6 +1385,9 @@ function setupEventListeners() {
   petsListElement.addEventListener("click", handlePetsListClick);
   petFeatureTabsElement.addEventListener("click", handlePetFeatureTabsClick);
   petKnowsBirthDateSelect.addEventListener("change", handlePetAgeModeChange);
+  petImageInput.addEventListener("change", () => {
+    handlePetImageChange();
+  });
   petFormElement.addEventListener("submit", handlePetSubmit);
   document.addEventListener("click", handlePageClick);
 }

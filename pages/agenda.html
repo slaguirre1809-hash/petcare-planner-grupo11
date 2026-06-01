@@ -11,15 +11,11 @@
     <link rel="stylesheet" href="../assets/css/agenda.css">
 </head>
 
-<body>
+<body data-page="agenda">
     <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
 
-    <!-- Boton flotante -->
-    <button class="floating-button" type="button">
-        +
-    </button>
-
-    <div class="page">
+    <div class="page agenda-page">
+        <div data-layout-sidebar></div>
         <header class="app-container app-topbar">
             <a class="app-brand" href="../index.html" aria-label="Ir al inicio de PetCare Planner">
                 <span class="app-brand__icon" aria-hidden="true">&#128062;</span>
@@ -28,7 +24,7 @@
         </header>
 
         <main id="main-content" class="app-container">
-            <main>
+            <div>
                 <section class="agenda-intro">
                     <h2>Agenda de cuidados</h2>
 
@@ -107,19 +103,18 @@
                 <section id="tasks-list">
                     <h2>Listado de tareas</h2>
                 </section>
-            </main>
+            </div>
         </main>
 
-        <nav class="bottom-nav" aria-label="Navegaci&oacute;n principal">
-            <a class="bottom-nav__link" href="../index.html">Inicio</a>
-            <a class="bottom-nav__link" href="./mascotas.html">Mascotas</a>
-            <a class="bottom-nav__link is-active" href="./agenda.html" aria-current="page">Agenda</a>
-        </nav>
+        <div data-layout-bottom-nav></div>
+        <footer data-layout-footer></footer>
     </div>
 
     <script src="../assets/js/data.js"></script>
     <script src="../assets/js/utils.js"></script>
     <script src="../assets/js/storage.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="../assets/js/layout.js"></script>
     <script src="../assets/js/agenda.js"></script>
 </body>
 
