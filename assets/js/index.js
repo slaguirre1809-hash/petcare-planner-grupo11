@@ -1,7 +1,3 @@
-/* =====================================================
-   Mapa de emojis por especie
-   ===================================================== */
-
 const SPECIES_EMOJI = {
   perro: '🐕',
   gato: '🐱',
@@ -13,18 +9,25 @@ const SPECIES_EMOJI = {
   default: '🐾'
 };
 
-/* =====================================================
-   Mensajes para estados vacíos
-   ===================================================== */
+const PET_IMAGE_BY_ID = {
+  "pet-kira": "assets/img/pets/dog-avatar.png",
+  "pet-mishi": "assets/img/pets/cat-avatar.png",
+  "pet-luna": "assets/img/pets/rabbit-avatar.png"
+};
 
-var EMPTY_MESSAGES = {
+const TASK_ICON_ASSETS = {
+  vaccine: "assets/img/icons/icon-vaccine.png",
+  food: "assets/img/icons/icon-food.png",
+  bath: "assets/img/icons/icon-bath.png",
+  vet: "assets/img/icons/icon-vet.png",
+  medicine: "assets/img/icons/icon-medicine.png",
+  calendar: "assets/img/icons/icon-calendar.png"
+};
+
+const EMPTY_MESSAGES = {
   noTasks: 'No hay tareas a mostrar',
   noPets: 'No hay mascotas registradas'
 };
-
-/* =====================================================
-   Utilidades
-   ===================================================== */
 
 function getEmojiForSpecies(species) {
   var key = (species || '').trim().toLowerCase();
@@ -38,9 +41,72 @@ function getUserName() {
   return 'Cuidador';
 }
 
-/* =====================================================
-   Tips del día
-   ===================================================== */
+function getUserPhoto() {
+  // Por ahora se utiliza una imagen por defecto. En el futuro se podría leer desde localStorage:
+  // const userPhoto = localStorage.getItem('petcare_user_photo');
+  // return userPhoto || './assets/img/states/cuidador-default-avatar.png';
+  return './assets/img/states/cuidador-default-avatar.png';
+}
+
+function resolveAssetPath(assetPath) {
+  if (!assetPath) return '';
+  if (/^(data:|blob:|https?:\/\/)/.test(assetPath)) return assetPath;
+  return './' + assetPath;
+}
+
+function renderOptionalImage(assetPath, className, altText, isLazy) {
+  var resolvedPath = resolveAssetPath(assetPath);
+  if (!resolvedPath) return '';
+  var lazyAttr = isLazy !== false ? ' loading="lazy"' : '';
+  return '<img class="' + className + '" src="' + resolvedPath + '" alt="' + (altText || '') + '"' + lazyAttr + ' onload="this.closest(\'.pet-avatar, .task-avatar\')?.classList.add(\'has-image\')" onerror="this.hidden = true; this.closest(\'.pet-avatar, .task-avatar\')?.classList.remove(\'has-image\')" />';
+}
+
+function renderUserProfile() {
+  var nameElement = document.getElementById('user-name');
+  var avatarElement = document.getElementById('user-avatar');
+
+  if (nameElement) {
+    nameElement.textContent = getUserName();
+  }
+
+  if (avatarElement) {
+    avatarElement.src = getUserPhoto();
+  }
+}
+
+
+function getPetImage(pet) {
+  return (pet.image ? pet.image.trim() : '') || PET_IMAGE_BY_ID[pet.id] || '';
+}
+
+function getTaskIconFallback(title) {
+  var t = (title || '').toLowerCase();
+  if (t.indexOf('vacuna') !== -1) return '💉';
+  if (t.indexOf('aliment') !== -1) return '🥣';
+  if (t.indexOf('baño') !== -1) return '🛁';
+  if (t.indexOf('cepill') !== -1) return '🧹';
+  if (t.indexOf('control') !== -1 || t.indexOf('veterin') !== -1) return '⚕️';
+  if (t.indexOf('medic') !== -1 || t.indexOf('pastilla') !== -1) return '💊';
+  return '⚠️';
+}
+
+function getTaskIconKey(title) {
+  var t = (title || '').toLowerCase();
+  if (t.indexOf('vacuna') !== -1) return 'vaccine';
+  if (t.indexOf('aliment') !== -1) return 'food';
+  if (t.indexOf('baño') !== -1) return 'bath';
+  if (t.indexOf('control') !== -1 || t.indexOf('veterin') !== -1) return 'vet';
+  if (t.indexOf('medic') !== -1 || t.indexOf('pastilla') !== -1) return 'medicine';
+  return '';
+}
+
+function renderTaskIcon(title) {
+  var iconKey = getTaskIconKey(title);
+  var iconAsset = iconKey ? TASK_ICON_ASSETS[iconKey] : '';
+  var fallback = getTaskIconFallback(title);
+  var imgHtml = iconAsset ? renderOptionalImage(iconAsset, 'task-avatar__image', '', true) : '';
+  return imgHtml + '<span class="task-avatar__fallback" aria-hidden="true">' + fallback + '</span>';
+}
 
 var TIPS = [
   'Cepillar a tu mascota regularmente ayuda a reducir el estrés y fortalece el vínculo.',
@@ -58,14 +124,9 @@ function pickRandomTip() {
 function updateTipOfTheDay() {
   var tipContainer = document.getElementById('tip-of-the-day');
   if (!tipContainer) return;
-
   var paragraph = tipContainer.querySelector('p');
   if (paragraph) paragraph.textContent = pickRandomTip();
 }
-
-/* =====================================================
-   Renderizar contadores del resumen de hoy
-   ===================================================== */
 
 function renderStats(tasks) {
   var overdueCount = getOverdueTasksFromList(tasks).length;
@@ -84,10 +145,6 @@ function renderStats(tasks) {
   if (doneEl) doneEl.textContent = doneCount;
 }
 
-/* =====================================================
-   Badge por estado
-   ===================================================== */
-
 function getBadgeEmoji(statusKey) {
   switch (statusKey) {
     case 'overdue': return '⚠️';
@@ -98,23 +155,19 @@ function getBadgeEmoji(statusKey) {
   }
 }
 
-/* =====================================================
-   Crear elemento de tarea próxima
-   ===================================================== */
-
 function createUpcomingTaskElement(task, pets) {
   var status = getTaskVisualStatus(task);
   var pet = getPetByIdFromList(pets, task.petId);
   var petName = pet ? pet.name : 'Mascota';
   var species = pet ? pet.species : '';
-  var emoji = getEmojiForSpecies(species);
   var dateDisplay = formatDateToDisplay(task.date);
   var timeDisplay = formatTimeToDisplay(task.time);
+  var taskIconHtml = renderTaskIcon(task.title);
 
   var li = document.createElement('li');
   li.innerHTML =
     '<article class="task-card">' +
-      '<span class="task-avatar" aria-hidden="true">' + emoji + '</span>' +
+      '<span class="task-avatar" aria-hidden="true">' + taskIconHtml + '</span>' +
       '<div class="task-card__body">' +
         '<h3 class="task-card__title">' + task.title + '</h3>' +
         '<p class="task-card__meta">' +
@@ -125,18 +178,14 @@ function createUpcomingTaskElement(task, pets) {
       '</div>' +
       '<a class="task-link" href="#" aria-label="Ver detalle de la tarea">›</a>' +
     '</article>';
-
   return li;
 }
 
-/* =====================================================
-   Obtener tareas para el dashboard (prioridad: vencidas → hoy → próximas, máximo 3)
-   ===================================================== */
 
 function getDashboardTasks(tasks, limit) {
   var overdue = getOverdueTasksFromList(tasks);
   var today = getTodayTasksFromList(tasks);
-  var upcoming = getUpcomingTasksFromList(tasks, 10); 
+  var upcoming = getUpcomingTasksFromList(tasks, 10);
 
   overdue = sortTasksByDate(overdue);
   today = sortTasksByDate(today);
@@ -146,35 +195,25 @@ function getDashboardTasks(tasks, limit) {
   return combined.slice(0, limit);
 }
 
-/* =====================================================
-   Renderizar lista de próximas tareas
-   ===================================================== */
 
 function renderUpcomingTasks(tasks, pets) {
   var container = document.getElementById('upcoming-tasks-list');
   if (!container) return;
 
   container.innerHTML = '';
-
   var dashboardTasks = getDashboardTasks(tasks, 3);
 
-if (dashboardTasks.length === 0) {
-  container.innerHTML = '<li class="empty-state">' + EMPTY_MESSAGES.noTasks + '</li>';
-  return;
-}
+  if (dashboardTasks.length === 0) {
+    container.innerHTML = '<li class="empty-state">' + EMPTY_MESSAGES.noTasks + '</li>';
+    return;
+  }
 
-var fragment = document.createDocumentFragment();
-
-for (var i = 0; i < dashboardTasks.length; i++) {
-  fragment.appendChild(createUpcomingTaskElement(dashboardTasks[i], pets));
-}
-
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < dashboardTasks.length; i++) {
+    fragment.appendChild(createUpcomingTaskElement(dashboardTasks[i], pets));
+  }
   container.appendChild(fragment);
 }
-
-/* =====================================================
-   Renderizar lista de mascotas
-   ===================================================== */
 
 function renderPets(pets) {
   var container = document.getElementById('pets-list-container');
@@ -194,39 +233,48 @@ function renderPets(pets) {
     var pet = displayPets[i];
     var emoji = getEmojiForSpecies(pet.species);
     var age = pet.age || 'Edad no especificada';
+    var petImage = getPetImage(pet);
+    var imgHtml = renderOptionalImage(petImage, 'pet-avatar__image', 'Foto de ' + pet.name, true);
+    var hiddenAttr = petImage ? '' : ' aria-hidden="true"';
 
     var li = document.createElement('li');
     li.className = 'pet-mini-card';
-
     li.innerHTML =
-      '<span class="pet-avatar" aria-hidden="true">' + emoji + '</span>' +
+      '<span class="pet-avatar"' + hiddenAttr + '>' +
+        imgHtml +
+        '<span class="pet-avatar__fallback" aria-hidden="true">' + emoji + '</span>' +
+      '</span>' +
       '<div class="pet-info">' +
         '<p class="pet-name">' + pet.name + '</p>' +
         '<p class="pet-specie">' + pet.species + '</p>' +
         '<p class="pet-meta">' + age + '</p>' +
       '</div>';
-
     fragment.appendChild(li);
   }
-
   container.appendChild(fragment);
 }
-
-/* =====================================================
-   Renderizar saludo
-   ===================================================== */
 
 function renderGreeting() {
   var greetingElement = document.getElementById('user-greeting');
   if (!greetingElement) return;
-
-  var userName = getUserName();
-  greetingElement.textContent = '¡Hola, ' + userName + '! 🐾';
+  greetingElement.textContent = '¡Hola, ' + getUserName() + '! 👋';
 }
 
-/* =====================================================
-   Inicialización del dashboard
-   ===================================================== */
+
+function createLucideIcons() {
+  if (typeof lucide !== 'undefined' && lucide.createIcons) {
+    lucide.createIcons();
+  }
+}
+
+function addPetBtnHandler() {
+  const addPetBtn = document.querySelector('.pet-add-card');
+if (addPetBtn) {
+  addPetBtn.addEventListener('click', () => {
+    window.location.href = './pages/mascotas.html';
+  });
+}
+}
 
 function initDashboard() {
   try {
@@ -240,14 +288,16 @@ function initDashboard() {
     renderUpcomingTasks(tasks, pets);
     renderPets(pets);
     updateTipOfTheDay();
+    createLucideIcons();
+    addPetBtnHandler();
+    renderUserProfile();
 
     var tipLink = document.querySelector('.tip-of-the-day__button');
     if (tipLink) {
-      tipLink.addEventListener('click', function (event) {
+      tipLink.addEventListener('click', function() {
         updateTipOfTheDay();
       });
     }
-
   } catch (error) {
     console.error('Error al inicializar el dashboard:', error);
   }
