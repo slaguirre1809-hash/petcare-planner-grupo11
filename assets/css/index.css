@@ -1,223 +1,81 @@
-:root {
-  --pet-purple: #6d28d9;
-  --pet-purple-dark: #5b21b6;
-  --pet-purple-soft: #f4efff;
-  --pet-text: #111827;
-  --pet-muted: #64748b;
-  --pet-border: #e5e7eb;
-  --pet-soft-border: #eee8fb;
-  --pet-shadow: 0 16px 40px rgba(82, 63, 124, 0.1);
-}
-
-body {
-  background:
-    radial-gradient(circle at 80% 0%, rgba(196, 181, 253, 0.22), transparent 30rem),
-    linear-gradient(180deg, #ffffff 0%, #fbfaff 100%);
-  margin: 0;
-  padding: 0;
-}
-
-.index-page {
-  background: rgba(255, 255, 255, 0.78);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
 /* =========================
-   Header (móvil)
+    Espaciado entre secciones
    ========================= */
 
-.index-topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  position: relative;
-  z-index: 5;
-
-  padding-top: 1.35rem;
-  padding-bottom: 0.5rem;
+.dashboard-section {
+  margin-top: var(--space-lg);
 }
 
-.index-topbar .app-brand {
-  align-items: center;
-  gap: 0.35rem;
-  text-decoration: none;
-  display: flex;
-}
-
-.index-topbar .app-brand__text {
-  color: var(--pet-text);
-  font-size: 1.3rem;
-  font-weight: 900;
-  line-height: 0.98;
-}
-
-.index-topbar .app-brand__text strong {
-  color: var(--pet-purple);
-}
-
-.brand-paw {
-  width: 3.1rem;
-  height: 3.1rem;
-  display: grid;
-  place-items: center;
-  border-radius: 1.1rem;
-  color: var(--pet-purple);
-  font-size: 2.1rem;
-  line-height: 1;
-}
-
-.brand-paw img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: saturate(1.08) contrast(1.05);
-}
-
-.brand-paw img:not([hidden]) + span {
-  display: none;
-}
-
-/* =========================
-   Layout principal (mobile)
-   ========================= */
-
-.index-main {
-  display: grid;
-  gap: 1.5rem;
-  padding: 1rem 1rem 2rem;
-}
-
-.index-aside {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 0 1rem 0;
-  align-items: stretch;
-}
-
-.tip-of-the-day {
-  padding: 0;
-  margin-top: 1rem;
-}
-
-.bottom-nav {
-  margin-top: auto;
-}
-
-.app-footer {
-  margin-top: auto;
-}
-
-/* =========================
-   Saludo
-   ========================= */
-
-.index-hero {
-  display: block;
-  padding-top: 0rem;
-  padding-bottom: 0.1rem;
-}
-
-.index-hero__content {
-  min-width: 0;
-}
-
-.index-greeting {
+.dashboard-section:first-child {
   margin-top: 0;
-  font-size: 1.8rem;
-  font-weight: 900;
-  color: var(--pet-purple);
-  margin-bottom: 0.5rem;
-}
-
-.index-hero__description {
-  font-size: 1rem;
-  color: var(--pet-muted);
-  line-height: 1.4;
 }
 
 /* =========================
-   Bloque destacado (con dos botones)
+   Bloque de saludo
+   ========================= */
+
+.greeting-block {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+
+#user-greeting {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.greeting-block__description {
+  margin-top: var(--space-xs);
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+/* =========================
+   3. Bloque destacado
    ========================= */
 
 .highlight-block {
   background: var(--color-primary-light);
   border-radius: var(--radius-lg);
   padding: var(--space-md);
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--pet-shadow);
-  border: 1px solid var(--pet-soft-border);
-}
-
-.highlight-block__content {
-  position: relative;
-  z-index: 1;
 }
 
 .highlight-block .section-title {
-  color: var(--pet-purple-dark);
-  margin-bottom: var(--space-xs);
+  color: var(--color-primary-dark, var(--color-text));
 }
 
 .highlight-block__subtitle {
+  margin-top: var(--space-sm);
   font-size: 0.9rem;
-  color: var(--pet-muted);
-  margin-bottom: var(--space-md);
+  color: var(--color-muted);
 }
 
-.highlight-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
+.highlight-block .btn-primary {
   margin-top: var(--space-md);
-}
-
-.highlight-buttons .btn {
-  flex: 1;
-  text-align: center;
 }
 
 /* =========================
    Resumen de hoy
    ========================= */
 
-.stats-section {
-  margin-top: var(--space-md);
-}
-
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-md);
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
 }
 
-.stats-grid li {
-  list-style: none;
+.stats-grid > .section-title {
+  grid-column: 1 / -1;
 }
 
 .stat-card {
   display: grid;
   justify-items: center;
+  align-content: center;
   text-align: center;
   gap: 0.25rem;
-  background: #ffffff;
-  border: 1px solid var(--pet-soft-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-md);
-  box-shadow: var(--pet-shadow);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 35px rgba(82, 63, 124, 0.15);
 }
 
 .stat-card__value {
@@ -227,80 +85,121 @@ body {
 
 .stat-card__label {
   font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--pet-text);
+  color: var(--color-muted);
 }
 
-.stat-card__helper {
-  font-size: 0.7rem;
-  color: var(--pet-muted);
+#overdue-count {
+  color: var(--color-danger);
 }
 
-.stat-card__icon {
+#today-count {
+  color: var(--color-warning);
+}
+
+#upcoming-count {
+  color: var(--color-success);
+}
+
+#done-count {
+  color: var(--color-primary);
+}
+
+/* =========================
+    Próximas tareas
+   ========================= */
+
+#upcoming-tasks-list {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.task-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.task-avatar {
+  flex: 0 0 auto;
   width: 2.5rem;
   height: 2.5rem;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  margin-bottom: 0.25rem;
+  background: var(--color-primary-light);
+  font-size: 1.25rem;
 }
 
-.stat-card__icon .lucide {
-  width: 1.25rem;
-  height: 1.25rem;
-  stroke-width: 2;
+.task-card__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-/* Colores específicos por estado */
-.stat-card--danger {
-  background: #ffe8ee;
-}
-.stat-card--danger .stat-card__value {
-  color: #f04464;
-}
-.stat-card--danger .stat-card__icon {
-  background: rgba(240, 68, 100, 0.15);
-  color: #f04464;
+.task-card__title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--color-text);
 }
 
-.stat-card--warning {
-  background: #fff3d6;
-}
-.stat-card--warning .stat-card__value {
-  color: #f59e0b;
-}
-.stat-card--warning .stat-card__icon {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+.task-card__meta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-muted);
 }
 
-.stat-card--success {
-  background: #e5f8eb;
-}
-.stat-card--success .stat-card__value {
-  color: #22a956;
-}
-.stat-card--success .stat-card__icon {
-  background: rgba(34, 169, 86, 0.15);
-  color: #22a956;
+.task-card .badge {
+  align-self: flex-start;
+  width: fit-content;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.55rem;
 }
 
-.stat-card--primary {
-  background: #f1ebff;
-}
-.stat-card--primary .stat-card__value {
-  color: #6f35e8;
-}
-.stat-card--primary .stat-card__icon {
-  background: rgba(111, 53, 232, 0.15);
-  color: #6f35e8;
+.task-link {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: var(--transition-colors);
 }
 
-.pets-list-grid {
+.task-link:hover {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.section-link:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+    Mis mascotas
+   ========================= */
+
+#pets-list-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-md);
-  margin-bottom: var(--space-md);
+  padding: 0;
+  list-style: none;
 }
 
 .pet-mini-card {
@@ -309,50 +208,13 @@ body {
   align-items: center;
   text-align: center;
   gap: 0.2rem;
-  background: #ffffff;
-  border: 1px solid var(--pet-soft-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-md);
-  box-shadow: var(--pet-shadow);
-  transition: transform 0.2s, border-color 0.2s;
-}
-
-.pet-mini-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--pet-purple);
 }
 
 .pet-mini-card .pet-avatar {
   width: 3.5rem;
   height: 3.5rem;
-  border-radius: 50%;
-  background: var(--color-primary-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  margin-bottom: 0.3rem;
-}
-
-.pet-mini-card .pet-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.pet-mini-card .pet-avatar .pet-avatar__fallback {
   font-size: 1.5rem;
-}
-
-.pet-mini-card .pet-avatar.has-image .pet-avatar__fallback {
-  display: none;
-}
-
-.pet-name {
-  margin: 0;
-  font-weight: 900;
-  color: var(--pet-text);
-  font-size: 1rem;
+  margin-bottom: 0.3rem;
 }
 
 .pet-specie {
@@ -366,225 +228,38 @@ body {
   margin-top: 0.25rem;
 }
 
-.pet-meta {
-  margin: 0;
-  font-size: 0.75rem;
-  color: var(--pet-muted);
-}
-
-.pet-add-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px dashed #c4b5fd;
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.68);
-  color: var(--pet-purple);
-  font-weight: 900;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.pet-add-card:hover {
-  background: #f4efff;
-  transform: translateY(-1px);
-}
-
-.pet-add-card__icon {
-  font-size: 1.5rem;
-  font-weight: 300;
-}
-
 /* =========================
-   Próximas tareas 
-   ========================= */
-
-.upcoming-tasks-aside .tasks-list {
-  display: grid;
-  gap: 0.75rem;
-  padding: 0;
-  list-style: none;
-}
-
-.task-card {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-md);
-  border: 1px solid var(--pet-border);
-  border-radius: var(--radius-lg);
-  background: #ffffff;
-  box-shadow: var(--pet-shadow);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.task-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 35px rgba(82, 63, 124, 0.12);
-}
-
-.task-avatar {
-  flex: 0 0 auto;
-  width: 2.5rem;
-  height: 2.5rem;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--color-primary-light);
-  position: relative;
-  overflow: hidden;
-}
-
-.task-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.task-avatar .task-avatar__fallback {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  font-size: 1.25rem;
-}
-
-.task-avatar.has-image .task-avatar__fallback {
-  display: none;
-}
-
-.task-card__body {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.task-card__title {
-  font-size: 0.95rem;
-  font-weight: 900;
-  color: var(--pet-text);
-}
-
-.task-card__meta {
-  font-size: 0.8rem;
-  color: var(--pet-muted);
-}
-
-.task-card .badge {
-  align-self: flex-start;
-  font-size: 0.75rem;
-  padding: 0.25rem 0.55rem;
-}
-
-.task-link {
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  font-size: 1.25rem;
-  color: var(--color-muted);
-  text-decoration: none;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.task-link:hover {
-  background: var(--color-primary-light);
-  color: var(--color-primary);
-}
-
-.section-link {
-  text-decoration: none;
-  font-weight: 800;
-  color: var(--pet-purple);
-}
-
-.section-link:hover {
-  text-decoration: underline;
-}
-
-/* =========================
-   Tip del día
+    Tip del día
    ========================= */
 
 .tip-of-the-day {
   background: var(--color-primary-light);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--pet-soft-border);
-  box-shadow: var(--pet-shadow);
+  padding: var(--space-md);
   text-align: center;
-  align-self: start;
 }
 
-.tip-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
-}
-
-.tip-icon {
-  width: 4rem;
-  height: 4rem;
-  line-height: 1;
-  flex-shrink: 0;
-  position: relative;
-  margin: 0;
-}
-
-.tip-icon img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.tip-icon img:not([hidden]) + .tip-fallback,
-.tip-icon img[src]:not([src=""]) + .tip-fallback {
-  display: none;
-}
-
-.tip-fallback {
-  display: block;
-  font-size: 2.5rem;
-}
-
-.tip-text {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.4;
-  color: var(--pet-text);
+.tip-of-the-day p {
+  font-size: 0.95rem;
+  color: var(--color-text);
 }
 
 .tip-of-the-day__button {
   display: inline-block;
-  margin: 0;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.9rem;
-  line-height: 1;
-  color: var(--pet-purple);
-  background: transparent;
-  border: none;
-  cursor: pointer;
+  margin-top: var(--space-sm);
+  font-size: 0.85rem;
   font-weight: 700;
-  transition: transform 0.2s, color 0.2s;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: var(--transition-colors);
 }
 
 .tip-of-the-day__button:hover {
   text-decoration: underline;
-  color: var(--pet-purple-dark);
-  transform: translateY(-1px);
 }
 
 /* =========================
-   Footer global
+    Footer
    ========================= */
 
 .app-footer {
@@ -592,338 +267,59 @@ body {
   padding: var(--space-md);
   margin-top: var(--space-xl);
   font-size: 0.8rem;
-  color: var(--pet-muted);
-  border-top: 1px solid var(--pet-border);
-  width: 100%;
-}
-
-.notification-btn {
-  position: relative;
-  width: 2.75rem;
-  height: 2.75rem;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  color: var(--pet-muted);
-  font-size: 1.55rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-.notification-btn .lucide {
-  display: block;
-}
-.notification-btn span {
-  position: absolute;
-  top: 0.15rem;
-  right: 0.1rem;
-  width: 1.2rem;
-  height: 1.2rem;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--pet-purple);
-  color: #ffffff;
-  font-size: 0.7rem;
-  font-weight: 900;
-}
-
-.aside-top-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-left: auto;
-}
-
-.user-profile-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-
-  padding: 0.45rem 0.75rem;
-
-  border: 1px solid var(--pet-border);
-  border-radius: 999px;
-
-  background: #ffffff;
-
-  cursor: pointer;
-
-  transition:
-    background-color 0.2s,
-    border-color 0.2s,
-    transform 0.2s;
-}
-
-.user-profile-btn:hover {
-  background: #f8fafc;
-  border-color: #d8dce2;
-}
-
-.user-profile-btn__avatar {
-  width: 2.4rem;
-  height: 2.4rem;
-
-  border-radius: 50%;
-  overflow: hidden;
-
-  flex-shrink: 0;
-}
-
-.user-profile-btn__avatar img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.user-profile-btn__name {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--pet-text);
-}
-
-.user-profile-btn__arrow {
-  width: 1rem;
-  height: 1rem;
-  color: var(--pet-muted);
-}
-
-
-.desktop-sidebar {
-  display: none;
+  color: var(--color-muted);
+  border-top: 1px solid var(--color-border);
 }
 
 /* =========================
-   Desktop (≥1100px)
+    Ajustes generales
    ========================= */
 
-@media (min-width: 1100px) {
-  .index-page {
-    display: grid;
-    grid-template-columns: 15.5rem minmax(0, 1fr) 22rem;
-    grid-template-areas:
-      "sidebar  main  topbar"
-      "sidebar  main    aside"
-      "footer   footer  footer";
-    column-gap: 1.5rem;
-    row-gap: 0;
-    max-width: 96rem;
-    margin: 0 auto;
-    padding: 0;
-    border: 1px solid var(--pet-border);
-    border-radius: 1.05rem;
-    background: rgba(255, 255, 255, 0.9);
+main.app-container {
+  padding-top: var(--space-md);
+  overflow-x: hidden;
+}
+
+/* =========================
+    Desktop 
+   ========================= */
+
+@media (min-width: 768px) {
+  .dashboard-section {
+    margin-top: var(--space-xl);
   }
 
-  .index-hero {
-    margin-top: 3rem;   
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 
-  .index-topbar {
-    grid-area: topbar;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0rem 1.5rem 0 1rem;
-    margin: 0;
-  }
-  .index-topbar .app-brand {
-    display: none; 
-  }
-  .aside-top-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-left: auto;
-  }
-
-  /* Main y aside */
-  .index-main {
-    grid-area: main;
-    padding: 0 0 2rem 1rem;
-    margin: 0;
-  }
-  .index-aside {
-    grid-area: aside;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 0 1rem 2rem 0;
-    margin: 0;
-  }
-
+  .greeting-block,
+  .highlight-block,
   .tip-of-the-day {
-    margin-top: 2rem; 
-    padding: 0;
-  }
-
-  .desktop-sidebar {
-    grid-area: sidebar;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 1rem 1.25rem;
-    border-right: 1px solid var(--pet-border);
-    background:
-      radial-gradient(circle at 40% 82%, rgba(196, 181, 253, 0.28), transparent 12rem),
-      #ffffff;
-  }
-
-  .desktop-sidebar__brand {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    color: var(--pet-text);
-    font-size: 1.35rem;
-    font-weight: 900;
-    line-height: 1.02;
-    text-decoration: none;
-  }
-  .desktop-sidebar__brand strong {
-    color: var(--pet-purple);
-  }
-  .desktop-sidebar__nav {
-    display: grid;
-    gap: 0.55rem;
-  }
-  .desktop-sidebar__link {
-    display: flex;
-    align-items: center;
-    gap: 0.78rem;
-    min-height: 3.05rem;
-    padding: 0.72rem 1rem;
-    border-radius: 0.75rem;
-    color: var(--pet-text);
-    font-weight: 750;
-    text-decoration: none;
-    transition: background-color 0.2s, color 0.2s;
-  }
-  .desktop-sidebar__link .lucide {
-    width: 1.25rem;
-    height: 1.25rem;
-    color: #64748b;
-  }
-  .desktop-sidebar__link:hover,
-  .desktop-sidebar__link.is-active {
-    background: var(--pet-purple-soft);
-    color: var(--pet-purple);
-  }
-  .desktop-sidebar__link.is-active .lucide {
-    color: var(--pet-purple);
-  }
-  .desktop-sidebar__link.is-disabled {
-    color: #475569;
-    cursor: not-allowed;
-  }
-  .desktop-sidebar__message {
-    margin-top: auto;
-    padding: 1rem 0.95rem 0.85rem;
-    border-radius: 1rem;
-    background:
-      radial-gradient(circle at 82% 76%, rgba(196, 181, 253, 0.42), transparent 4.5rem),
-      linear-gradient(180deg, #f5f0ff, #ffffff);
-  }
-  .desktop-sidebar__message header strong {
-    display: block;
-    color: var(--pet-purple-dark);
-    font-size: 1rem;
-  }
-  .desktop-sidebar__message p {
-    margin-top: 0.5rem;
-    color: var(--pet-text);
-    font-size: 0.86rem;
-  }
-  .mini-illustration {
-    position: relative;
-    display: flex;
-    align-items: end;
-    justify-content: center;
-    min-height: 13.2rem;
-    margin-top: 0.8rem;
-    padding: 0.35rem 0.45rem 0;
-    border: 1px solid var(--pet-border);
-    border-radius: 1.1rem;
-    background: rgba(255, 255, 255, 0.86);
-    box-shadow: var(--shadow-card);
-    overflow: hidden;
-  }
-  .sidebar-pets-image {
-    position: absolute;
-    inset: auto 0.2rem 0;
-    z-index: 2;
-    width: calc(100% - 0.4rem);
-    height: 13rem;
-    max-width: 100%;
-    filter: saturate(1.1) contrast(1.06);
-    object-fit: cover;
-    object-position: center bottom;
-  }
-  .sidebar-pets-image[hidden] {
-    display: none;
-  }
-  .mini-illustration .pet-face {
-    position: relative;
-    z-index: 1;
-    width: 4.25rem;
-    height: 4.25rem;
-    margin-inline: -0.3rem;
-  }
-  .sidebar-pets-image:not([hidden]) ~ .pet-face {
-    visibility: hidden;
-  }
-  .bottom-nav {
-    display: none;
-  }
-  .app-footer {
-    grid-area: footer;
-    margin-top: 0;
-    border-top: 1px solid var(--pet-border);
-  }
-  .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .pets-list-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .upcoming-tasks-aside .tasks-list {
-    grid-template-columns: 1fr;
-  }
-  .highlight-buttons .btn {
-    flex: 0 0 auto;
-  }
-}
-
-/* =========================
-   Tablet / desktop pequeño
-   ========================= */
-
-@media (min-width: 768px) and (max-width: 1099px) {
-  .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .pets-list-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .highlight-block {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     padding: var(--space-lg);
   }
 
-  .highlight-buttons {
-    margin-top: 0;
+  .highlight-block .btn-primary {
+    width: auto;
   }
 
-  .highlight-buttons .btn {
-    flex: 0 0 auto;
-    margin-left: var(--space-md);
-  }
-
-  .upcoming-tasks-aside .tasks-list {
+  #upcoming-tasks-list {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  #pets-list-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pet-mini-card .pet-avatar {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.75rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .app-footer {
+    margin-top: var(--space-2xl);
+    padding: var(--space-lg);
   }
 }

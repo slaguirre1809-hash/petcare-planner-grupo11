@@ -4,204 +4,96 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inicio | PetCare Planner</title>
+
   <link rel="stylesheet" href="./assets/css/base.css">
   <link rel="stylesheet" href="./assets/css/components.css">
   <link rel="stylesheet" href="./assets/css/index.css">
 </head>
+
 <body>
   <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
-  <div class="page index-page">
 
-    <!-- Sidebar desktop -->
-    <aside class="desktop-sidebar" aria-label="Navegacion lateral">
-      <a class="desktop-sidebar__brand" href="./index.html" aria-label="Ir al inicio de PetCare Planner">
-        <span class="brand-paw" aria-hidden="true">
-          <img src="./assets/img/brand/isotipo-paw.png" alt="">
-          <span>👋</span>
-        </span>
-        <span>PetCare<br><strong>Planner</strong></span>
-      </a>
-      <nav class="desktop-sidebar__nav" aria-label="Navegacion principal">
-        <a class="desktop-sidebar__link is-active" href="./index.html" aria-current="page"><i data-lucide="home" aria-hidden="true"></i>Inicio</a>
-        <a class="desktop-sidebar__link" href="./pages/mascotas.html"><i data-lucide="paw-print" aria-hidden="true"></i>Mis Mascotas</a>
-        <a class="desktop-sidebar__link" href="./pages/agenda.html"><i data-lucide="clipboard-check" aria-hidden="true"></i>Agenda de cuidados</a>
-        <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true"><i data-lucide="bell" aria-hidden="true"></i>Recordatorios</a>
-        <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true"><i data-lucide="calendar-days" aria-hidden="true"></i>Calendario</a>
-        <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true"><i data-lucide="circle-user" aria-hidden="true"></i>Perfil</a>
-        <a class="desktop-sidebar__link is-disabled" href="#" aria-disabled="true"><i data-lucide="settings" aria-hidden="true"></i>Configuracion</a>
-      </nav>
-      <article class="desktop-sidebar__message">
-        <header><strong>El amor se demuestra cada dia</strong></header>
-        <p>Pequeñas rutinas, grandes beneficios para su calidad de vida.</p>
-        <div class="mini-illustration" aria-hidden="true">
-          <img class="sidebar-pets-image" src="./assets/img/pets/sidebar-pets.png" alt="" loading="lazy" onerror="this.hidden = true">
-          <span class="pet-face pet-face--dog"></span>
-          <span class="pet-face pet-face--cat"></span>
-        </div>
-      </article>
-    </aside>
-
-    <!-- Header mobile -->
-    <header class="app-container app-topbar index-topbar">
+  <div class="page">
+    <header class="app-container app-topbar">
       <a class="app-brand" href="./index.html" aria-label="Ir al inicio de PetCare Planner">
-        <span class="brand-paw" aria-hidden="true">
-          <img src="./assets/img/brand/isotipo-paw.png" alt="">
-          <span>🐾</span>
-        </span>
-        <span class="app-brand__text">PetCare<br><strong>Planner</strong></span>
+        <span class="app-brand__icon" aria-hidden="true">🐾</span>
+        <span class="app-brand__text">PetCare Planner</span>
       </a>
-
-      <nav class="aside-top-actions" aria-label="Accesos rápidos">
-
-  <button
-    class="notification-btn notification-btn--desktop"
-    type="button"
-    aria-label="3 recordatorios pendientes"
-  >
-    <i data-lucide="bell" aria-hidden="true"></i>
-    <span>3</span>
-  </button>
-
-  <button
-    class="user-profile-btn"
-    type="button"
-    aria-label="Perfil de usuario"
-  >
-    <span class="user-profile-btn__avatar">
-      <img id="user-avatar" src="./assets/img/users/default-user.png" alt="Foto de perfil" >
-    </span>
-
-    <span id="user-name" class="user-profile-btn__name">
-      Usuario
-    </span>
-
-    <i data-lucide="chevron-down" aria-hidden="true"></i>
-  </button>
-
-</nav>
-
     </header>
 
-    <!-- Main -->
-    <main id="main-content" class="app-container index-main">
-      <h1 class="visually-hidden">Panel de control de PetCare Planner</h1>
+    <main id="main-content" class="app-container">
 
-      <!-- Hero / saludo -->
-      <section class="index-hero" aria-labelledby="welcome-title">
-        <header class="index-hero__content">
-          <h2 id="welcome-title" class="visually-hidden">Bienvenida</h2>
-          <p id="user-greeting" class="index-greeting">Cargando...</p>
-          <p class="index-hero__description">Organizá los cuidados de tus mascotas y seguí su bienestar día a día.</p>
-        </header>
+      <h1 class="visually-hidden">Panel de inicio de PetCare Planner</h1>
+
+      <section class="dashboard-section greeting-block">
+        <p id="user-greeting">Cargando...</p> 
+        <p class="greeting-block__description">Organizá los cuidados de tus mascotas y seguí su bienestar día a día.</p>
       </section>
 
-      <!-- Highlight block -->
-      <section class="dashboard-section highlight-block" aria-labelledby="highlight-title">
-        <header class="highlight-block__content">
-          <h2 id="highlight-title" class="section-title">Tus mascotas, siempre al día ❤️</h2>
-          <p class="highlight-block__subtitle">Planificá sus cuidados, recibí recordatorios y disfrutá más tiempo juntos.</p>
-        </header>
-        <nav class="highlight-buttons" aria-label="Acciones rápidas">
-          <a class="btn btn-primary" href="./pages/agenda.html">+ Nueva tarea</a>
-          <a class="btn btn-secondary" href="./pages/agenda.html">Ver agenda →</a>
-        </nav>
+      <section class="dashboard-section highlight-block">
+        <h2 class="section-title">Tus mascotas, siempre al día ❤️</h2>
+        <p class="highlight-block__subtitle">Planificá sus cuidados y recibí recordatorios para que nada se te pase.</p>
+        <a class="btn btn-primary" href="./pages/agenda.html">+ Nueva tarea</a>
       </section>
 
-      <!-- Stats -->
-      <section class="dashboard-section stats-section" aria-labelledby="stats-title">
-        <h2 id="stats-title" class="section-title">Resumen de hoy</h2>
-        <ul class="stats-grid">
-          <li>
-            <article class="stat-card stat-card--danger">
-              <span class="stat-card__icon" aria-hidden="true"><i data-lucide="circle-alert"></i></span>
-              <span class="stat-card__value" id="overdue-count">--</span>
-              <span class="stat-card__label">Vencidas</span>
-              <span class="stat-card__helper">Requieren atención</span>
-            </article>
-          </li>
-          <li>
-            <article class="stat-card stat-card--warning">
-              <span class="stat-card__icon" aria-hidden="true"><i data-lucide="sun"></i></span>
-              <span class="stat-card__value" id="today-count">--</span>
-              <span class="stat-card__label">Para hoy</span>
-              <span class="stat-card__helper">Programadas para hoy</span>
-            </article>
-          </li>
-          <li>
-            <article class="stat-card stat-card--success">
-              <span class="stat-card__icon" aria-hidden="true"><i data-lucide="calendar-days"></i></span>
-              <span class="stat-card__value" id="upcoming-count">--</span>
-              <span class="stat-card__label">Próximas</span>
-              <span class="stat-card__helper">En los próximos días</span>
-            </article>
-          </li>
-          <li>
-            <article class="stat-card stat-card--primary">
-              <span class="stat-card__icon" aria-hidden="true"><i data-lucide="circle-check"></i></span>
-              <span class="stat-card__value" id="done-count">--</span>
-              <span class="stat-card__label">Completadas</span>
-              <span class="stat-card__helper">¡Buen trabajo!</span>
-            </article>
-          </li>
+      <section class="dashboard-section stats-grid">
+        <h2 class="section-title">Resumen de hoy</h2>
+        <article class="stat-card stat-card--danger">
+          <span class="stat-card__value" id="overdue-count">--</span>
+          <span class="stat-card__label">Vencidas</span>
+        </article>
+        <article class="stat-card stat-card--warning">
+          <span class="stat-card__value" id="today-count">--</span>
+          <span class="stat-card__label">Para hoy</span>
+        </article>
+        <article class="stat-card stat-card--success">
+          <span class="stat-card__value" id="upcoming-count">--</span>
+          <span class="stat-card__label">Próximas</span>
+        </article>
+        <article class="stat-card stat-card--primary">
+          <span class="stat-card__value" id="done-count">--</span>
+          <span class="stat-card__label">Completadas</span>
+        </article>
+      </section>
+
+      <section class="dashboard-section upcoming-tasks">
+        <header class="section-header">
+          <h2 class="section-title">Próximas tareas</h2>
+          <a class="section-link" href="./pages/agenda.html" aria-label="Ver todas las tareas">Ver todas</a>
+        </header>
+        <ul id="upcoming-tasks-list">
         </ul>
       </section>
 
-      <!-- Pets -->
-      <section class="dashboard-section my-pets" aria-labelledby="pets-title">
+      <section class="dashboard-section my-pets">
         <header class="section-header">
-          <h2 id="pets-title" class="section-title">Mis mascotas</h2>
+          <h2 class="section-title">Mis mascotas</h2>
           <a class="section-link" href="./pages/mascotas.html" aria-label="Ver todas las mascotas">Ver todas</a>
         </header>
-        <ul id="pets-list-container" class="pets-list-grid"><!-- Render dinámico --></ul>
-        <button class="pet-add-card" type="button" data-open-pet-form>
-          <span class="pet-add-card__icon" aria-hidden="true">+</span>
-          <span class="pet-add-card__text">Agregar mascota</span>
-        </button>
+        <ul id="pets-list-container">
+        </ul>
       </section>
+
+      <aside class="dashboard-section tip-of-the-day" id="tip-of-the-day">
+        <p>Cargando...</p>
+        <button class="tip-of-the-day__button" type="button" > Ver otro tip </button>
+      </aside>
+
     </main>
 
-    <aside class="index-aside" aria-label="Información complementaria">
-
-  <article class="dashboard-section tip-of-the-day" id="tip-of-the-day" aria-labelledby="tip-title">
-    <header class="tip-content">
-      <h2 id="tip-title" class="visually-hidden">Tip del día</h2>
-      <figure class="tip-icon">
-        <img src="./assets/img/tips/water-bowl.png" alt="" loading="lazy" onerror="this.hidden = true">
-        <span class="tip-fallback" aria-hidden="true">💧</span>
-      </figure>
-      <p class="tip-text">Cargando...</p>
-      <button class="tip-of-the-day__button" type="button">Ver otro tip</button>
-    </header>
-  </article>
-
-  <section class="dashboard-section upcoming-tasks-aside" aria-labelledby="tasks-title">
-    <header class="section-header">
-      <h2 id="tasks-title" class="section-title">Próximas tareas</h2>
-      <a class="section-link" href="./pages/agenda.html" aria-label="Ver todas las tareas">Ver todas</a>
-    </header>
-    <ul id="upcoming-tasks-list" class="tasks-list"></ul>
-  </section>
-
-</aside>
-
-    <!-- Bottom nav mobile -->
     <nav class="bottom-nav" aria-label="Navegación principal">
-      <a class="bottom-nav__link is-active" href="./index.html" aria-current="page">Inicio</a>
-      <a class="bottom-nav__link" href="./pages/mascotas.html">Mascotas</a>
-      <a class="bottom-nav__link" href="./pages/agenda.html"> Agenda </a>
+      <a class="bottom-nav__link is-active" href="./index.html" aria-current="page" aria-label="Ir a la página de inicio">Inicio</a>
+      <a class="bottom-nav__link" href="./pages/mascotas.html" aria-label="Ir a la página de mascotas">Mascotas</a>
+      <a class="bottom-nav__link" href="./pages/agenda.html" aria-label="Ir a la página de agenda">Agenda</a>
     </nav>
-
-    <!-- Footer -->
     <footer class="app-footer">
       <p>🐾 PetCare Planner – Cuidados que mejoran vidas</p>
     </footer>
-
   </div>
 
   <script src="./assets/js/data.js"></script>
   <script src="./assets/js/utils.js"></script>
   <script src="./assets/js/storage.js"></script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="./assets/js/index.js"></script>
 </body>
 </html>

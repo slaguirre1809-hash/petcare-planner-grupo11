@@ -83,7 +83,7 @@ body {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  color: var(--pet-muted);
+  color: #475569;
   font-size: 1.55rem;
 }
 
@@ -408,12 +408,12 @@ body {
 }
 
 .pet-selector-card--cat .pet-species-chip {
-  background: var(--color-danger-light);
+  background: #ffe8ee;
   color: #e11d48;
 }
 
 .pet-selector-card--rabbit .pet-species-chip {
-  background: var(--color-warning-light);
+  background: #fff3d6;
   color: #b45309;
 }
 
@@ -603,7 +603,7 @@ body {
 .pet-profile-card__meta .lucide {
   width: 1rem;
   height: 1rem;
-  color: var(--pet-muted);
+  color: #64748b;
 }
 
 .pet-profile-card__action {
@@ -643,7 +643,7 @@ body {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  color: var(--pet-muted);
+  color: #64748b;
   font-size: 0.82rem;
 }
 
@@ -654,7 +654,9 @@ body {
 }
 
 .pet-summary-grid {
-  display: block;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
   overflow: hidden;
   margin-top: 1rem;
   border: 1px solid var(--pet-soft-border);
@@ -730,6 +732,10 @@ body {
   color: #475569;
   font-size: 0.72rem;
   line-height: 1.25;
+}
+
+.pet-summary-grid {
+  display: block;
 }
 
 .pet-summary-dashboard {
